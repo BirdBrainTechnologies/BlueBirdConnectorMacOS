@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<script src="js/jquery.js" ></script>
+		<script src="js/bluebird.js" ></script>
+
+		<link href="fontawesome/css/fontawesome.min.css" rel="stylesheet" type="text/css">
+		<link href="fontawesome/css/solid.min.css" rel="stylesheet" type="text/css">
+		<link href="fontawesome/css/brands.min.css" rel="stylesheet" type="text/css">
+		<link href="fontawesome/css/svg-with-js.min.css" rel="stylesheet" type="text/css">
+		<link href="fontawesome/css/v4-shims.min.css" rel="stylesheet" type="text/css">
+
+
+		<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="css/fonts.css" rel="stylesheet" type="text/css">
+		<link href="css/custom.css" rel="stylesheet" type="text/css">
+		<link rel="icon"  type="image/png" href="images/hummingbirdlogo32x32.png">
+	</head>
+	<body>
+		<header id="main-header">
+			<div class="row">
+				<div class="col-xs-12">
+					<img id="birdbrain-logo" src="img/birdbrain-technologies-logo.svg" alt="BirdBrain Technologies LLC" />
+				</div>
+				<div id="indicators">
+					<div id="indicator-wifi" class="fa-stack /*indicator-on*/">
+						<i class="icon fas fa-fw fa-wifi fa-stack-2x"></i>
+						<i class="dot fas fa-circle fa-stack-1x"></i>
+					</div>
+
+					<div id="indicator-bluetooth" class="fa-stack /*indicator-on*/">
+						<i class="icon fab fa-fw fa-bluetooth fa-stack-2x"></i>
+						<i class="dot fas fa-circle fa-stack-1x"></i>
+						<i class="dot dot-spin fas fa-sync-alt fa-spin fa-stack-2x"></i>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<section id="finder">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 text-center"><a id="find-button" class="btn btn-orange btn-lg" href="#"><i class="fas fa-sync-alt /*fa-spin*/"></i><span id="findBtnText"> Find Robots</span></a></div>
+					<div class="col-xs-12">
+						<div id="robots-found" class="robot-list">
+							<!--
+							<div class="row robot-item">
+								<div class="col-xs-2 img"><img src="img/img-bit.svg" alt="Bit" /></div>
+								<div class="col-xs-8 name">Precious Zircon Giraffe</div>
+								<div class="col-xs-2 buttons">
+									<a class="button" href="#"><span class="button-connect fa-stack fa-2x">
+										<i class="fas fa-circle fa-stack-2x"></i>
+										<i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+									</span></a>
+								</div>
+							</div>
+							<div class="row robot-item">
+								<div class="col-xs-2 img"><img src="img/img-hummingbird-bit.svg" alt="Hummingbird Bit" /></div>
+								<div class="col-xs-8 name">Benevolent Turquoise Lion</div>
+								<div class="col-xs-2 buttons">
+									<a class="button" href="#"><span class="button-connect fa-stack fa-2x">
+										<i class="fas fa-circle fa-stack-2x"></i>
+										<i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+									</span></a>
+								</div>
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="connected">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 text-center"><h1 id="connection-state">Connected</h1></div>
+					<div class="col-xs-12">
+						<div id="robots-connected" class="robot-list">
+						<!--	<div class="row robot-item">
+								<div class="col-xs-2 img">A <img src="img/img-bit.svg" alt="Bit" /></div>
+								<div class="col-xs-6 name">Precious Zircon Giraffe</div>
+								<div class="col-xs-4 buttons">
+									<a class="button" href="#"><span class="button-disconnect fa-stack fa-2x">
+										<i class="fas fa-circle fa-stack-2x"></i>
+										<i class="fas fa-minus fa-stack-1x fa-inverse"></i>
+									</span></a>
+								</div>
+							</div>
+							<div class="row robot-item">
+								<div class="col-xs-2 img">B <img src="img/img-hummingbird-bit.svg" alt="Hummingbird Bit" /></div>
+								<div class="col-xs-6 name">Benevolent Turquoise Lion</div>
+								<div class="col-xs-4 buttons">
+									<span class="button button-battery fa-stack fa-2x"><i class="fas fa-battery-full /*fa-battery-half*/ /*fa-battery-quarter*/ fa-stack-2x"></i></span>
+									<a class="button" href="#" onclick="return launchCalibrate();"><span class="button-calibrate fa-stack fa-2x">
+										<i class="fas fa-square fa-stack-2x"></i>
+										<i class="fas fa-compass fa-stack-1x fa-inverse"></i>
+									</span></a>
+
+									<a class="button" href="#"><span class="button-disconnect fa-stack fa-2x">
+										<i class="fas fa-circle fa-stack-2x"></i>
+										<i class="fas fa-minus fa-stack-1x fa-inverse"></i>
+									</span></a>
+								</div>
+							</div>  -->
+						</div>
+					</div>
+
+					<div id="start-programming">
+						<div class="col-xs-12 text-center"><h1 id="start_programming">Start Programming</h1></div>
+						<div id="online-toggle" class="col-xs-12 text-center">
+							<label id="slider-toggle" class="switch">
+								<input id="cloud-slider" type="checkbox" checked="checked">
+								<span  class="slider round"></span>
+							</label>
+							<i class="fas fa-cloud"></i>
+						</div>
+
+						<div id="programming-buttons" class="col-xs-12 text-center">
+							<!--
+							<a id="launch-scratch" class="btn btn-lg btn-orange"><img src="img/logo-scratch.svg" alt="Scratch" /></a> &nbsp;
+							-->
+							<a class="btn btn-lg btn-orange launch-snap-btn"><img src="img/logo-snap.svg" alt="Snap!" /></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+<!--
+		<section id="bluetooth-modal" class="modal">
+			<div class="container">
+				<h2><i class="fab fa-bluetooth-b"></i><span id="Connection_Failure"> Connection Failure </span><i class="fab fa-usb"></i></h2>
+				<div class="animation">
+	                <video id="dongleVid" autoplay loop alt="Bluegiga Dongle">
+	                    <source src="vid/Plug in Dongle_2.mp4" type='video/mp4'>
+	                </video>
+				</div>
+			</div>
+		</section>
+
+		<section id="calibrate-modal" class="modal">
+			<div class="container">
+				<a href="#" onclick="return closeCalibrationModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
+				<h2><i class="fas fa-compass"></i><span id="CompassCalibrate">Calibrate Compass</span></h2>
+				<div class="animation">
+					         <video id="compassVid" autoplay loop alt="Bluegiga Dongle">
+	                    <source src="vid/HummBit Figure 8_2.mp4" type='video/mp4'>
+	                </video>
+
+					<div class="status /*status-success*/ /*status-fail*/">
+						<i class="fas fa-check bounce"></i><i class="fas fa-times bounce"></i>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="daplink-modal" class="modal" data-backdrop="static" data-keyboard="false">
+			<div class="container">
+
+				<a href="#" onclick="return closeDapLinkModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
+
+				<h2></i><span id="Update_firmware"> Update Firmware</span></h2>
+				<div class="animation">
+	                <video id="DAPLinkVid" autoplay loop alt="DAPLink Video">
+	                    <source src="vid/Reset Button Press.mp4" type='video/mp4'>
+	                </video>
+				</div>
+			</div>
+		</section>
+
+		<section id="nativeMacOSBLE-modal" class="modal">
+			<div class="container">
+				<h2><i class="fab fa-bluetooth-b"></i><span id="Connection_Failure"> Connection Failure </span><i class="fab fa-usb"></i></h2>
+				<div class="animation">
+	                <video id="macOSVid" autoplay loop alt="NativeMacOS">
+	                    <source src="vid/NativeMacBLEon.mp4" type='video/mp4'>
+	                </video>
+				</div>
+			</div>
+		</section>
+-->
+
+		<script type="text/javascript">
+
+
+			/* Close calibration modal */
+			function closeModal() {
+				removeVideos();
+				/*
+				$('.modal').css('display','none');
+				return false;*/
+			}
+
+			/* Close calibration modal */
+			function closeCalibrationModal() {
+				console.log("closeCalibrationModal");
+				// Close the window
+				//$('#calibrate-modal').css('display','none');
+				removeVideos();
+
+				var devLetter = null;
+				if (usingSerialDevice())
+					devLetter =  'A'  // Serial connection is always devLetter = A.
+				else if (usingBLEDDevice())
+					devLetter = getCalibrationDevLetter();
+
+				if (devLetter !== null) {
+	                var data = {
+		                  'command' : 'calibrateStop',
+		                  'devLetter' : devLetter
+		                }
+		              console.log(data);
+		              //Send message to app to stop calibration
+		              cs.send(JSON.stringify(data));
+		        }
+
+				return false;
+			}
+
+
+			/* Close DapLinkModal modal */
+			function closeDapLinkModal() {
+				// Close the window
+				//$('#daplink-modal').css('display','none');
+				removeVideos();
+
+				var devLetter = null;
+				if (usingSerialDevice())
+					devLetter =  'A'  // Serial connection is always devLetter = A.
+
+				if (devLetter !== null) {
+	                var data = {
+		                  'command' : 'DAPLinkStop',
+		                  'devLetter' : devLetter
+		                }
+		              console.log(data);
+		              //Send message to app to stop calibration
+		              cs.send(JSON.stringify(data));
+		        }
+
+				return false;
+			}
+
+
+
+
+
+			/* Launch calibration modal and position elements */
+			function launchCalibrate(devLetter, deviceName) {
+				closeModal();
+				setCalibrationDevLetter (devLetter);
+/*
+			    var video = document.getElementById("compassVid");
+			    video.pause();
+			    video.currentTime = 0;
+
+
+				var h = $(window).height();
+				$('#calibrate-modal').css('display','block');
+
+                $('#calibrate-modal .status').removeClass('status-success');
+                $('#calibrate-modal .status').removeClass('status-fail');
+
+				var hc = $('#calibrate-modal .container').height();
+				$('#calibrate-modal .container').css('marginTop', ((h-hc)/2)+'px');
+
+				var ha = $('#calibrate-modal .animation').height();
+				var hi = $('#calibrate-modal .animation i').height();
+				$('#calibrate-modal .animation i').css('marginTop', ((ha-hi)/2)+'px');
+*/
+                // set the appropriate calibration video
+				var devVideo = getDeviceVideo(deviceName);
+	/*			$('#compassVid').attr("src", devVideo); */
+
+                var data = {
+	                  'command' : 'calibrate',
+	                  'devLetter' : devLetter
+	                }
+	              console.log(data);
+	              cs.send(JSON.stringify(data));
+
+	          /*    video.load();
+
+				return false;*/
+				launchVideo(devVideo);
+			}
+
+			function launchBluetooth() {
+				launchVideo("Plug in Dongle_2.mp4");
+				/*
+				var h = $(window).height();
+				console.log("Window Height: " + h);
+				$('#bluetooth-modal').css('display','block');
+				var hc = $('#bluetooth-modal .container').height();
+				var marginTop = ((h-hc)/2);
+				console.log("Window Height: " + h + "; Modal height: " + hc + "; marginTop: " + marginTop);
+				$('#bluetooth-modal .container').css('marginTop', marginTop+'px');
+				*/
+
+				// Not needed as there are no status icons
+				/*
+				var ha = $('#bluetooth-modal .animation').height();
+				var hi = $('#bluetooth-modal .animation i').height();
+				$('#bluetooth-modal .animation i').css('marginTop', ((ha-hi)/2)+'px');
+				*/
+
+				// Show bluetooth spinner
+				$('#indicators .fa-spin').css("display", "block");
+
+				return false;
+			}
+/*
+			function closeBluetooth() {
+				removeVideos();
+				//$('#bluetooth-modal').css('display','none');
+				// Hide bluetooth spinner
+				$('#indicators .fa-spin').css("display", "none");
+			}
+*/
+			/* If overlay of modal window is clicked, close calibration window */
+			//$(".modal").click(function() { closeModal(); close }).children().click(function(e) { return false; });
+
+			/* Toggle connected section */
+			function toggleConnected() {
+				var visible = $('#connected').css('display') != 'none';
+
+				$('#connected').slideToggle();
+
+				if(!visible)
+					$('body').css('backgroundColor', '#881199');
+				else
+					$('body').css('backgroundColor', '#089BAB');
+			}
+
+
+			/* Launch calibration modal and position elements */
+			function launchDAPLinkUpgradeVideo() {
+				launchVideo("Reset Button Press.mp4");
+				/*
+			    var video = document.getElementById("DAPLinkVid");
+			    video.pause();
+			    video.currentTime = 0;
+
+
+			    //var devLetter = 'A'; // Serial connection only
+
+				var h = $(window).height();
+				$('#daplink-modal').css('display','block');
+
+
+                //$('#daplink-modal .status').removeClass('status-success');
+                //$('#daplink-modal .status').removeClass('status-fail');
+
+				var hc = $('#daplink-modal .container').height();
+				$('#daplink-modal .container').css('marginTop', ((h-hc)/2)+'px');
+
+				var marginTop = ((h-hc)/2);
+				console.log("Window Height: " + h + "; Modal height: " + hc + "; marginTop: " + marginTop);
+				*/
+				// Not needed as there are no status icons
+				/*
+				var ha = $('#daplink-modal .animation').height();
+				var hi = $('#daplink-modal .animation i').height();
+				$('#daplink-modal .animation i').css('margin-top', ((ha-hi)/2)+'px');
+				*/
+/*
+				video.load();
+
+				return false;*/
+			}
+
+
+			function launchNativeMacOSBLEvideo() {
+				launchVideo("NativeMacBLEon.mp4");
+
+				/*
+				// load the video each time rather than setting its currentTime  to 0 due to bug with video.play not returning promise which causes an issue only on Chromebooks
+				var video = document.getElementById("macOSVid");
+				video.load();
+
+				var h = $(window).height();
+				console.log("Window Height: " + h);
+				$('#nativeMacOSBLE-modal').css('display','block');
+				var hc = $('#nativeMacOSBLE-modal .container').height();
+				var marginTop = ((h-hc)/2);
+				console.log("Window Height: " + h + "; Modal height: " + hc + "; marginTop: " + marginTop);
+				$('#nativeMacOSBLE-modal .container').css('marginTop', marginTop+'px');
+
+				// Show bluetooth spinner
+				$('#indicators .fa-spin').css("display", "block");
+
+				return false;*/
+			}
+
+			/*
+			 * Add and launch a video
+			 */
+			function launchVideo(videoName) {
+				console.log("launchVideo " + videoName);
+				const section = document.createElement('section');
+				section.setAttribute("class", "modal");
+				section.setAttribute("style", "display: none;")
+
+				//Make a container to hold everything
+				const container = document.createElement('div');
+				container.setAttribute("class", "container")
+				container.setAttribute("style", "position: relative; margin: 0 auto; height: auto; width: 95%; top: 50%; transform: translateY(-50%);");
+
+				//Create the parts
+				const header = document.createElement('h2');
+				var icon = document.createElement('i');
+				const span = document.createElement('span');
+				var icon2 = document.createElement('i');
+
+				//Make a container for the video and any other animations
+				const animation = document.createElement('div');
+				animation.setAttribute("class", "animation");
+
+				//Set to close button action if close button required
+				var onClickCloseBtn = null;
+				console.log("launchVideo before switch for " + videoName);
+				switch(videoName){
+					case "Plug in Dongle_2.mp4":
+						icon.setAttribute("class", "fab fa-bluetooth-b");
+						span.setAttribute("id", "Connection_Failure");
+						span.textContent=" " + translationTable["Connection_Failure"] + " ";
+						icon2.setAttribute("class", "fab fa-usb");
+						break;
+					case "HummBit Figure 8_2.mp4":
+					case "MicroBit Figure 8_2.mp4":
+					case "Finch_Calibration.mp4":
+						section.setAttribute("id", "calibrate-modal");
+						icon.setAttribute("class", "fas fa-compass");
+						icon2 = null;
+
+						onClickCloseBtn = "return closeCalibrationModal();";
+						//<a href="#" onclick="return closeCalibrationModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
+
+						span.setAttribute("id", "CompassCalibrate");
+						span.textContent=" " + translationTable["CompassCalibrate"] + " ";
+						const status = document.createElement('div');
+						//status.setAttribute("style", "position: relative; margin: 0 auto; height: auto; width: auto; top: 50%; transform: translateY(-50%);")
+						status.setAttribute("class", "status /*status-success*/ /*status-fail*/");
+						const check = document.createElement('i');
+						check.setAttribute("class", "fas fa-check bounce");
+						status.appendChild(check);
+						const times = document.createElement('i');
+						times.setAttribute("class", "fas fa-times bounce");
+						status.appendChild(times);
+						animation.appendChild(status);
+						break;
+					case "Reset Button Press.mp4": //daplink video
+						//<a href="#" onclick="return closeDapLinkModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
+						onClickCloseBtn = "return closeDapLinkModal();";
+
+						icon = null;
+						span.setAttribute("id", "Update_firmware");
+						span.textContent=" " + translationTable["Update_firmware"] + " ";
+						icon2 = null;
+
+						section.setAttribute("data-backdrop", "static");
+						section.setAttribute("data-keyboard", "false");
+						break;
+					case "NativeMacBLEon.mp4":
+						section.setAttribute("id", "nativeMacOSBLE-modal");
+						icon.setAttribute("class", "fab fa-bluetooth-b");
+						span.setAttribute("id", "Connection_Failure");
+						span.textContent=" " + translationTable["Connection_Failure"] + " ";
+						icon2.setAttribute("class", "fab fa-usb");
+						break;
+					default:
+						icon = null;
+				}
+				console.log("launchVideo after switch for " + videoName);
+				if (icon != null) { header.appendChild(icon); }
+				header.appendChild(span);
+				if (icon2 != null) { header.appendChild(icon2); }
+
+				//Make a close button if required
+				if (onClickCloseBtn != null) {
+					//<a href="#" onclick="return closeDapLinkModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
+					const closeBtn = document.createElement('a');
+					closeBtn.setAttribute("href", "#");
+					closeBtn.setAttribute("onclick", onClickCloseBtn);
+					closeBtn.setAttribute("class", "close btn btn-modal");
+					const btnIcon = document.createElement('i');
+					btnIcon.setAttribute("class", "fas fa-times");
+					closeBtn.appendChild(btnIcon);
+					container.appendChild(closeBtn);
+				}
+
+				//Make the video element
+				const videoElement = document.createElement('video');
+				videoElement.setAttribute("type", "video/mp4");
+				videoElement.setAttribute("id", "video" + videoName);
+				videoElement.setAttribute("loop", "loop");
+				//videoElement.setAttribute("style", "position: relative; display: block; margin: 0 auto; height: auto; width: 95%; top: 50%; transform: translateY(-50%);")
+				//videoElement.setAttribute("style", "position: relative; display: block; margin: 0 auto; height: auto; width: 95%;")
+				videoElement.src = "vid/" + videoName;
+				//videoElement.autoplay = true;
+				videoElement.muted = true; //video must be muted to autoplay on Android.
+				//Wait until the video is ready to play to display it.
+				videoElement.addEventListener('canplay',function () {
+					console.log("launchVideo about to show " + videoName);
+					section.setAttribute("style", "display: block;");
+					videoElement.play();
+				},false);
+				console.log("launchVideo about to add to document: " + videoName);
+				//connect up the finished parts
+				container.appendChild(header);
+				animation.appendChild(videoElement);
+				container.appendChild(animation);
+				//document.body.appendChild(container);
+				section.appendChild(container);
+				document.body.appendChild(section);
+
+				/* If overlay of modal window is clicked, close calibration window */
+				$(".modal").click(function() { closeModal(); close }).children().click(function(e) { return false; });
+			};
+
+			/**
+ 			 * Removes any videos that are currently playing.
+			 * We only play one at a time anyway.
+ 		 	 */
+			function removeVideos() {
+					const videosOpen = document.getElementsByTagName("video").length;
+					if (videosOpen > 0){
+						for (var i = 0; i < videosOpen; i++) {
+							const videoElement = document.getElementsByTagName("video")[i];
+							removeVideo(videoElement);
+						}
+					}
+			};
+			function removeVideo(videoElement) {
+				console.log("removing video " + videoElement.id);
+				//Fully unload the video.
+				//see https://stackoverflow.com/questions/3258587/how-to-properly-unload-destroy-a-video-element
+				videoElement.pause();
+				videoElement.removeAttribute('src'); // empty source
+				videoElement.load();
+
+				//Remove the whole modal.
+				//Each video is presented inside a div element inside a div element
+				//inside a section. This is what must be removed. See launchVideo.
+				const animation = videoElement.parentNode;
+				const container = animation.parentNode;
+				const section = container.parentNode
+
+				section.parentNode.removeChild(section);
+			};
+
+
+
+			function getLang()
+			{
+		 		console.log("navigator.language");
+		 		console.log(navigator.language);
+		 		return navigator.language;
+
+				/*  further examples of how to find language
+			 	if (navigator.languages != undefined) {
+			 		console.log("navigator.languages");
+			 		console.log(navigator.languages);
+			 		for
+			 		return navigator.languages[0];
+				}
+			 	else {
+			 		console.log("navigator.language");
+			 		console.log(navigator.language);
+			 		return navigator.language;
+			 	} */
+
+			}
+
+
+            //Row Selection Logic
+            $(document).ready(function() {
+
+            	console.log("DOCUMENT READY");
+            	getLang();
+
+
+                if (!connectedDevSelected)
+                  $.connectedDevListRefresh();
+
+                // Scan button - "find robots"
+                $('#find-button').on('click', function(e){
+                	$('#robots-found').empty();
+                    console.log("find-button clicked");
+                    setConnectingState("Connected");
+                    var newScanState = null;
+                    if ($('#find-button i').hasClass("fa-spin"))
+                    	newScanState = 'off';
+                    else
+                    	newScanState = 'on';
+                    console.log("Turning scan " + newScanState);
+                    var data = {
+                        'command' : 'scan',
+                        'scanState' : newScanState,
+                        'devNum': 1   //dummy
+                      }
+                    cs.send(JSON.stringify(data));
+                    $.scanListRefresh();
+                });
+
+ 				$('#programming-buttons .launch-snap-btn').on('click', function(e){
+ 					launchSnap();
+ 				});
+
+ 				$('.switch').on('click', function(e){
+ 					console.log("Internet Up: " + internetUp);
+ 					if (!(internetUp)) {
+ 						$('#cloud-slider').prop('checked', false);
+ 						return false;
+ 					}
+
+ 					console.log("Slider state: " + $('#cloud-slider').prop('checked'));
+
+ 					var checked = $('#cloud-slider').prop('checked');
+	 				if (checked) {
+	 					$('#cloud-slider').prop('checked', false);
+	 					console.log("Unchecking slider new state: " + $('#cloud-slider').prop('checked'));
+	 				}
+	 				else {
+	 					$('#cloud-slider').prop('checked', true);
+	 					console.log("Checking slider new state : " + $('#cloud-slider').prop('checked'));
+	 				}
+ 				});
+
+
+				$('#daplink-modal').on('hidden.bs.modal', function () {
+				    console.log("MODAL CLOSING");
+				});
+
+                //toggleConnected();
+            });
+		</script>
+
+	</body>
+</html>

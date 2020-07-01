@@ -1,0 +1,810 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		31C516ED24ABD0930051C05F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C516EC24ABD0930051C05F /* AppDelegate.swift */; };
+		31C516EF24ABD0930051C05F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C516EE24ABD0930051C05F /* ViewController.swift */; };
+		31C516F124ABD0960051C05F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31C516F024ABD0960051C05F /* Assets.xcassets */; };
+		31C516F424ABD0960051C05F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31C516F224ABD0960051C05F /* Main.storyboard */; };
+		31C5170024ABD0960051C05F /* BlueBird_ConnectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C516FF24ABD0960051C05F /* BlueBird_ConnectorTests.swift */; };
+		31C5170B24ABD0960051C05F /* BlueBird_ConnectorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C5170A24ABD0960051C05F /* BlueBird_ConnectorUITests.swift */; };
+		31C5171924ABD50C0051C05F /* FrontendServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C5171824ABD50C0051C05F /* FrontendServer.swift */; };
+		31C5171C24ABDDFC0051C05F /* prototype.html in Resources */ = {isa = PBXBuildFile; fileRef = 31C5171B24ABDDFC0051C05F /* prototype.html */; };
+		31C5171F24ABDE280051C05F /* bluebird.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C5171E24ABDE270051C05F /* bluebird.js */; };
+		31C5172124ABDE3A0051C05F /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C5172024ABDE3A0051C05F /* jquery.js */; };
+		31C5172424ABDE610051C05F /* custom.css in Resources */ = {isa = PBXBuildFile; fileRef = 31C5172324ABDE610051C05F /* custom.css */; };
+		31C5172624ABDEA40051C05F /* bootstrap.min.css in Resources */ = {isa = PBXBuildFile; fileRef = 31C5172524ABDEA40051C05F /* bootstrap.min.css */; };
+		31C5172824ABDEA90051C05F /* fonts.css in Resources */ = {isa = PBXBuildFile; fileRef = 31C5172724ABDEA90051C05F /* fonts.css */; };
+		31C5173C24ABDEC00051C05F /* all.min.css in Resources */ = {isa = PBXBuildFile; fileRef = 31C5172B24ABDEC00051C05F /* all.min.css */; };
+		31C5173D24ABDEC00051C05F /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31C5172D24ABDEC00051C05F /* fa-solid-900.ttf */; };
+		31C5173E24ABDEC00051C05F /* fa-regular-400.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5172E24ABDEC00051C05F /* fa-regular-400.svg */; };
+		31C5173F24ABDEC00051C05F /* fa-regular-400.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5172F24ABDEC00051C05F /* fa-regular-400.woff2 */; };
+		31C5174024ABDEC00051C05F /* fa-solid-900.eot in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173024ABDEC00051C05F /* fa-solid-900.eot */; };
+		31C5174124ABDEC00051C05F /* fa-brands-400.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173124ABDEC00051C05F /* fa-brands-400.svg */; };
+		31C5174224ABDEC00051C05F /* fa-regular-400.woff in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173224ABDEC00051C05F /* fa-regular-400.woff */; };
+		31C5174324ABDEC00051C05F /* fa-brands-400.eot in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173324ABDEC00051C05F /* fa-brands-400.eot */; };
+		31C5174424ABDEC10051C05F /* fa-solid-900.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173424ABDEC00051C05F /* fa-solid-900.svg */; };
+		31C5174524ABDEC10051C05F /* fa-solid-900.woff in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173524ABDEC00051C05F /* fa-solid-900.woff */; };
+		31C5174624ABDEC10051C05F /* fa-regular-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173624ABDEC00051C05F /* fa-regular-400.ttf */; };
+		31C5174724ABDEC10051C05F /* fa-solid-900.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173724ABDEC00051C05F /* fa-solid-900.woff2 */; };
+		31C5174824ABDEC10051C05F /* fa-brands-400.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173824ABDEC00051C05F /* fa-brands-400.woff2 */; };
+		31C5174924ABDEC10051C05F /* fa-brands-400.woff in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173924ABDEC00051C05F /* fa-brands-400.woff */; };
+		31C5174A24ABDEC10051C05F /* fa-brands-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173A24ABDEC00051C05F /* fa-brands-400.ttf */; };
+		31C5174B24ABDEC10051C05F /* fa-regular-400.eot in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173B24ABDEC00051C05F /* fa-regular-400.eot */; };
+		31C5174E24ABDEF80051C05F /* birdbrain-technologies-logo.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5174D24ABDEF80051C05F /* birdbrain-technologies-logo.svg */; };
+		31C5175024ABDF030051C05F /* img-bit.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5174F24ABDF030051C05F /* img-bit.svg */; };
+		31C5175224ABDF090051C05F /* img-finch.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175124ABDF090051C05F /* img-finch.svg */; };
+		31C5175424ABDF100051C05F /* img-hummingbird-bit.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175324ABDF100051C05F /* img-hummingbird-bit.svg */; };
+		31C5175624ABDF180051C05F /* pattern-blue-circuitry.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175524ABDF180051C05F /* pattern-blue-circuitry.svg */; };
+		31C5175F24ABDF470051C05F /* raleway-semibold.eot in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175824ABDF460051C05F /* raleway-semibold.eot */; };
+		31C5176024ABDF470051C05F /* raleway-semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175924ABDF460051C05F /* raleway-semibold.ttf */; };
+		31C5176124ABDF470051C05F /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175A24ABDF460051C05F /* Nunito-Regular.ttf */; };
+		31C5176224ABDF470051C05F /* Nunito-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175B24ABDF460051C05F /* Nunito-ExtraBold.ttf */; };
+		31C5176324ABDF470051C05F /* raleway-semibold.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175C24ABDF470051C05F /* raleway-semibold.svg */; };
+		31C5176424ABDF470051C05F /* raleway-semibold.woff in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175D24ABDF470051C05F /* raleway-semibold.woff */; };
+		31C5176524ABDF470051C05F /* raleway-semibold.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175E24ABDF470051C05F /* raleway-semibold.woff2 */; };
+		31C5176A24ABDF5C0051C05F /* MicroBit_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5176724ABDF5C0051C05F /* MicroBit_Calibration.mp4 */; };
+		31C5176B24ABDF5C0051C05F /* HummBit_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5176824ABDF5C0051C05F /* HummBit_Calibration.mp4 */; };
+		31C5176C24ABDF5C0051C05F /* Finch_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5176924ABDF5C0051C05F /* Finch_Calibration.mp4 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		31C516FC24ABD0960051C05F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 31C516E124ABD0930051C05F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31C516E824ABD0930051C05F;
+			remoteInfo = "BlueBird Connector";
+		};
+		31C5170724ABD0960051C05F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 31C516E124ABD0930051C05F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31C516E824ABD0930051C05F;
+			remoteInfo = "BlueBird Connector";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		31C516E924ABD0930051C05F /* BlueBird Connector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BlueBird Connector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31C516EC24ABD0930051C05F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		31C516EE24ABD0930051C05F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		31C516F024ABD0960051C05F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		31C516F324ABD0960051C05F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		31C516F524ABD0960051C05F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31C516F624ABD0960051C05F /* BlueBird_Connector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BlueBird_Connector.entitlements; sourceTree = "<group>"; };
+		31C516FB24ABD0960051C05F /* BlueBird ConnectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BlueBird ConnectorTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31C516FF24ABD0960051C05F /* BlueBird_ConnectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueBird_ConnectorTests.swift; sourceTree = "<group>"; };
+		31C5170124ABD0960051C05F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31C5170624ABD0960051C05F /* BlueBird ConnectorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BlueBird ConnectorUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31C5170A24ABD0960051C05F /* BlueBird_ConnectorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueBird_ConnectorUITests.swift; sourceTree = "<group>"; };
+		31C5170C24ABD0960051C05F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31C5171824ABD50C0051C05F /* FrontendServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontendServer.swift; sourceTree = "<group>"; };
+		31C5171B24ABDDFC0051C05F /* prototype.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = prototype.html; sourceTree = "<group>"; };
+		31C5171E24ABDE270051C05F /* bluebird.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bluebird.js; sourceTree = "<group>"; };
+		31C5172024ABDE3A0051C05F /* jquery.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.js; sourceTree = "<group>"; };
+		31C5172324ABDE610051C05F /* custom.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = custom.css; sourceTree = "<group>"; };
+		31C5172524ABDEA40051C05F /* bootstrap.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = bootstrap.min.css; sourceTree = "<group>"; };
+		31C5172724ABDEA90051C05F /* fonts.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = fonts.css; sourceTree = "<group>"; };
+		31C5172B24ABDEC00051C05F /* all.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = all.min.css; sourceTree = "<group>"; };
+		31C5172D24ABDEC00051C05F /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
+		31C5172E24ABDEC00051C05F /* fa-regular-400.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "fa-regular-400.svg"; sourceTree = "<group>"; };
+		31C5172F24ABDEC00051C05F /* fa-regular-400.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-regular-400.woff2"; sourceTree = "<group>"; };
+		31C5173024ABDEC00051C05F /* fa-solid-900.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.eot"; sourceTree = "<group>"; };
+		31C5173124ABDEC00051C05F /* fa-brands-400.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "fa-brands-400.svg"; sourceTree = "<group>"; };
+		31C5173224ABDEC00051C05F /* fa-regular-400.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-regular-400.woff"; sourceTree = "<group>"; };
+		31C5173324ABDEC00051C05F /* fa-brands-400.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-brands-400.eot"; sourceTree = "<group>"; };
+		31C5173424ABDEC00051C05F /* fa-solid-900.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "fa-solid-900.svg"; sourceTree = "<group>"; };
+		31C5173524ABDEC00051C05F /* fa-solid-900.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.woff"; sourceTree = "<group>"; };
+		31C5173624ABDEC00051C05F /* fa-regular-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-regular-400.ttf"; sourceTree = "<group>"; };
+		31C5173724ABDEC00051C05F /* fa-solid-900.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.woff2"; sourceTree = "<group>"; };
+		31C5173824ABDEC00051C05F /* fa-brands-400.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-brands-400.woff2"; sourceTree = "<group>"; };
+		31C5173924ABDEC00051C05F /* fa-brands-400.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-brands-400.woff"; sourceTree = "<group>"; };
+		31C5173A24ABDEC00051C05F /* fa-brands-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-brands-400.ttf"; sourceTree = "<group>"; };
+		31C5173B24ABDEC00051C05F /* fa-regular-400.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-regular-400.eot"; sourceTree = "<group>"; };
+		31C5174D24ABDEF80051C05F /* birdbrain-technologies-logo.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "birdbrain-technologies-logo.svg"; sourceTree = "<group>"; };
+		31C5174F24ABDF030051C05F /* img-bit.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "img-bit.svg"; sourceTree = "<group>"; };
+		31C5175124ABDF090051C05F /* img-finch.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "img-finch.svg"; sourceTree = "<group>"; };
+		31C5175324ABDF100051C05F /* img-hummingbird-bit.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "img-hummingbird-bit.svg"; sourceTree = "<group>"; };
+		31C5175524ABDF180051C05F /* pattern-blue-circuitry.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "pattern-blue-circuitry.svg"; sourceTree = "<group>"; };
+		31C5175824ABDF460051C05F /* raleway-semibold.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "raleway-semibold.eot"; sourceTree = "<group>"; };
+		31C5175924ABDF460051C05F /* raleway-semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "raleway-semibold.ttf"; sourceTree = "<group>"; };
+		31C5175A24ABDF460051C05F /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
+		31C5175B24ABDF460051C05F /* Nunito-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-ExtraBold.ttf"; sourceTree = "<group>"; };
+		31C5175C24ABDF470051C05F /* raleway-semibold.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "raleway-semibold.svg"; sourceTree = "<group>"; };
+		31C5175D24ABDF470051C05F /* raleway-semibold.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "raleway-semibold.woff"; sourceTree = "<group>"; };
+		31C5175E24ABDF470051C05F /* raleway-semibold.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "raleway-semibold.woff2"; sourceTree = "<group>"; };
+		31C5176724ABDF5C0051C05F /* MicroBit_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = MicroBit_Calibration.mp4; sourceTree = "<group>"; };
+		31C5176824ABDF5C0051C05F /* HummBit_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HummBit_Calibration.mp4; sourceTree = "<group>"; };
+		31C5176924ABDF5C0051C05F /* Finch_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Finch_Calibration.mp4; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		31C516E624ABD0930051C05F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31C516F824ABD0960051C05F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31C5170324ABD0960051C05F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		31C516E024ABD0930051C05F = {
+			isa = PBXGroup;
+			children = (
+				31C516EB24ABD0930051C05F /* BlueBird Connector */,
+				31C516FE24ABD0960051C05F /* BlueBird ConnectorTests */,
+				31C5170924ABD0960051C05F /* BlueBird ConnectorUITests */,
+				31C516EA24ABD0930051C05F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		31C516EA24ABD0930051C05F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				31C516E924ABD0930051C05F /* BlueBird Connector.app */,
+				31C516FB24ABD0960051C05F /* BlueBird ConnectorTests.xctest */,
+				31C5170624ABD0960051C05F /* BlueBird ConnectorUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		31C516EB24ABD0930051C05F /* BlueBird Connector */ = {
+			isa = PBXGroup;
+			children = (
+				31C5171A24ABDD620051C05F /* Frontend */,
+				31C516EC24ABD0930051C05F /* AppDelegate.swift */,
+				31C516EE24ABD0930051C05F /* ViewController.swift */,
+				31C5171824ABD50C0051C05F /* FrontendServer.swift */,
+				31C516F024ABD0960051C05F /* Assets.xcassets */,
+				31C516F224ABD0960051C05F /* Main.storyboard */,
+				31C516F524ABD0960051C05F /* Info.plist */,
+				31C516F624ABD0960051C05F /* BlueBird_Connector.entitlements */,
+			);
+			path = "BlueBird Connector";
+			sourceTree = "<group>";
+		};
+		31C516FE24ABD0960051C05F /* BlueBird ConnectorTests */ = {
+			isa = PBXGroup;
+			children = (
+				31C516FF24ABD0960051C05F /* BlueBird_ConnectorTests.swift */,
+				31C5170124ABD0960051C05F /* Info.plist */,
+			);
+			path = "BlueBird ConnectorTests";
+			sourceTree = "<group>";
+		};
+		31C5170924ABD0960051C05F /* BlueBird ConnectorUITests */ = {
+			isa = PBXGroup;
+			children = (
+				31C5170A24ABD0960051C05F /* BlueBird_ConnectorUITests.swift */,
+				31C5170C24ABD0960051C05F /* Info.plist */,
+			);
+			path = "BlueBird ConnectorUITests";
+			sourceTree = "<group>";
+		};
+		31C5171A24ABDD620051C05F /* Frontend */ = {
+			isa = PBXGroup;
+			children = (
+				31C5176624ABDF5C0051C05F /* vid */,
+				31C5175724ABDF370051C05F /* fonts */,
+				31C5174C24ABDEED0051C05F /* img */,
+				31C5172924ABDEC00051C05F /* fontawesome */,
+				31C5172224ABDE580051C05F /* css */,
+				31C5171D24ABDE1B0051C05F /* js */,
+				31C5171B24ABDDFC0051C05F /* prototype.html */,
+			);
+			path = Frontend;
+			sourceTree = "<group>";
+		};
+		31C5171D24ABDE1B0051C05F /* js */ = {
+			isa = PBXGroup;
+			children = (
+				31C5172024ABDE3A0051C05F /* jquery.js */,
+				31C5171E24ABDE270051C05F /* bluebird.js */,
+			);
+			path = js;
+			sourceTree = "<group>";
+		};
+		31C5172224ABDE580051C05F /* css */ = {
+			isa = PBXGroup;
+			children = (
+				31C5172524ABDEA40051C05F /* bootstrap.min.css */,
+				31C5172724ABDEA90051C05F /* fonts.css */,
+				31C5172324ABDE610051C05F /* custom.css */,
+			);
+			path = css;
+			sourceTree = "<group>";
+		};
+		31C5172924ABDEC00051C05F /* fontawesome */ = {
+			isa = PBXGroup;
+			children = (
+				31C5172A24ABDEC00051C05F /* css */,
+				31C5172C24ABDEC00051C05F /* webfonts */,
+			);
+			path = fontawesome;
+			sourceTree = "<group>";
+		};
+		31C5172A24ABDEC00051C05F /* css */ = {
+			isa = PBXGroup;
+			children = (
+				31C5172B24ABDEC00051C05F /* all.min.css */,
+			);
+			path = css;
+			sourceTree = "<group>";
+		};
+		31C5172C24ABDEC00051C05F /* webfonts */ = {
+			isa = PBXGroup;
+			children = (
+				31C5172D24ABDEC00051C05F /* fa-solid-900.ttf */,
+				31C5172E24ABDEC00051C05F /* fa-regular-400.svg */,
+				31C5172F24ABDEC00051C05F /* fa-regular-400.woff2 */,
+				31C5173024ABDEC00051C05F /* fa-solid-900.eot */,
+				31C5173124ABDEC00051C05F /* fa-brands-400.svg */,
+				31C5173224ABDEC00051C05F /* fa-regular-400.woff */,
+				31C5173324ABDEC00051C05F /* fa-brands-400.eot */,
+				31C5173424ABDEC00051C05F /* fa-solid-900.svg */,
+				31C5173524ABDEC00051C05F /* fa-solid-900.woff */,
+				31C5173624ABDEC00051C05F /* fa-regular-400.ttf */,
+				31C5173724ABDEC00051C05F /* fa-solid-900.woff2 */,
+				31C5173824ABDEC00051C05F /* fa-brands-400.woff2 */,
+				31C5173924ABDEC00051C05F /* fa-brands-400.woff */,
+				31C5173A24ABDEC00051C05F /* fa-brands-400.ttf */,
+				31C5173B24ABDEC00051C05F /* fa-regular-400.eot */,
+			);
+			path = webfonts;
+			sourceTree = "<group>";
+		};
+		31C5174C24ABDEED0051C05F /* img */ = {
+			isa = PBXGroup;
+			children = (
+				31C5175124ABDF090051C05F /* img-finch.svg */,
+				31C5175524ABDF180051C05F /* pattern-blue-circuitry.svg */,
+				31C5175324ABDF100051C05F /* img-hummingbird-bit.svg */,
+				31C5174D24ABDEF80051C05F /* birdbrain-technologies-logo.svg */,
+				31C5174F24ABDF030051C05F /* img-bit.svg */,
+			);
+			path = img;
+			sourceTree = "<group>";
+		};
+		31C5175724ABDF370051C05F /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				31C5175B24ABDF460051C05F /* Nunito-ExtraBold.ttf */,
+				31C5175A24ABDF460051C05F /* Nunito-Regular.ttf */,
+				31C5175824ABDF460051C05F /* raleway-semibold.eot */,
+				31C5175C24ABDF470051C05F /* raleway-semibold.svg */,
+				31C5175924ABDF460051C05F /* raleway-semibold.ttf */,
+				31C5175D24ABDF470051C05F /* raleway-semibold.woff */,
+				31C5175E24ABDF470051C05F /* raleway-semibold.woff2 */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
+		31C5176624ABDF5C0051C05F /* vid */ = {
+			isa = PBXGroup;
+			children = (
+				31C5176724ABDF5C0051C05F /* MicroBit_Calibration.mp4 */,
+				31C5176824ABDF5C0051C05F /* HummBit_Calibration.mp4 */,
+				31C5176924ABDF5C0051C05F /* Finch_Calibration.mp4 */,
+			);
+			path = vid;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		31C516E824ABD0930051C05F /* BlueBird Connector */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31C5170F24ABD0960051C05F /* Build configuration list for PBXNativeTarget "BlueBird Connector" */;
+			buildPhases = (
+				31C516E524ABD0930051C05F /* Sources */,
+				31C516E624ABD0930051C05F /* Frameworks */,
+				31C516E724ABD0930051C05F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "BlueBird Connector";
+			productName = "BlueBird Connector";
+			productReference = 31C516E924ABD0930051C05F /* BlueBird Connector.app */;
+			productType = "com.apple.product-type.application";
+		};
+		31C516FA24ABD0960051C05F /* BlueBird ConnectorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31C5171224ABD0960051C05F /* Build configuration list for PBXNativeTarget "BlueBird ConnectorTests" */;
+			buildPhases = (
+				31C516F724ABD0960051C05F /* Sources */,
+				31C516F824ABD0960051C05F /* Frameworks */,
+				31C516F924ABD0960051C05F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31C516FD24ABD0960051C05F /* PBXTargetDependency */,
+			);
+			name = "BlueBird ConnectorTests";
+			productName = "BlueBird ConnectorTests";
+			productReference = 31C516FB24ABD0960051C05F /* BlueBird ConnectorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		31C5170524ABD0960051C05F /* BlueBird ConnectorUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31C5171524ABD0960051C05F /* Build configuration list for PBXNativeTarget "BlueBird ConnectorUITests" */;
+			buildPhases = (
+				31C5170224ABD0960051C05F /* Sources */,
+				31C5170324ABD0960051C05F /* Frameworks */,
+				31C5170424ABD0960051C05F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31C5170824ABD0960051C05F /* PBXTargetDependency */,
+			);
+			name = "BlueBird ConnectorUITests";
+			productName = "BlueBird ConnectorUITests";
+			productReference = 31C5170624ABD0960051C05F /* BlueBird ConnectorUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		31C516E124ABD0930051C05F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "BirdBrain Technologies";
+				TargetAttributes = {
+					31C516E824ABD0930051C05F = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					31C516FA24ABD0960051C05F = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = 31C516E824ABD0930051C05F;
+					};
+					31C5170524ABD0960051C05F = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = 31C516E824ABD0930051C05F;
+					};
+				};
+			};
+			buildConfigurationList = 31C516E424ABD0930051C05F /* Build configuration list for PBXProject "BlueBird Connector" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 31C516E024ABD0930051C05F;
+			productRefGroup = 31C516EA24ABD0930051C05F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				31C516E824ABD0930051C05F /* BlueBird Connector */,
+				31C516FA24ABD0960051C05F /* BlueBird ConnectorTests */,
+				31C5170524ABD0960051C05F /* BlueBird ConnectorUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		31C516E724ABD0930051C05F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31C5176224ABDF470051C05F /* Nunito-ExtraBold.ttf in Resources */,
+				31C5175224ABDF090051C05F /* img-finch.svg in Resources */,
+				31C5175424ABDF100051C05F /* img-hummingbird-bit.svg in Resources */,
+				31C5172624ABDEA40051C05F /* bootstrap.min.css in Resources */,
+				31C5173F24ABDEC00051C05F /* fa-regular-400.woff2 in Resources */,
+				31C5173D24ABDEC00051C05F /* fa-solid-900.ttf in Resources */,
+				31C5174924ABDEC10051C05F /* fa-brands-400.woff in Resources */,
+				31C5175024ABDF030051C05F /* img-bit.svg in Resources */,
+				31C5172424ABDE610051C05F /* custom.css in Resources */,
+				31C5174E24ABDEF80051C05F /* birdbrain-technologies-logo.svg in Resources */,
+				31C5174024ABDEC00051C05F /* fa-solid-900.eot in Resources */,
+				31C5176124ABDF470051C05F /* Nunito-Regular.ttf in Resources */,
+				31C5174724ABDEC10051C05F /* fa-solid-900.woff2 in Resources */,
+				31C5172824ABDEA90051C05F /* fonts.css in Resources */,
+				31C5174324ABDEC00051C05F /* fa-brands-400.eot in Resources */,
+				31C5174224ABDEC00051C05F /* fa-regular-400.woff in Resources */,
+				31C5174424ABDEC10051C05F /* fa-solid-900.svg in Resources */,
+				31C5176424ABDF470051C05F /* raleway-semibold.woff in Resources */,
+				31C5173E24ABDEC00051C05F /* fa-regular-400.svg in Resources */,
+				31C5176B24ABDF5C0051C05F /* HummBit_Calibration.mp4 in Resources */,
+				31C5172124ABDE3A0051C05F /* jquery.js in Resources */,
+				31C516F124ABD0960051C05F /* Assets.xcassets in Resources */,
+				31C5176024ABDF470051C05F /* raleway-semibold.ttf in Resources */,
+				31C5171C24ABDDFC0051C05F /* prototype.html in Resources */,
+				31C5176A24ABDF5C0051C05F /* MicroBit_Calibration.mp4 in Resources */,
+				31C5173C24ABDEC00051C05F /* all.min.css in Resources */,
+				31C516F424ABD0960051C05F /* Main.storyboard in Resources */,
+				31C5174124ABDEC00051C05F /* fa-brands-400.svg in Resources */,
+				31C5174524ABDEC10051C05F /* fa-solid-900.woff in Resources */,
+				31C5175F24ABDF470051C05F /* raleway-semibold.eot in Resources */,
+				31C5174824ABDEC10051C05F /* fa-brands-400.woff2 in Resources */,
+				31C5176C24ABDF5C0051C05F /* Finch_Calibration.mp4 in Resources */,
+				31C5176524ABDF470051C05F /* raleway-semibold.woff2 in Resources */,
+				31C5171F24ABDE280051C05F /* bluebird.js in Resources */,
+				31C5176324ABDF470051C05F /* raleway-semibold.svg in Resources */,
+				31C5174624ABDEC10051C05F /* fa-regular-400.ttf in Resources */,
+				31C5175624ABDF180051C05F /* pattern-blue-circuitry.svg in Resources */,
+				31C5174A24ABDEC10051C05F /* fa-brands-400.ttf in Resources */,
+				31C5174B24ABDEC10051C05F /* fa-regular-400.eot in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31C516F924ABD0960051C05F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31C5170424ABD0960051C05F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		31C516E524ABD0930051C05F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31C5171924ABD50C0051C05F /* FrontendServer.swift in Sources */,
+				31C516EF24ABD0930051C05F /* ViewController.swift in Sources */,
+				31C516ED24ABD0930051C05F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31C516F724ABD0960051C05F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31C5170024ABD0960051C05F /* BlueBird_ConnectorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31C5170224ABD0960051C05F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31C5170B24ABD0960051C05F /* BlueBird_ConnectorUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		31C516FD24ABD0960051C05F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31C516E824ABD0930051C05F /* BlueBird Connector */;
+			targetProxy = 31C516FC24ABD0960051C05F /* PBXContainerItemProxy */;
+		};
+		31C5170824ABD0960051C05F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31C516E824ABD0930051C05F /* BlueBird Connector */;
+			targetProxy = 31C5170724ABD0960051C05F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		31C516F224ABD0960051C05F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				31C516F324ABD0960051C05F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		31C5170D24ABD0960051C05F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		31C5170E24ABD0960051C05F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		31C5171024ABD0960051C05F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "BlueBird Connector/BlueBird_Connector.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = N6XC9HC8PB;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "BlueBird Connector/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-Connector";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		31C5171124ABD0960051C05F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "BlueBird Connector/BlueBird_Connector.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = N6XC9HC8PB;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "BlueBird Connector/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-Connector";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		31C5171324ABD0960051C05F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = N6XC9HC8PB;
+				INFOPLIST_FILE = "BlueBird ConnectorTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-ConnectorTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BlueBird Connector.app/Contents/MacOS/BlueBird Connector";
+			};
+			name = Debug;
+		};
+		31C5171424ABD0960051C05F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = N6XC9HC8PB;
+				INFOPLIST_FILE = "BlueBird ConnectorTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-ConnectorTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BlueBird Connector.app/Contents/MacOS/BlueBird Connector";
+			};
+			name = Release;
+		};
+		31C5171624ABD0960051C05F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = N6XC9HC8PB;
+				INFOPLIST_FILE = "BlueBird ConnectorUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-ConnectorUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "BlueBird Connector";
+			};
+			name = Debug;
+		};
+		31C5171724ABD0960051C05F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = N6XC9HC8PB;
+				INFOPLIST_FILE = "BlueBird ConnectorUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-ConnectorUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "BlueBird Connector";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		31C516E424ABD0930051C05F /* Build configuration list for PBXProject "BlueBird Connector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31C5170D24ABD0960051C05F /* Debug */,
+				31C5170E24ABD0960051C05F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31C5170F24ABD0960051C05F /* Build configuration list for PBXNativeTarget "BlueBird Connector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31C5171024ABD0960051C05F /* Debug */,
+				31C5171124ABD0960051C05F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31C5171224ABD0960051C05F /* Build configuration list for PBXNativeTarget "BlueBird ConnectorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31C5171324ABD0960051C05F /* Debug */,
+				31C5171424ABD0960051C05F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31C5171524ABD0960051C05F /* Build configuration list for PBXNativeTarget "BlueBird ConnectorUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31C5171624ABD0960051C05F /* Debug */,
+				31C5171724ABD0960051C05F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 31C516E124ABD0930051C05F /* Project object */;
+}
