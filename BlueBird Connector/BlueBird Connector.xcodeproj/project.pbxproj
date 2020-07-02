@@ -51,6 +51,13 @@
 		31C5176A24ABDF5C0051C05F /* MicroBit_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5176724ABDF5C0051C05F /* MicroBit_Calibration.mp4 */; };
 		31C5176B24ABDF5C0051C05F /* HummBit_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5176824ABDF5C0051C05F /* HummBit_Calibration.mp4 */; };
 		31C5176C24ABDF5C0051C05F /* Finch_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5176924ABDF5C0051C05F /* Finch_Calibration.mp4 */; };
+		31C63E8224AE70240051F104 /* HummingbirdDragAndDrop.html in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8124AE70240051F104 /* HummingbirdDragAndDrop.html */; };
+		31C63E8424AE702E0051F104 /* MyCSS.css in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8324AE702E0051F104 /* MyCSS.css */; };
+		31C63E8624AE70340051F104 /* all.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8524AE70340051F104 /* all.js */; };
+		31C63E8824AE73510051F104 /* hummingbirdlogo32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8724AE73510051F104 /* hummingbirdlogo32x32.png */; };
+		31C63E8A24AE79A20051F104 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8924AE79A20051F104 /* index.html */; };
+		31C63E8C24AE7A7B0051F104 /* messages.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8B24AE7A7B0051F104 /* messages.js */; };
+		31C63E8E24AE81A10051F104 /* jquery-3.5.1.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8D24AE81A10051F104 /* jquery-3.5.1.min.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +129,13 @@
 		31C5176724ABDF5C0051C05F /* MicroBit_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = MicroBit_Calibration.mp4; sourceTree = "<group>"; };
 		31C5176824ABDF5C0051C05F /* HummBit_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HummBit_Calibration.mp4; sourceTree = "<group>"; };
 		31C5176924ABDF5C0051C05F /* Finch_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Finch_Calibration.mp4; sourceTree = "<group>"; };
+		31C63E8124AE70240051F104 /* HummingbirdDragAndDrop.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = HummingbirdDragAndDrop.html; sourceTree = "<group>"; };
+		31C63E8324AE702E0051F104 /* MyCSS.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = MyCSS.css; sourceTree = "<group>"; };
+		31C63E8524AE70340051F104 /* all.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = all.js; sourceTree = "<group>"; };
+		31C63E8724AE73510051F104 /* hummingbirdlogo32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hummingbirdlogo32x32.png; sourceTree = "<group>"; };
+		31C63E8924AE79A20051F104 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		31C63E8B24AE7A7B0051F104 /* messages.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = messages.js; sourceTree = "<group>"; };
+		31C63E8D24AE81A10051F104 /* jquery-3.5.1.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-3.5.1.min.js"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +186,7 @@
 		31C516EB24ABD0930051C05F /* BlueBird Connector */ = {
 			isa = PBXGroup;
 			children = (
+				31C63E8024AE6FEA0051F104 /* tmp */,
 				31C5171A24ABDD620051C05F /* Frontend */,
 				31C516EC24ABD0930051C05F /* AppDelegate.swift */,
 				31C516EE24ABD0930051C05F /* ViewController.swift */,
@@ -212,6 +227,7 @@
 				31C5172224ABDE580051C05F /* css */,
 				31C5171D24ABDE1B0051C05F /* js */,
 				31C5171B24ABDDFC0051C05F /* prototype.html */,
+				31C63E8924AE79A20051F104 /* index.html */,
 			);
 			path = Frontend;
 			sourceTree = "<group>";
@@ -219,8 +235,10 @@
 		31C5171D24ABDE1B0051C05F /* js */ = {
 			isa = PBXGroup;
 			children = (
+				31C63E8D24AE81A10051F104 /* jquery-3.5.1.min.js */,
 				31C5172024ABDE3A0051C05F /* jquery.js */,
 				31C5171E24ABDE270051C05F /* bluebird.js */,
+				31C63E8B24AE7A7B0051F104 /* messages.js */,
 			);
 			path = js;
 			sourceTree = "<group>";
@@ -277,6 +295,7 @@
 		31C5174C24ABDEED0051C05F /* img */ = {
 			isa = PBXGroup;
 			children = (
+				31C63E8724AE73510051F104 /* hummingbirdlogo32x32.png */,
 				31C5175124ABDF090051C05F /* img-finch.svg */,
 				31C5175524ABDF180051C05F /* pattern-blue-circuitry.svg */,
 				31C5175324ABDF100051C05F /* img-hummingbird-bit.svg */,
@@ -308,6 +327,16 @@
 				31C5176924ABDF5C0051C05F /* Finch_Calibration.mp4 */,
 			);
 			path = vid;
+			sourceTree = "<group>";
+		};
+		31C63E8024AE6FEA0051F104 /* tmp */ = {
+			isa = PBXGroup;
+			children = (
+				31C63E8124AE70240051F104 /* HummingbirdDragAndDrop.html */,
+				31C63E8324AE702E0051F104 /* MyCSS.css */,
+				31C63E8524AE70340051F104 /* all.js */,
+			);
+			path = tmp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -415,6 +444,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31C5176224ABDF470051C05F /* Nunito-ExtraBold.ttf in Resources */,
+				31C63E8A24AE79A20051F104 /* index.html in Resources */,
 				31C5175224ABDF090051C05F /* img-finch.svg in Resources */,
 				31C5175424ABDF100051C05F /* img-hummingbird-bit.svg in Resources */,
 				31C5172624ABDEA40051C05F /* bootstrap.min.css in Resources */,
@@ -432,7 +462,9 @@
 				31C5174224ABDEC00051C05F /* fa-regular-400.woff in Resources */,
 				31C5174424ABDEC10051C05F /* fa-solid-900.svg in Resources */,
 				31C5176424ABDF470051C05F /* raleway-semibold.woff in Resources */,
+				31C63E8224AE70240051F104 /* HummingbirdDragAndDrop.html in Resources */,
 				31C5173E24ABDEC00051C05F /* fa-regular-400.svg in Resources */,
+				31C63E8824AE73510051F104 /* hummingbirdlogo32x32.png in Resources */,
 				31C5176B24ABDF5C0051C05F /* HummBit_Calibration.mp4 in Resources */,
 				31C5172124ABDE3A0051C05F /* jquery.js in Resources */,
 				31C516F124ABD0960051C05F /* Assets.xcassets in Resources */,
@@ -443,16 +475,20 @@
 				31C516F424ABD0960051C05F /* Main.storyboard in Resources */,
 				31C5174124ABDEC00051C05F /* fa-brands-400.svg in Resources */,
 				31C5174524ABDEC10051C05F /* fa-solid-900.woff in Resources */,
+				31C63E8E24AE81A10051F104 /* jquery-3.5.1.min.js in Resources */,
+				31C63E8C24AE7A7B0051F104 /* messages.js in Resources */,
 				31C5175F24ABDF470051C05F /* raleway-semibold.eot in Resources */,
 				31C5174824ABDEC10051C05F /* fa-brands-400.woff2 in Resources */,
 				31C5176C24ABDF5C0051C05F /* Finch_Calibration.mp4 in Resources */,
 				31C5176524ABDF470051C05F /* raleway-semibold.woff2 in Resources */,
 				31C5171F24ABDE280051C05F /* bluebird.js in Resources */,
 				31C5176324ABDF470051C05F /* raleway-semibold.svg in Resources */,
+				31C63E8624AE70340051F104 /* all.js in Resources */,
 				31C5174624ABDEC10051C05F /* fa-regular-400.ttf in Resources */,
 				31C5175624ABDF180051C05F /* pattern-blue-circuitry.svg in Resources */,
 				31C5174A24ABDEC10051C05F /* fa-brands-400.ttf in Resources */,
 				31C5174B24ABDEC10051C05F /* fa-regular-400.eot in Resources */,
+				31C63E8424AE702E0051F104 /* MyCSS.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,7 +612,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -630,7 +666,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;

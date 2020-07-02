@@ -1,27 +1,36 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8" />
-		<script src="js/jquery.js" ></script>
-		<script src="js/bluebird.js" ></script>
+        <title>BlueBird Connector</title>
+		<!-- <meta charset="UTF-8" /> -->
+        <link href="custom.css" rel="stylesheet" type="text/css" />
+            
+		<!-- <script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="bluebird.js"></script> -->
+        <script type="text/javascript" src="all.js"></script>
 
-		<link href="fontawesome/css/fontawesome.min.css" rel="stylesheet" type="text/css">
-		<link href="fontawesome/css/solid.min.css" rel="stylesheet" type="text/css">
-		<link href="fontawesome/css/brands.min.css" rel="stylesheet" type="text/css">
-		<link href="fontawesome/css/svg-with-js.min.css" rel="stylesheet" type="text/css">
-		<link href="fontawesome/css/v4-shims.min.css" rel="stylesheet" type="text/css">
+		<!-- <link href="fontawesome.min.css" rel="stylesheet" type="text/css">
+		<link href="solid.min.css" rel="stylesheet" type="text/css">
+		<link href="brands.min.css" rel="stylesheet" type="text/css">
+		<link href="svg-with-js.min.css" rel="stylesheet" type="text/css">
+		<link href="v4-shims.min.css" rel="stylesheet" type="text/css">
 
 
-		<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<link href="css/fonts.css" rel="stylesheet" type="text/css">
-		<link href="css/custom.css" rel="stylesheet" type="text/css">
-		<link rel="icon"  type="image/png" href="images/hummingbirdlogo32x32.png">
+		<link href="bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="fonts.css" rel="stylesheet" type="text/css">
+		<link href="custom.css" rel="stylesheet" type="text/css">
+		<link rel="icon"  type="image/png" href="hummingbirdlogo32x32.png">
+            
+        <meta name="viewport" content="user-scalable=1.0,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="content-type" content="text/html;charset=utf-8"> -->
 	</head>
 	<body>
 		<header id="main-header">
 			<div class="row">
 				<div class="col-xs-12">
-					<img id="birdbrain-logo" src="img/birdbrain-technologies-logo.svg" alt="BirdBrain Technologies LLC" />
+					<img id="birdbrain-logo" src="birdbrain-technologies-logo.svg" alt="BirdBrain Technologies LLC" />
 				</div>
 				<div id="indicators">
 					<div id="indicator-wifi" class="fa-stack /*indicator-on*/">
@@ -35,74 +44,29 @@
 						<i class="dot dot-spin fas fa-sync-alt fa-spin fa-stack-2x"></i>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</header>
 
-		<section id="finder">
+		<!--<section id="finder">
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12 text-center"><a id="find-button" class="btn btn-orange btn-lg" href="#"><i class="fas fa-sync-alt /*fa-spin*/"></i><span id="findBtnText"> Find Robots</span></a></div>
 					<div class="col-xs-12">
 						<div id="robots-found" class="robot-list">
-							<!--
-							<div class="row robot-item">
-								<div class="col-xs-2 img"><img src="img/img-bit.svg" alt="Bit" /></div>
-								<div class="col-xs-8 name">Precious Zircon Giraffe</div>
-								<div class="col-xs-2 buttons">
-									<a class="button" href="#"><span class="button-connect fa-stack fa-2x">
-										<i class="fas fa-circle fa-stack-2x"></i>
-										<i class="fas fa-plus fa-stack-1x fa-inverse"></i>
-									</span></a>
-								</div>
-							</div>
-							<div class="row robot-item">
-								<div class="col-xs-2 img"><img src="img/img-hummingbird-bit.svg" alt="Hummingbird Bit" /></div>
-								<div class="col-xs-8 name">Benevolent Turquoise Lion</div>
-								<div class="col-xs-2 buttons">
-									<a class="button" href="#"><span class="button-connect fa-stack fa-2x">
-										<i class="fas fa-circle fa-stack-2x"></i>
-										<i class="fas fa-plus fa-stack-1x fa-inverse"></i>
-									</span></a>
-								</div>
-							</div> -->
+							
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
+		</section>-->
 
-		<section id="connected">
+		<!--<section id="connected">
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12 text-center"><h1 id="connection-state">Connected</h1></div>
 					<div class="col-xs-12">
 						<div id="robots-connected" class="robot-list">
-						<!--	<div class="row robot-item">
-								<div class="col-xs-2 img">A <img src="img/img-bit.svg" alt="Bit" /></div>
-								<div class="col-xs-6 name">Precious Zircon Giraffe</div>
-								<div class="col-xs-4 buttons">
-									<a class="button" href="#"><span class="button-disconnect fa-stack fa-2x">
-										<i class="fas fa-circle fa-stack-2x"></i>
-										<i class="fas fa-minus fa-stack-1x fa-inverse"></i>
-									</span></a>
-								</div>
-							</div>
-							<div class="row robot-item">
-								<div class="col-xs-2 img">B <img src="img/img-hummingbird-bit.svg" alt="Hummingbird Bit" /></div>
-								<div class="col-xs-6 name">Benevolent Turquoise Lion</div>
-								<div class="col-xs-4 buttons">
-									<span class="button button-battery fa-stack fa-2x"><i class="fas fa-battery-full /*fa-battery-half*/ /*fa-battery-quarter*/ fa-stack-2x"></i></span>
-									<a class="button" href="#" onclick="return launchCalibrate();"><span class="button-calibrate fa-stack fa-2x">
-										<i class="fas fa-square fa-stack-2x"></i>
-										<i class="fas fa-compass fa-stack-1x fa-inverse"></i>
-									</span></a>
-
-									<a class="button" href="#"><span class="button-disconnect fa-stack fa-2x">
-										<i class="fas fa-circle fa-stack-2x"></i>
-										<i class="fas fa-minus fa-stack-1x fa-inverse"></i>
-									</span></a>
-								</div>
-							</div>  -->
+						
 						</div>
 					</div>
 
@@ -117,72 +81,19 @@
 						</div>
 
 						<div id="programming-buttons" class="col-xs-12 text-center">
-							<!--
-							<a id="launch-scratch" class="btn btn-lg btn-orange"><img src="img/logo-scratch.svg" alt="Scratch" /></a> &nbsp;
-							-->
+							
 							<a class="btn btn-lg btn-orange launch-snap-btn"><img src="img/logo-snap.svg" alt="Snap!" /></a>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
-<!--
-		<section id="bluetooth-modal" class="modal">
-			<div class="container">
-				<h2><i class="fab fa-bluetooth-b"></i><span id="Connection_Failure"> Connection Failure </span><i class="fab fa-usb"></i></h2>
-				<div class="animation">
-	                <video id="dongleVid" autoplay loop alt="Bluegiga Dongle">
-	                    <source src="vid/Plug in Dongle_2.mp4" type='video/mp4'>
-	                </video>
-				</div>
-			</div>
-		</section>
+		</section>-->
 
-		<section id="calibrate-modal" class="modal">
-			<div class="container">
-				<a href="#" onclick="return closeCalibrationModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
-				<h2><i class="fas fa-compass"></i><span id="CompassCalibrate">Calibrate Compass</span></h2>
-				<div class="animation">
-					         <video id="compassVid" autoplay loop alt="Bluegiga Dongle">
-	                    <source src="vid/HummBit Figure 8_2.mp4" type='video/mp4'>
-	                </video>
-
-					<div class="status /*status-success*/ /*status-fail*/">
-						<i class="fas fa-check bounce"></i><i class="fas fa-times bounce"></i>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section id="daplink-modal" class="modal" data-backdrop="static" data-keyboard="false">
-			<div class="container">
-
-				<a href="#" onclick="return closeDapLinkModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
-
-				<h2></i><span id="Update_firmware"> Update Firmware</span></h2>
-				<div class="animation">
-	                <video id="DAPLinkVid" autoplay loop alt="DAPLink Video">
-	                    <source src="vid/Reset Button Press.mp4" type='video/mp4'>
-	                </video>
-				</div>
-			</div>
-		</section>
-
-		<section id="nativeMacOSBLE-modal" class="modal">
-			<div class="container">
-				<h2><i class="fab fa-bluetooth-b"></i><span id="Connection_Failure"> Connection Failure </span><i class="fab fa-usb"></i></h2>
-				<div class="animation">
-	                <video id="macOSVid" autoplay loop alt="NativeMacOS">
-	                    <source src="vid/NativeMacBLEon.mp4" type='video/mp4'>
-	                </video>
-				</div>
-			</div>
-		</section>
--->
 
 		<script type="text/javascript">
 
-
+            
+        
 			/* Close calibration modal */
 			function closeModal() {
 				removeVideos();

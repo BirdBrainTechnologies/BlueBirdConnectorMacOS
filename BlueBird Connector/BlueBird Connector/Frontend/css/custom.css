@@ -34,7 +34,7 @@ body { background-color: #089BAB; color: #535353; font-family: 'Nunito', Helveti
 h1 { font-family: 'Raleway', Helvetica, Arial, sans-serif; font-size: 1.75em; text-transform: uppercase; margin-top: 0; padding-top: 0; }
 
 /* !header */
-#main-header { background-color: #fff; background-image: url(../img/pattern-blue-circuitry.svg); background-position: top center; background-repeat: repeat; background-size: 561px 538px; padding: 12px 20px; position: relative; }
+#main-header { background-color: #fff; background-image: url(pattern-blue-circuitry.svg); background-position: top center; background-repeat: repeat; background-size: 561px 538px; padding: 12px 20px; position: relative; }
 #main-header .col-xs-12 { padding-left: 0; text-align: center; }
 #birdbrain-logo { max-width: 255px; width: 80%; }
 

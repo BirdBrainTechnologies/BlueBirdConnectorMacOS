@@ -12,7 +12,7 @@ import WebKit
 class FrontendServer: NSObject, WKScriptMessageHandler {
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print("got message: \(message)")
+        print("got message: \(message.name): \(message.body)")
     }
     
     
