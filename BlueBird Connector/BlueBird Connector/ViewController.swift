@@ -8,12 +8,16 @@
 
 import Cocoa
 import WebKit
+import BirdbrainBLE
 
 
-class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate {
+class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWindowDelegate {
     
     var webView = WKWebView()
+    
+    let robotManager: UARTDeviceManager<Robot> = UARTDeviceManager<Robot>(scanFilter: Robot.scanFilter)
     let frontendServer = FrontendServer()
+    let backendServer = BackendServer()
     
     
     /*override func loadView() {
@@ -35,6 +39,10 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate {
         super.viewDidLoad()
         print("viewdidload")
         
+        print(Robot.scanFilter)
+        robotManager.delegate = self
+        frontendServer.setRobotManager(robotManager)
+        
         let config = WKWebViewConfiguration()
         let contentController = WKUserContentController()
         contentController.add(self.frontendServer, name: "serverSubstitute")
@@ -53,8 +61,16 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate {
         let dir = URL(fileURLWithPath: resourceDir, isDirectory: true)
         self.webView.loadFileURL(html, allowingReadAccessTo: dir)
         
+        /*do {
+            let htmlString = try String(contentsOfFile: htmlPath, encoding: String.Encoding.utf8)
+            self.webView.loadHTMLString(htmlString, baseURL: URL(string: "http://localhost/")!)
+        } catch {
+            print("problem \(error)")
+        }*/
+        
         print("add view")
         self.view.addSubview(self.webView)
+        frontendServer.setWebView(self.webView)
         
        /* let js = """
             
@@ -78,15 +94,15 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate {
         }
     }
     
-    func sendToFrontend(_ javascript: String) {
-        self.webView.evaluateJavaScript(javascript) { (response, error) in
-            if let _ = error {
-                print("error: \(error)")
-            }
-            else {
-                print("response: \(response)")
-            }
-        }
+    override func viewDidAppear() {
+        view.window?.delegate = self
+    }
+    
+    //MARK: NSWindowDelegate methods
+    
+    func windowDidResize(_ notification: Notification) {
+        print("windowDidResize \(notification)")
+        self.webView.frame = self.view.bounds
     }
 
     //MARK: WKNavigationDelegate methods
@@ -105,4 +121,52 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate {
     }
 
 }
+
+
+extension ViewController: UARTDeviceManagerDelegate {
+    func didUpdateState(to state: UARTDeviceManagerState) {
+        print("UARTDeviceManagerDelegate.didUpdateState: \(state)")
+        if (state == .enabled) {
+            if robotManager.startScanning() {
+                print("Scanning...")
+                frontendServer.notifiyScanState(isOn: true)
+            }
+            else {
+                print("Failed to start scanning!")
+            }
+        }
+    }
+
+    func didDiscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
+        print("DID DISCOVER \(advertisementData)")
+        if let advertisementSignature = advertisementSignature {
+            print(advertisementSignature)
+            robotManager.stopScanning()
+        } else {
+            // TODO: do something better
+            print("Ignoring device \(uuid) because its advertisement signature is nil")
+        }
+    }
+
+    func didRediscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
+        print("DID REDISCOVER")
+    }
+
+    func didDisappear(uuid: UUID) {
+        print("DID DISAPPEAR")
+    }
+
+    func didConnectTo(uuid: UUID) {
+        print("DID CONNECT TO")
+    }
+
+    func didDisconnectFrom(uuid: UUID, error: Error?) {
+        print("DID DISCONNECT FROM")
+    }
+
+    func didFailToConnectTo(uuid: UUID, error: Error?) {
+        print("DID FAIL TO CONNECT TO")
+    }
+}
+
 

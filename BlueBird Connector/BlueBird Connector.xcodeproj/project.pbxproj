@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3119066624B0C82300CCE7C6 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = 3119066524B0C82300CCE7C6 /* Swifter */; };
+		3119066824B0C86900CCE7C6 /* BackendServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3119066724B0C86900CCE7C6 /* BackendServer.swift */; };
+		3119066A24B8B79800CCE7C6 /* translations.js in Resources */ = {isa = PBXBuildFile; fileRef = 3119066924B8B79800CCE7C6 /* translations.js */; };
+		3162728124BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */; };
 		31C516ED24ABD0930051C05F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C516EC24ABD0930051C05F /* AppDelegate.swift */; };
 		31C516EF24ABD0930051C05F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C516EE24ABD0930051C05F /* ViewController.swift */; };
 		31C516F124ABD0960051C05F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31C516F024ABD0960051C05F /* Assets.xcassets */; };
@@ -58,6 +62,10 @@
 		31C63E8A24AE79A20051F104 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8924AE79A20051F104 /* index.html */; };
 		31C63E8C24AE7A7B0051F104 /* messages.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8B24AE7A7B0051F104 /* messages.js */; };
 		31C63E8E24AE81A10051F104 /* jquery-3.5.1.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8D24AE81A10051F104 /* jquery-3.5.1.min.js */; };
+		31C63E9024AE8A8C0051F104 /* modals.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8F24AE8A8C0051F104 /* modals.js */; };
+		31C63E9224AE8BAF0051F104 /* gui.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E9124AE8BAF0051F104 /* gui.js */; };
+		31C63E9524AF6D1D0051F104 /* BirdbrainBLE in Frameworks */ = {isa = PBXBuildFile; productRef = 31C63E9424AF6D1D0051F104 /* BirdbrainBLE */; };
+		31C63E9724AF72D70051F104 /* Robot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C63E9624AF72D70051F104 /* Robot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +86,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3119066724B0C86900CCE7C6 /* BackendServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendServer.swift; sourceTree = "<group>"; };
+		3119066924B8B79800CCE7C6 /* translations.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = translations.js; sourceTree = "<group>"; };
+		3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertisedNamePrefixesScanFilter.swift; sourceTree = "<group>"; };
 		31C516E924ABD0930051C05F /* BlueBird Connector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BlueBird Connector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31C516EC24ABD0930051C05F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31C516EE24ABD0930051C05F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +147,9 @@
 		31C63E8924AE79A20051F104 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		31C63E8B24AE7A7B0051F104 /* messages.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = messages.js; sourceTree = "<group>"; };
 		31C63E8D24AE81A10051F104 /* jquery-3.5.1.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-3.5.1.min.js"; sourceTree = "<group>"; };
+		31C63E8F24AE8A8C0051F104 /* modals.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = modals.js; sourceTree = "<group>"; };
+		31C63E9124AE8BAF0051F104 /* gui.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = gui.js; sourceTree = "<group>"; };
+		31C63E9624AF72D70051F104 /* Robot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Robot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +157,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31C63E9524AF6D1D0051F104 /* BirdbrainBLE in Frameworks */,
+				3119066624B0C82300CCE7C6 /* Swifter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,7 +206,10 @@
 				31C5171A24ABDD620051C05F /* Frontend */,
 				31C516EC24ABD0930051C05F /* AppDelegate.swift */,
 				31C516EE24ABD0930051C05F /* ViewController.swift */,
+				31C63E9824AF77D60051F104 /* Robot */,
 				31C5171824ABD50C0051C05F /* FrontendServer.swift */,
+				3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */,
+				3119066724B0C86900CCE7C6 /* BackendServer.swift */,
 				31C516F024ABD0960051C05F /* Assets.xcassets */,
 				31C516F224ABD0960051C05F /* Main.storyboard */,
 				31C516F524ABD0960051C05F /* Info.plist */,
@@ -235,10 +254,13 @@
 		31C5171D24ABDE1B0051C05F /* js */ = {
 			isa = PBXGroup;
 			children = (
+				3119066924B8B79800CCE7C6 /* translations.js */,
+				31C63E9124AE8BAF0051F104 /* gui.js */,
 				31C63E8D24AE81A10051F104 /* jquery-3.5.1.min.js */,
 				31C5172024ABDE3A0051C05F /* jquery.js */,
 				31C5171E24ABDE270051C05F /* bluebird.js */,
 				31C63E8B24AE7A7B0051F104 /* messages.js */,
+				31C63E8F24AE8A8C0051F104 /* modals.js */,
 			);
 			path = js;
 			sourceTree = "<group>";
@@ -339,6 +361,14 @@
 			path = tmp;
 			sourceTree = "<group>";
 		};
+		31C63E9824AF77D60051F104 /* Robot */ = {
+			isa = PBXGroup;
+			children = (
+				31C63E9624AF72D70051F104 /* Robot.swift */,
+			);
+			path = Robot;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -355,6 +385,10 @@
 			dependencies = (
 			);
 			name = "BlueBird Connector";
+			packageProductDependencies = (
+				31C63E9424AF6D1D0051F104 /* BirdbrainBLE */,
+				3119066524B0C82300CCE7C6 /* Swifter */,
+			);
 			productName = "BlueBird Connector";
 			productReference = 31C516E924ABD0930051C05F /* BlueBird Connector.app */;
 			productType = "com.apple.product-type.application";
@@ -427,6 +461,10 @@
 				Base,
 			);
 			mainGroup = 31C516E024ABD0930051C05F;
+			packageReferences = (
+				31C63E9324AF6D1D0051F104 /* XCRemoteSwiftPackageReference "BirdbrainBLE" */,
+				3119066424B0C82300CCE7C6 /* XCRemoteSwiftPackageReference "swifter" */,
+			);
 			productRefGroup = 31C516EA24ABD0930051C05F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -449,7 +487,9 @@
 				31C5175424ABDF100051C05F /* img-hummingbird-bit.svg in Resources */,
 				31C5172624ABDEA40051C05F /* bootstrap.min.css in Resources */,
 				31C5173F24ABDEC00051C05F /* fa-regular-400.woff2 in Resources */,
+				31C63E9224AE8BAF0051F104 /* gui.js in Resources */,
 				31C5173D24ABDEC00051C05F /* fa-solid-900.ttf in Resources */,
+				3119066A24B8B79800CCE7C6 /* translations.js in Resources */,
 				31C5174924ABDEC10051C05F /* fa-brands-400.woff in Resources */,
 				31C5175024ABDF030051C05F /* img-bit.svg in Resources */,
 				31C5172424ABDE610051C05F /* custom.css in Resources */,
@@ -486,6 +526,7 @@
 				31C63E8624AE70340051F104 /* all.js in Resources */,
 				31C5174624ABDEC10051C05F /* fa-regular-400.ttf in Resources */,
 				31C5175624ABDF180051C05F /* pattern-blue-circuitry.svg in Resources */,
+				31C63E9024AE8A8C0051F104 /* modals.js in Resources */,
 				31C5174A24ABDEC10051C05F /* fa-brands-400.ttf in Resources */,
 				31C5174B24ABDEC10051C05F /* fa-regular-400.eot in Resources */,
 				31C63E8424AE702E0051F104 /* MyCSS.css in Resources */,
@@ -513,6 +554,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3162728124BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift in Sources */,
+				31C63E9724AF72D70051F104 /* Robot.swift in Sources */,
+				3119066824B0C86900CCE7C6 /* BackendServer.swift in Sources */,
 				31C5171924ABD50C0051C05F /* FrontendServer.swift in Sources */,
 				31C516EF24ABD0930051C05F /* ViewController.swift in Sources */,
 				31C516ED24ABD0930051C05F /* AppDelegate.swift in Sources */,
@@ -612,7 +656,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -666,7 +710,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -689,7 +733,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-Connector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -710,7 +754,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-Connector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -841,6 +885,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3119066424B0C82300CCE7C6 /* XCRemoteSwiftPackageReference "swifter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/httpswift/swifter";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.7;
+			};
+		};
+		31C63E9324AF6D1D0051F104 /* XCRemoteSwiftPackageReference "BirdbrainBLE" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BirdBrainTechnologies/BirdbrainBLE.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3119066524B0C82300CCE7C6 /* Swifter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3119066424B0C82300CCE7C6 /* XCRemoteSwiftPackageReference "swifter" */;
+			productName = Swifter;
+		};
+		31C63E9424AF6D1D0051F104 /* BirdbrainBLE */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31C63E9324AF6D1D0051F104 /* XCRemoteSwiftPackageReference "BirdbrainBLE" */;
+			productName = BirdbrainBLE;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 31C516E124ABD0930051C05F /* Project object */;
 }
