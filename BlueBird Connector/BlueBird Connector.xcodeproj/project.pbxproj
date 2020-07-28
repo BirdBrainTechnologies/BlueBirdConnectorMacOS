@@ -55,9 +55,6 @@
 		31C5176A24ABDF5C0051C05F /* MicroBit_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5176724ABDF5C0051C05F /* MicroBit_Calibration.mp4 */; };
 		31C5176B24ABDF5C0051C05F /* HummBit_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5176824ABDF5C0051C05F /* HummBit_Calibration.mp4 */; };
 		31C5176C24ABDF5C0051C05F /* Finch_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31C5176924ABDF5C0051C05F /* Finch_Calibration.mp4 */; };
-		31C63E8224AE70240051F104 /* HummingbirdDragAndDrop.html in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8124AE70240051F104 /* HummingbirdDragAndDrop.html */; };
-		31C63E8424AE702E0051F104 /* MyCSS.css in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8324AE702E0051F104 /* MyCSS.css */; };
-		31C63E8624AE70340051F104 /* all.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8524AE70340051F104 /* all.js */; };
 		31C63E8824AE73510051F104 /* hummingbirdlogo32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8724AE73510051F104 /* hummingbirdlogo32x32.png */; };
 		31C63E8A24AE79A20051F104 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8924AE79A20051F104 /* index.html */; };
 		31C63E8C24AE7A7B0051F104 /* messages.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E8B24AE7A7B0051F104 /* messages.js */; };
@@ -140,9 +137,6 @@
 		31C5176724ABDF5C0051C05F /* MicroBit_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = MicroBit_Calibration.mp4; sourceTree = "<group>"; };
 		31C5176824ABDF5C0051C05F /* HummBit_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HummBit_Calibration.mp4; sourceTree = "<group>"; };
 		31C5176924ABDF5C0051C05F /* Finch_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Finch_Calibration.mp4; sourceTree = "<group>"; };
-		31C63E8124AE70240051F104 /* HummingbirdDragAndDrop.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = HummingbirdDragAndDrop.html; sourceTree = "<group>"; };
-		31C63E8324AE702E0051F104 /* MyCSS.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = MyCSS.css; sourceTree = "<group>"; };
-		31C63E8524AE70340051F104 /* all.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = all.js; sourceTree = "<group>"; };
 		31C63E8724AE73510051F104 /* hummingbirdlogo32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hummingbirdlogo32x32.png; sourceTree = "<group>"; };
 		31C63E8924AE79A20051F104 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		31C63E8B24AE7A7B0051F104 /* messages.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = messages.js; sourceTree = "<group>"; };
@@ -202,7 +196,6 @@
 		31C516EB24ABD0930051C05F /* BlueBird Connector */ = {
 			isa = PBXGroup;
 			children = (
-				31C63E8024AE6FEA0051F104 /* tmp */,
 				31C5171A24ABDD620051C05F /* Frontend */,
 				31C516EC24ABD0930051C05F /* AppDelegate.swift */,
 				31C516EE24ABD0930051C05F /* ViewController.swift */,
@@ -351,16 +344,6 @@
 			path = vid;
 			sourceTree = "<group>";
 		};
-		31C63E8024AE6FEA0051F104 /* tmp */ = {
-			isa = PBXGroup;
-			children = (
-				31C63E8124AE70240051F104 /* HummingbirdDragAndDrop.html */,
-				31C63E8324AE702E0051F104 /* MyCSS.css */,
-				31C63E8524AE70340051F104 /* all.js */,
-			);
-			path = tmp;
-			sourceTree = "<group>";
-		};
 		31C63E9824AF77D60051F104 /* Robot */ = {
 			isa = PBXGroup;
 			children = (
@@ -502,7 +485,6 @@
 				31C5174224ABDEC00051C05F /* fa-regular-400.woff in Resources */,
 				31C5174424ABDEC10051C05F /* fa-solid-900.svg in Resources */,
 				31C5176424ABDF470051C05F /* raleway-semibold.woff in Resources */,
-				31C63E8224AE70240051F104 /* HummingbirdDragAndDrop.html in Resources */,
 				31C5173E24ABDEC00051C05F /* fa-regular-400.svg in Resources */,
 				31C63E8824AE73510051F104 /* hummingbirdlogo32x32.png in Resources */,
 				31C5176B24ABDF5C0051C05F /* HummBit_Calibration.mp4 in Resources */,
@@ -523,13 +505,11 @@
 				31C5176524ABDF470051C05F /* raleway-semibold.woff2 in Resources */,
 				31C5171F24ABDE280051C05F /* bluebird.js in Resources */,
 				31C5176324ABDF470051C05F /* raleway-semibold.svg in Resources */,
-				31C63E8624AE70340051F104 /* all.js in Resources */,
 				31C5174624ABDEC10051C05F /* fa-regular-400.ttf in Resources */,
 				31C5175624ABDF180051C05F /* pattern-blue-circuitry.svg in Resources */,
 				31C63E9024AE8A8C0051F104 /* modals.js in Resources */,
 				31C5174A24ABDEC10051C05F /* fa-brands-400.ttf in Resources */,
 				31C5174B24ABDEC10051C05F /* fa-regular-400.eot in Resources */,
-				31C63E8424AE702E0051F104 /* MyCSS.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

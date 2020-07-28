@@ -1,8 +1,19 @@
-var connectedDeviceList = {};
+var connectedDeviceList = [];
 var scanDeviceList = [];
+var devLetterList = ['A', 'B', 'C'];
 //Table to use for translations
 var translationTable = null;
 var language = "en";
+
+//HTML code to string conversion tool:  http://pojo.sodhanalibrary.com/string.html
+var connectButton =
+      "              <div class=\"col-xs-2 buttons\">"+
+      "                 <a class=\"button\" href=\"#\"><span class=\"button-connect fa-stack fa-2x\">"+
+      "                   <i class=\"fas fa-circle fa-stack-2x\"></i>"+
+      "                   <i class=\"fas fa-plus fa-stack-1x fa-inverse\"></i>"+
+      "                 </span></a>"+
+      "               </div>"+
+      "             </div>";
 
 
 //Row Selection Logic
@@ -87,7 +98,7 @@ $.scanListRefresh = function() {
   //Loop through and populate row items
   $.each(scanDeviceList, function(i, item) {
     var name = (item.fancyName == null ? item.name : item.fancyName);
-    addressTable[name] = item.address;
+    //addressTable[name] = item.address;
     var deviceName = getDeviceName(item.name);
     var deviceImage = getDeviceImage(deviceName);
 
@@ -104,39 +115,58 @@ $.scanListRefresh = function() {
       connectButton + "</a>");
 
     //the connect button click event
-
-    // Stop the scanning
     el.find('a').click(function() {
-      var stopData = {
+      // Stop the scanning
+      var stopScan = {
         'command': 'scan',
         'scanState': 'off',
-        'devNum': 1 //dummy
       }
-      cs.send(JSON.stringify(stopData));
+      //cs.send(JSON.stringify(stopData));
+      sendMessageToBackend(msgTypes.COMMAND, stopScan)
+      sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+        consoleLog: "Scan stopped"
+      })
 
       // Show the spinner of a device about to appear connected
       setConnectedDisplay("show");
+      sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+        consoleLog: "Connected display set to show"
+      })
       setConnectingState("Connecting");
+      sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+        consoleLog: "Connecting state set to connecting"
+      })
 
       // Send the actual connect command
-      var data = {
+      var connect = {
         'command': 'connect',
         'address': item.address,
         'devLetter': devLetterList[0]
       }
-      console.log("Connection address = " + data.address);
-      console.log("devLetter = " + data.devLetter);
+      //console.log("Connection address = " + data.address);
+      //console.log("devLetter = " + data.devLetter);
+      sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+        consoleLog: "Connection address = " + connect.address + "; devLetter = " + connect.devLetter
+      })
 
       // There appeared to be a conflict between stopping the scan and connecting, so experimentation
       // revealed that a 10ms wait would space the commands out enough.
+      // TODO: IS THIS NECESSARY?
       setTimeout(function() {
-        cs.send(JSON.stringify(data));
+        //cs.send(JSON.stringify(data));
+        sendMessageToBackend(msgTypes.COMMAND, connect)
 
         // Clear the scan list and remove the devLetter from subsequent use on the connect button click event
-        console.log("Removing from scan list on connect button click event: " + deviceName + "  " + name);
+        //console.log("Removing from scan list on connect button click event: " + deviceName + "  " + name);
         removeFromScanList(item.name);
-        hideUsedDevNum(deviceName, devLetterList[0]);
+        sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+          consoleLog: "removed item from scan list: " + item.name
+        })
+        hideUsedDevLetter(deviceName, devLetterList[0]);
         $.scanListRefresh();
+        sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+          consoleLog: "done with send message timeout"
+        })
       }, 10);
 
       //Connection in progress remove from scan list
@@ -151,6 +181,9 @@ $.scanListRefresh = function() {
           "display": "none"
         });
       }, 3000);
+      sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+        consoleLog: "Connect button click complete"
+      })
     });
 
     $('#robots-found').append(el);
@@ -181,7 +214,8 @@ $.connectedDevListRefresh = function() {
     })
     var name = (item.deviceFancyName == null ? item.deviceName : item.deviceFancyName);
     var deviceName = getDeviceName(item.deviceName);
-    var devLetter = connectedDeviceList[item.deviceConnection].devLetter;
+    //var devLetter = connectedDeviceList[item.deviceConnection].devLetter;
+    var devLetter = item.devLetter;
     hideUsedDevLetter(deviceName, devLetter);
     var deviceImage = getDeviceImage(deviceName);
     var devDisplay = getDeviceDisplay(deviceName);
@@ -216,16 +250,18 @@ $.connectedDevListRefresh = function() {
     el.find('.button-disconnect').click(function() {
       var data = {
         'command': 'disconnect',
-        'connection': item.deviceConnection,
+        //'connection': item.deviceConnection,
+        'devLetter': item.devLetter,
         'address': item.deviceAddress
       }
-      cs.send(JSON.stringify(data));
+      //cs.send(JSON.stringify(data));
+      sendMessageToBackend(msgTypes.COMMAND, data)
 
-      console.log("Disconnect Data");
-      console.log(data);
+      //console.log("Disconnect Data");
+      //console.log(data);
 
       //Disconnection in progress remove from  list
-      el.remove();
+      //el.remove();
       restoreUsedDevLetter(devLetter);
 
     });
@@ -318,6 +354,26 @@ function hideUsedDevLetter(deviceName, devLetter) {
 
 }
 
+function populateSelectList(deviceName) {
+  var optionList = "";
+  var list = devLetterList;
+
+  if (!(list == null)) {
+    //for (var i=0; i < list.length; i++)
+      //optionList +='<option value=\"' + list[i].toString() + '\">' + list[i].toString() + '</option>';
+    if (list.length > 0) {
+      optionList +='<option value=\"' + list[0].toString() + '\">' + list[0].toString() + '</option>';
+       $('.connect').prop('disabled', false);
+     }
+    else {
+      optionList +='<option value=\"' + ' ' + '\">' + ' ' + '</option>';
+       $('.connect').prop('disabled', true);
+    }
+    console.log(optionList);
+    return optionList;
+  } else return null;
+}
+
 function restoreUsedDevLetter(devLetter) {
   var list = devLetterList;
   var i = list.indexOf(devLetter);
@@ -329,9 +385,9 @@ function restoreUsedDevLetter(devLetter) {
 }
 
 function getDeviceImage(deviceName) {
-  var deviceImage = "img/img-hummingbird-bit.svg" // default hummingbird image
-  if (deviceName == "micro:bit") deviceImage = "img/img-bit.svg";
-  if (deviceName.startsWith("FN")) deviceImage = "img/img-finch.svg";
+  var deviceImage = "img-hummingbird-bit.svg" // default hummingbird image
+  if (deviceName.startsWith("MB")) deviceImage = "img-bit.svg";
+  if (deviceName.startsWith("FN")) deviceImage = "img-finch.svg";
   return deviceImage;
 }
 
@@ -340,4 +396,14 @@ function getDeviceDisplay(deviceName) {
   if (deviceName == "micro:bit")
     deviceDisplay = "style=\"display:none\"";
   return deviceDisplay;
+}
+
+function removeFromScanList(deviceName) {
+  // Remove connected device from scan list
+  for (var j = scanDeviceList.length - 1; j >= 0; --j) {
+    if (scanDeviceList[j].name == deviceName) {
+      console.log("Removing " + scanDeviceList[j].name + " from scan list");
+      scanDeviceList.splice(j, 1);
+    }
+  }
 }

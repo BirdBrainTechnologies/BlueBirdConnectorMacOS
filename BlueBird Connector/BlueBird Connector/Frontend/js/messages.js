@@ -60,3 +60,50 @@ CallbackManager.scanEnded = function() {
     $('#findBtnText').text(" "+translationTable["find_robots"]);
   }
 }
+CallbackManager.deviceDiscovered = function(address, name, fancyName, rssi) {
+  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+    consoleLog: "device discovered: " + address + ", " + name + ", " + fancyName + ", " + rssi
+  })
+  scanDeviceList.push({
+    address: address,
+    name: name,
+    fancyName: fancyName,
+    rssi: rssi
+  })
+
+  scanDeviceList.sort(function(a, b) {
+    //return (a.address > b.address) - (a.address < b.address);
+    return (a.rssi < b.rssi) - (a.rssi > b.rssi);
+  });
+
+  $.scanListRefresh();
+}
+CallbackManager.deviceDidDisappear = function(address) {
+  scanDeviceList.forEach( (device, i) => {
+    if (device.address == address) {
+      scanDeviceList.splice(i, 1)
+    }
+  })
+
+  $.scanListRefresh()
+}
+CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter) {
+  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+    consoleLog: "device did connect: " + address + ", " + name + ", " + fancyName + ", " + devLetter
+  })
+  connectedDeviceList.push({
+    deviceAddress: address,
+    deviceFancyName: fancyName,
+    deviceName: name,
+    devLetter: devLetter
+  })
+  $.connectedDevListRefresh()
+}
+CallbackManager.deviceDidDisconnect = function(address) {
+  connectedDeviceList.forEach( (device, i) => {
+    if (device.deviceAddress == address) {
+      connectedDeviceList.splice(i, 1)
+    }
+  })
+  $.connectedDevListRefresh()
+}

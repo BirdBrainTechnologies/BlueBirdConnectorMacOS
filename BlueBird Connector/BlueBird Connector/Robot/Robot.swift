@@ -15,19 +15,26 @@ open class Robot: ManageableUARTDevice {
     }
     
   
-    static public let scanFilter: UARTDeviceScanFilter = AdvertisedNamePrefixScanFilter(prefix: "FN")
+    static public let scanFilter: UARTDeviceScanFilter = AdvertisedNamePrefixesScanFilter(prefixes: ["FN", "BB", "MB"])
     
-    let type: RobotType?
+    var type: RobotType?
+    var name: String?
+    var fancyName: String?
     
     private var uartDevice: UARTDevice      // Required by the Bluetooth package
     
     
     public required init (blePeripheral: BLEPeripheral) {
-        self.type = RobotType.getTypeFromPrefix("FN")
         self.uartDevice = BaseUARTDevice(blePeripheral: blePeripheral)
         self.uartDevice.delegate = self
-        
     }
+    
+    public func setAdvertisementSignature(_ data: AdvertisementSignature) {
+        self.name = data.advertisedName
+        self.type =  RobotType.getTypeFromPrefix(String(data.advertisedName.prefix(2)))
+        self.fancyName = data.memorableName
+    }
+    
     
 }
 

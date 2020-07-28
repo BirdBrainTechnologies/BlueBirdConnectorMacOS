@@ -9,15 +9,20 @@
 import Cocoa
 import WebKit
 import BirdbrainBLE
+import os
 
 
 class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWindowDelegate {
+    
+    let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "ViewController")
     
     var webView = WKWebView()
     
     let robotManager: UARTDeviceManager<Robot> = UARTDeviceManager<Robot>(scanFilter: Robot.scanFilter)
     let frontendServer = FrontendServer()
     let backendServer = BackendServer()
+    
+    var connectedRobots = [DeviceLetter: Robot]()
     
     
     /*override func loadView() {
@@ -37,9 +42,8 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewdidload")
+        os_log("viewdidload", log: log, type: .debug)
         
-        print(Robot.scanFilter)
         robotManager.delegate = self
         frontendServer.setRobotManager(robotManager)
         
@@ -53,7 +57,7 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
         self.webView.uiDelegate = self
         
         guard let htmlPath = Bundle.main.path(forResource: "index", ofType: "html"), let resourceDir = Bundle.main.resourcePath else {
-            NSLog("Unable to find frontend resources")
+            os_log("Unable to find frontend resources", log: log, type: .error)
             return
         }
         
@@ -68,7 +72,6 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
             print("problem \(error)")
         }*/
         
-        print("add view")
         self.view.addSubview(self.webView)
         frontendServer.setWebView(self.webView)
         
@@ -102,6 +105,7 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
     
     func windowDidResize(_ notification: Notification) {
         print("windowDidResize \(notification)")
+        os_log("windowDidResize", log: log, type: .debug)
         self.webView.frame = self.view.bounds
     }
 
@@ -109,14 +113,16 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         NSLog("did fail provisional navigation %@", error as NSError)
+        os_log("did fail provisional navigation: [%s]", log: log, type: .error, error.localizedDescription)
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         NSLog("did fail navigation %@", error as NSError)
+        os_log("did fail navigation: [%s]", log: log, type: .error, error.localizedDescription)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        NSLog("didFinish navigation")
+        os_log("didFinish navigation", log: log, type: .debug)
         self.webView.evaluateJavaScript("alert('Hello from evaluateJavascript()')", completionHandler: nil)
     }
 
@@ -125,48 +131,94 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
 
 extension ViewController: UARTDeviceManagerDelegate {
     func didUpdateState(to state: UARTDeviceManagerState) {
-        print("UARTDeviceManagerDelegate.didUpdateState: \(state)")
-        if (state == .enabled) {
+        os_log("UARTDeviceManagerDelegate.didUpdateState to: [%s]", log: log, type: .debug, state.rawValue)
+        switch state {
+        case .enabled:
             if robotManager.startScanning() {
-                print("Scanning...")
+                os_log("Scanning...", log: log, type: .debug)
                 frontendServer.notifiyScanState(isOn: true)
+            } else {
+                os_log("Failed to start scanning!", log: log, type: .error)
             }
-            else {
-                print("Failed to start scanning!")
-            }
+        case .disabled:
+            os_log("manager disabled", log: log, type: .debug)
+        case .error:
+            os_log("manager error", log: log, type: .error)
         }
     }
 
     func didDiscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
-        print("DID DISCOVER \(advertisementData)")
-        if let advertisementSignature = advertisementSignature {
-            print(advertisementSignature)
-            robotManager.stopScanning()
-        } else {
-            // TODO: do something better
-            print("Ignoring device \(uuid) because its advertisement signature is nil")
+        
+        os_log("DID DISCOVER [%s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
+        guard let advertisementSignature = advertisementSignature else {
+            os_log("Ignoring device [%s] because it is missing advertisement info.", log: log, type: .debug, uuid.uuidString)
+            return
         }
+        
+        frontendServer.notifyDeviceDiscovery(uuid: uuid, advertisementSignature: advertisementSignature, rssi: rssi)
+        
     }
 
     func didRediscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
-        print("DID REDISCOVER")
+        os_log("DID REDISCOVER [%s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
     }
 
     func didDisappear(uuid: UUID) {
-        print("DID DISAPPEAR")
+        os_log("DID DISAPPEAR [%s]", log: log, type: .debug, uuid.uuidString)
+        frontendServer.notifyDeviceDidDisappear(uuid: uuid)
     }
 
     func didConnectTo(uuid: UUID) {
-        print("DID CONNECT TO")
+        os_log("DID CONNECT TO [%s]", log: log, type: .debug, uuid.uuidString)
+        guard let robot = robotManager.getDevice(uuid: uuid), let adSig = frontendServer.availableDevices[uuid]?.advertisementSignature else {
+            os_log("Connected robot not found with uuid [%s]", log: log, type: .error, uuid.uuidString)
+            return
+        }
+        robot.setAdvertisementSignature(adSig)
+        
+        let fancyName = adSig.memorableName ?? adSig.advertisedName
+        var letterAssigned = false
+        for devLetter in DeviceLetter.allCases {
+            if !letterAssigned && connectedRobots[devLetter] == nil {
+                connectedRobots[devLetter] = robot
+                letterAssigned = true
+                frontendServer.notifyDeviceDidConnect(uuid: uuid, name: adSig.advertisedName, fancyName: fancyName, deviceLetter: devLetter)
+            }
+        }
+        
+        if !letterAssigned {
+            os_log("Too many connections", log: log, type: .error)
+            let _ = robotManager.disconnectFromDevice(havingUUID: uuid)
+        }
     }
 
     func didDisconnectFrom(uuid: UUID, error: Error?) {
-        print("DID DISCONNECT FROM")
+        os_log("DID DISCONNECT FROM [%s]", log: log, type: .debug, uuid.uuidString)
+        if let error = error {
+            os_log("Error: [%s]", log: log, type: .error, error.localizedDescription)
+        }
+        
+        for (letter, robot) in connectedRobots {
+            if robot.uuid == uuid {
+                connectedRobots[letter] = nil
+                frontendServer.notifyDeviceDidDisconnect(uuid: uuid)
+            }
+        }
     }
 
     func didFailToConnectTo(uuid: UUID, error: Error?) {
-        print("DID FAIL TO CONNECT TO")
+        os_log("DID FAIL TO CONNECT TO [%s] with error [%s]", log: log, type: .error, uuid.uuidString, error?.localizedDescription ?? "no error")
     }
 }
 
-
+enum DeviceLetter: CaseIterable {
+    case A, B, C
+    
+    func toString() -> String {
+        switch self{
+        case .A: return "A"
+        case .B: return "B"
+        case .C: return "C"
+        }
+    }
+}
