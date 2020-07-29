@@ -53,12 +53,19 @@ CallbackManager.scanStarted = function() {
     $('#find-button i').addClass('fa-spin');
     $('#findBtnText').text(" "+translationTable["finding_robots"]);
   }
+  updateBleStatus(true);
 }
 CallbackManager.scanEnded = function() {
   if ($('#find-button i').hasClass('fa-spin')) {
     $('#find-button i').removeClass('fa-spin');
     $('#findBtnText').text(" "+translationTable["find_robots"]);
   }
+}
+CallbackManager.bleDisabled = function() {
+  updateBleStatus(false);
+  CallbackManager.scanEnded();
+  scanDeviceList = []
+  $.scanListRefresh();
 }
 CallbackManager.deviceDiscovered = function(address, name, fancyName, rssi) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {

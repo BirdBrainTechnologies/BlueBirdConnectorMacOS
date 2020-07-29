@@ -26,6 +26,8 @@ $(document).ready(function() {
   })
   console.log("DOCUMENT READY");
   setLanguage();
+  updateInternetStatus();
+  setInterval(updateInternetStatus, 2000)
 
   $.connectedDevListRefresh();
 
@@ -406,4 +408,75 @@ function removeFromScanList(deviceName) {
       scanDeviceList.splice(j, 1);
     }
   }
+}
+
+function updateInternetStatus() {
+  if (navigator.onLine) {
+    $('#indicator-wifi').addClass("indicator-on");
+    //$('#cloud-slider').prop('checked', true);
+    internetUp = true;
+  } else {
+    $('#indicator-wifi').removeClass("indicator-on");
+    $('#cloud-slider').prop('checked', false);
+    internetUp = false;
+  }
+  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+    consoleLog: "Updated internet status"
+  })
+}
+
+function updateBleStatus(isOn) {
+  if (isOn) {
+    $('#indicator-bluetooth').addClass("indicator-on");
+    $('#indicators .fa-spin').css("display", "none");
+  } else {
+    $('#indicator-bluetooth').removeClass("indicator-on");
+  }
+}
+
+function launchSnap() {
+  let projectName = ""
+  if (connectedDeviceList.length == 1) {
+    if (connectedDeviceList[0].deviceName.startsWith("FN")) {
+      projectName = "FinchSingleDeviceStarterProject";
+    } else {
+      projectName = "HummingbirdSingleDeviceStarterProject";
+    }
+  } else {
+    if (allRobotsAreFinches()) {
+      projectName = "FinchMultiDeviceStarterProject";
+    } else if (noRobotsAreFinches()) {
+      projectName = "HummingbirdMultiDeviceStarterProject";
+    } else {
+      projectName = "MixedMultiDeviceStarterProject";
+    }
+  }
+
+  const shouldOpenOnline = $('#cloud-slider').prop('checked')
+
+  sendMessageToBackend(msgTypes.COMMAND, {
+    command: "openSnap",
+    project: projectName,
+    online: shouldOpenOnline,
+    language: language
+  })
+}
+
+function allRobotsAreFinches() {
+  let onlyFinches = true;
+  for (let i = 0; i < connectedDeviceList.length; i++) {
+    if (connectedDeviceList[i].deviceName.startsWith("FN")) {
+      onlyFinches = false;
+    }
+  }
+  return onlyFinches;
+}
+function noRobotsAreFinches() {
+  let noFinches = true;
+  for (let i = 0; i < connectedDeviceList.length; i++) {
+    if (connectedDeviceList[i].deviceName.startsWith("FN")) {
+      noFinches = false;
+    }
+  }
+  return noFinches;
 }

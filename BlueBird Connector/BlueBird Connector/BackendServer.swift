@@ -8,8 +8,12 @@
 
 import Foundation
 import Swifter
+import os
 
 class BackendServer {
+    
+    let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "BackendServer")
+    
     let server: HttpServer
     
     public init() {
@@ -21,7 +25,7 @@ class BackendServer {
             try server.start(30061)
             print("Server has started ( port = \(try server.port()) ). Try to connect now...")
         } catch {
-            print("Server start error: \(error)")
+            os_log("Server start error: [%s]", log: log, type: .error, error.localizedDescription)
         }
         
     }

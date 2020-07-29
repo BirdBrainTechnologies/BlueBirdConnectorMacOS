@@ -9,17 +9,25 @@
 import Foundation
 import WebKit
 import BirdbrainBLE
+import os
 
 class FrontendServer: NSObject, WKScriptMessageHandler {
     
-    var robotManager: UARTDeviceManager<Robot>?
+    let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "FrontendServer")
+    
+    let robotManager: UARTDeviceManager<Robot>
     var webView: WKWebView?
     var documentIsReady: Bool = false
     var callbacksPending: [String] = []
     var availableDevices = [UUID: AvailableDevice]()
     
-    func setRobotManager(_ manager: UARTDeviceManager<Robot>) {
+   /* func setRobotManager(_ manager: UARTDeviceManager<Robot>) {
         robotManager = manager
+    }*/
+    init(robotManager: UARTDeviceManager<Robot>) {
+        self.robotManager = robotManager
+        
+        super.init()
     }
     
     func setWebView(_ view: WKWebView) {
@@ -32,6 +40,10 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         } else {
             sendToFrontend("CallbackManager.scanEnded()")
         }
+    }
+    
+    func notifyBleDisabled() {
+        sendToFrontend("CallbackManager.bleDisabled()")
     }
     
     func notifyDeviceDiscovery(uuid: UUID, advertisementSignature: AdvertisementSignature, rssi: NSNumber) {
@@ -69,18 +81,18 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         }
         
         guard let webView = webView else {
-            print("Cannot send frontend messages until webview is setup")
+            os_log("Cannot send frontend messages until webview is setup", log: log, type: .error)
             return
         }
         
-        print("eval js on frontend: " + javascript)
+        os_log("eval js on frontend: [%s]", log: log, type: .debug, javascript)
         
         //TODO: Do we need to submit this to a dispatch queue like in birdblox?
         webView.evaluateJavaScript(javascript) { (response, error) in
             if let error = error {
-                print(error)
-            } else if let response = response {
-                print("response: \(response)")
+                os_log("Error evaluating javascript: [%s]", log: self.log, type: .error, error.localizedDescription)
+            } else if let _ = response {
+                os_log("Javascript eval response received", log: self.log, type: .debug)
             }
         }
     }
@@ -88,34 +100,32 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         
         guard let body = message.body as? NSDictionary, let type = body["type"] as? String else {
-            print("no message body")
+            os_log("Message received from frontend was not formatted correctly", log: log, type: .error)
             return
         }
         
         switch (type) {
         case "console log" :
-            guard let logMsg = body["consoleLog"] else {
-                print("Mis-formed console message")
+            guard let logMsg = body["consoleLog"] as? String else {
+                os_log("Console log message missing", log: log, type: .error)
                 print(body)
                 return
             }
-            print("WebView console log: \(logMsg)")
+            os_log("WebView console log: [%s]", log: log, type: .debug, logMsg)
         case "document status":
             if let documentStatus = body["documentStatus"] as? String {
                 switch(documentStatus) {
                 case "READY":
-                    print("DOCUMENT READY")
+                    os_log("DOCUMENT READY", log: log, type: .debug)
                     documentIsReady = true
                     callbacksPending.forEach { callback in
                         sendToFrontend(callback)
                     }
                 case "onresize":
-                    print("webview has resized")
-                    print(body)
+                    os_log("webview has resized", log: log, type: .debug)
                 default:
-                    print("unrecognized document status " + documentStatus)
+                    os_log("unrecognized document status [%s]", log: log, type: .error, documentStatus)
                 }
-                
             }
         case "command":
             if let command = body["command"] as? String {
@@ -126,14 +136,17 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
                     handleConnectCommand(body)
                 case "disconnect":
                     handleDisconnectCommand(body)
+                case "openSnap":
+                    handleOpenSnapCommand(body)
                 default:
-                    print("Command not found \(command)")
+                    os_log("Command not found [%s]", log: log, type: .error, command)
                 }
             }
         case "error":
+            os_log("A javascript error occurred", log: log, type: .error)
             print(body)
         default:
-            print("Unrecognized frontend message: ")
+            os_log("Unrecognized frontend message", log: log, type: .error)
             print(body)
         }
         
@@ -141,57 +154,114 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     
     func handleScanCommand(_ fullCommand: NSDictionary) {
         guard let scanState = fullCommand["scanState"] as? String else {
-            print("Scan state not specified")
+            os_log("Scan state not specified", log: log, type: .error)
             return
         }
-        guard let robotManager = robotManager else {
-            print("cannot update scan state until robot manager has been set")
+    /*    guard let robotManager = robotManager else {
+            os_log("cannot update scan state until robot manager has been set", log: log, type: .error)
             return
-        }
+        }*/
         
         switch scanState {
         case "on":
-            robotManager.startScanning()
+            startScan()
+        case "off":
+            if robotManager.stopScanning() {
+                notifiyScanState(isOn: false)
+            } else {
+                os_log("Failed to stop scanning!", log: log, type: .error)
+            }
+            
+        default:
+            os_log("unknown scan state [%s]", log: log, type: .error, scanState)
+            
+        }
+    }
+    
+    func startScan() {
+   /*     guard let robotManager = robotManager else {
+            os_log("cannot start scan until robot manager has been set", log: log, type: .error)
+            return
+        }*/
+        
+        if robotManager.startScanning() {
+            os_log("Scanning...", log: log, type: .debug)
+            notifiyScanState(isOn: true)
             availableDevices.forEach{(uuid, device) in
                 notifyDeviceDiscovery(uuid: uuid, advertisementSignature: device.advertisementSignature, rssi: device.rssi)
             }
-            notifiyScanState(isOn: true)
-        case "off":
-            robotManager.stopScanning()
-            notifiyScanState(isOn: false)
-        default:
-            print("unknown scan state \(scanState)")
+        } else {
+            os_log("Failed to start scanning!", log: log, type: .error)
         }
     }
     
     func handleConnectCommand(_ fullCommand: NSDictionary) {
-        guard let robotManager = robotManager else {
-            print("cannot connect to robots until robot manager has been set")
+      /*  guard let robotManager = robotManager else {
+            os_log("cannot connect to robots until robot manager has been set", log: log, type: .error)
             return
-        }
+        }*/
         guard let address = fullCommand["address"] as? String,
             let devLetter = fullCommand["devLetter"] as? String,
             let uuid = UUID(uuidString: address) else {
-            print("Improperly formed connect command ", fullCommand)
+            os_log("Improperly formed connect command", log: log, type: .error)
+            print(fullCommand)
             return
         }
-        print("connect to ", address)
+        os_log("connect to [%s]", log: log, type: .debug, address)
         let _ = robotManager.connectToDevice(havingUUID: uuid)
     }
     
     func handleDisconnectCommand(_ fullCommand: NSDictionary) {
-        guard let robotManager = robotManager else {
-            print("cannot connect to robots until robot manager has been set")
+      /*  guard let robotManager = robotManager else {
+            os_log("cannot disconnect from robots until robot manager has been set", log: log, type: .error)
             return
-        }
+        }*/
         guard let devLetter = fullCommand["devLetter"] as? String,
             let uuidString = fullCommand["address"] as? String,
             let uuid = UUID(uuidString: uuidString) else {
-            print("Improperly formed disconnect command ", fullCommand)
+            os_log("Improperly formed disconnect command", log: log, type: .error)
+            print(fullCommand)
             return
         }
         
         let _ = robotManager.disconnectFromDevice(havingUUID: uuid)
+    }
+    
+    func handleOpenSnapCommand(_ fullCommand: NSDictionary) {
+        
+        guard let projectName = fullCommand["project"] as? String,
+            let openOnline = fullCommand["online"] as? Bool,
+            let language = fullCommand["language"] as? String else {
+                os_log("Poorly formed open snap command", log: log, type: .error)
+                print(fullCommand)
+                return
+        }
+        
+        var urlString = ""
+        if (openOnline) {
+            urlString = "https://snap.berkeley.edu/snap/snap.html#present:Username=birdbraintech&ProjectName=" + projectName + "&editMode&lang=" + language;
+        } else {
+            urlString = "snap/snap.html#open:snapProjects/" + projectName + ".xml&editMode&lang=" + language;
+        }
+        guard let url = URL(string: urlString) else {
+            os_log("Bad url string [%s]", log: log, type: .error, urlString)
+            return
+        }
+        
+        //if on 10.15 or later, we can open in chrome specifically, if available
+        if #available(OSX 10.15, *), let chromeURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.google.Chrome") {
+            os_log("Opening snap! at [%s] in chrome at [%s]", log: log, type: .debug, url.absoluteString, chromeURL.absoluteString)
+            let configuration = NSWorkspace.OpenConfiguration()
+            NSWorkspace.shared.open([url], withApplicationAt: chromeURL, configuration: configuration)
+        } else {
+            if NSWorkspace.shared.open(url) {
+                os_log("Opened snap! at [%s]", log: log, type: .debug, url.absoluteString)
+            } else {
+                os_log("Failed to open snap! at [%s]", log: log, type: .error, url.absoluteString)
+            }
+        }
+        
+        
     }
     
 }

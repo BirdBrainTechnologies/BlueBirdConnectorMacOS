@@ -11,6 +11,8 @@
 		3119066824B0C86900CCE7C6 /* BackendServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3119066724B0C86900CCE7C6 /* BackendServer.swift */; };
 		3119066A24B8B79800CCE7C6 /* translations.js in Resources */ = {isa = PBXBuildFile; fileRef = 3119066924B8B79800CCE7C6 /* translations.js */; };
 		3162728124BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */; };
+		31C1D5B824D0974900A83B21 /* RobotManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */; };
+		31C1D5BA24D1BCEF00A83B21 /* logo-snap.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */; };
 		31C516ED24ABD0930051C05F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C516EC24ABD0930051C05F /* AppDelegate.swift */; };
 		31C516EF24ABD0930051C05F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C516EE24ABD0930051C05F /* ViewController.swift */; };
 		31C516F124ABD0960051C05F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31C516F024ABD0960051C05F /* Assets.xcassets */; };
@@ -86,6 +88,8 @@
 		3119066724B0C86900CCE7C6 /* BackendServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendServer.swift; sourceTree = "<group>"; };
 		3119066924B8B79800CCE7C6 /* translations.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = translations.js; sourceTree = "<group>"; };
 		3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertisedNamePrefixesScanFilter.swift; sourceTree = "<group>"; };
+		31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotManagerDelegate.swift; sourceTree = "<group>"; };
+		31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "logo-snap.svg"; sourceTree = "<group>"; };
 		31C516E924ABD0930051C05F /* BlueBird Connector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BlueBird Connector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31C516EC24ABD0930051C05F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31C516EE24ABD0930051C05F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -310,6 +314,7 @@
 		31C5174C24ABDEED0051C05F /* img */ = {
 			isa = PBXGroup;
 			children = (
+				31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */,
 				31C63E8724AE73510051F104 /* hummingbirdlogo32x32.png */,
 				31C5175124ABDF090051C05F /* img-finch.svg */,
 				31C5175524ABDF180051C05F /* pattern-blue-circuitry.svg */,
@@ -348,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				31C63E9624AF72D70051F104 /* Robot.swift */,
+				31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */,
 			);
 			path = Robot;
 			sourceTree = "<group>";
@@ -475,6 +481,7 @@
 				3119066A24B8B79800CCE7C6 /* translations.js in Resources */,
 				31C5174924ABDEC10051C05F /* fa-brands-400.woff in Resources */,
 				31C5175024ABDF030051C05F /* img-bit.svg in Resources */,
+				31C1D5BA24D1BCEF00A83B21 /* logo-snap.svg in Resources */,
 				31C5172424ABDE610051C05F /* custom.css in Resources */,
 				31C5174E24ABDEF80051C05F /* birdbrain-technologies-logo.svg in Resources */,
 				31C5174024ABDEC00051C05F /* fa-solid-900.eot in Resources */,
@@ -539,6 +546,7 @@
 				3119066824B0C86900CCE7C6 /* BackendServer.swift in Sources */,
 				31C5171924ABD50C0051C05F /* FrontendServer.swift in Sources */,
 				31C516EF24ABD0930051C05F /* ViewController.swift in Sources */,
+				31C1D5B824D0974900A83B21 /* RobotManagerDelegate.swift in Sources */,
 				31C516ED24ABD0930051C05F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
