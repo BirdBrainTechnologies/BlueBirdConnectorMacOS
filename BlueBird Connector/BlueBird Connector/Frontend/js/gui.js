@@ -1,6 +1,6 @@
 var connectedDeviceList = [];
 var scanDeviceList = [];
-var devLetterList = ['A', 'B', 'C'];
+//var devLetterList = ['A', 'B', 'C'];
 //Table to use for translations
 var translationTable = null;
 var language = "en";
@@ -108,8 +108,8 @@ $.scanListRefresh = function() {
     console.log(item);
 
     var el = $(
-      "<div class=\"address\" style=\"display:none\">" + item.address + "</div>" +
-      "<div class=\"devLetter\" style=\"display:none\">" + devLetterList[0] + "</div>" +
+      //"<div class=\"address\" style=\"display:none\">" + item.address + "</div>" +
+      //"<div class=\"devLetter\" style=\"display:none\">" + devLetterList[0] + "</div>" +
       "<div class=\"row robot-item\"><a href=\"#\"> " +
       "<div class=\"row robot-item\">" +
       "<div class=\"col-xs-2 img\"><img src=\"" + deviceImage + "\" alt=\"Bit\" /></div>" +
@@ -142,8 +142,7 @@ $.scanListRefresh = function() {
       // Send the actual connect command
       var connect = {
         'command': 'connect',
-        'address': item.address,
-        'devLetter': devLetterList[0]
+        'address': item.address
       }
       //console.log("Connection address = " + data.address);
       //console.log("devLetter = " + data.devLetter);
@@ -164,7 +163,7 @@ $.scanListRefresh = function() {
         sendMessageToBackend(msgTypes.CONSOLE_LOG, {
           consoleLog: "removed item from scan list: " + item.name
         })
-        hideUsedDevLetter(deviceName, devLetterList[0]);
+        //hideUsedDevLetter(deviceName, devLetterList[0]);
         $.scanListRefresh();
         sendMessageToBackend(msgTypes.CONSOLE_LOG, {
           consoleLog: "done with send message timeout"
@@ -191,7 +190,8 @@ $.scanListRefresh = function() {
     $('#robots-found').append(el);
     //console.log($tr.wrap('<p>').html());
 
-    if (devLetterList.length > 0)
+    //if (devLetterList.length > 0)
+    if (connectedDeviceList.length < 3)
       $('.connect').prop('disabled', false);
     else
       $('.connect').prop('disabled', true);
@@ -211,14 +211,11 @@ $.connectedDevListRefresh = function() {
 
   var refreshTable = {};
   $.each(connectedDeviceList, function(i, item) {
-    sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-      consoleLog: "connectedDevListRefresh for each"
-    })
     var name = (item.deviceFancyName == null ? item.deviceName : item.deviceFancyName);
     var deviceName = getDeviceName(item.deviceName);
     //var devLetter = connectedDeviceList[item.deviceConnection].devLetter;
     var devLetter = item.devLetter;
-    hideUsedDevLetter(deviceName, devLetter);
+    //hideUsedDevLetter(deviceName, devLetter);
     var deviceImage = getDeviceImage(deviceName);
     var devDisplay = getDeviceDisplay(deviceName);
 
@@ -264,7 +261,7 @@ $.connectedDevListRefresh = function() {
 
       //Disconnection in progress remove from  list
       //el.remove();
-      restoreUsedDevLetter(devLetter);
+      //restoreUsedDevLetter(devLetter);
 
     });
 
@@ -272,9 +269,7 @@ $.connectedDevListRefresh = function() {
     refreshTable[devLetter] = el;
 
   });
-  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-    consoleLog: "connectedDevListRefresh after foreach"
-  })
+
   var keys = [];
   for (var key in refreshTable) {
     if (refreshTable.hasOwnProperty(key)) {
@@ -289,9 +284,6 @@ $.connectedDevListRefresh = function() {
     var devEntry = refreshTable[key];
     $('#robots-connected').append(devEntry);
   }
-  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-    consoleLog: "connectedDevListRefresh after robots-connected"
-  })
 
   if (!(jQuery.isEmptyObject(connectedDeviceList))) {
     setConnectedDisplay("show");
@@ -338,7 +330,7 @@ function getDeviceName(devInstance) {
   return devName;
 }
 
-function hideUsedDevLetter(deviceName, devLetter) {
+/*function hideUsedDevLetter(deviceName, devLetter) {
   console.log("hideUsedDevLetter");
 
   var list = devLetterList;
@@ -354,9 +346,9 @@ function hideUsedDevLetter(deviceName, devLetter) {
   $('select.' + deviceName).empty();
   $('select.' + deviceName).append(newOptions);
 
-}
+}*/
 
-function populateSelectList(deviceName) {
+/*function populateSelectList(deviceName) {
   var optionList = "";
   var list = devLetterList;
 
@@ -374,9 +366,9 @@ function populateSelectList(deviceName) {
     console.log(optionList);
     return optionList;
   } else return null;
-}
+}*/
 
-function restoreUsedDevLetter(devLetter) {
+/*function restoreUsedDevLetter(devLetter) {
   var list = devLetterList;
   var i = list.indexOf(devLetter);
 
@@ -384,7 +376,7 @@ function restoreUsedDevLetter(devLetter) {
     list.push(parseInt(devLetter));
   list.sort();
   console.log(list);
-}
+}*/
 
 function getDeviceImage(deviceName) {
   var deviceImage = "img-hummingbird-bit.svg" // default hummingbird image

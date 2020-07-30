@@ -14,7 +14,7 @@ import os
 
 class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWindowDelegate {
     
-    let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "ViewController")
+    private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "ViewController")
     
     var webView = WKWebView()
     
@@ -43,7 +43,7 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
         
         //robotManager.delegate = self
         //frontendServer.setRobotManager(robotManager)
-        let delegate = RobotManagerDelegate(frontendServer: frontendServer, robotManager: robotManager)
+        let delegate = RobotManagerDelegate(frontendServer: frontendServer, robotManager: robotManager, backendServer: backendServer)
         robotManager.delegate = delegate
         
         let config = WKWebViewConfiguration()
@@ -136,6 +136,15 @@ enum DeviceLetter: CaseIterable {
         case .A: return "A"
         case .B: return "B"
         case .C: return "C"
+        }
+    }
+    
+    static func fromString(_ string: String) -> DeviceLetter? {
+        switch string {
+        case "A": return .A
+        case "B": return .B
+        case "C": return .C
+        default: return nil
         }
     }
 }

@@ -49,6 +49,7 @@ sendMessageToBackend(requestObject)*/
 CallbackManager = {}
 
 CallbackManager.scanStarted = function() {
+  scanDeviceList = []
   if (!($('#find-button i').hasClass('fa-spin'))){
     $('#find-button i').addClass('fa-spin');
     $('#findBtnText').text(" "+translationTable["finding_robots"]);
@@ -107,6 +108,9 @@ CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter)
   $.connectedDevListRefresh()
 }
 CallbackManager.deviceDidDisconnect = function(address) {
+  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+    consoleLog: "device did disconnect: " + address
+  })
   connectedDeviceList.forEach( (device, i) => {
     if (device.deviceAddress == address) {
       connectedDeviceList.splice(i, 1)

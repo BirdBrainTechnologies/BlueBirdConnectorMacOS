@@ -13,7 +13,7 @@ import os
 
 class FrontendServer: NSObject, WKScriptMessageHandler {
     
-    let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "FrontendServer")
+    private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "FrontendServer")
     
     let robotManager: UARTDeviceManager<Robot>
     var webView: WKWebView?
@@ -201,7 +201,6 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             return
         }*/
         guard let address = fullCommand["address"] as? String,
-            let devLetter = fullCommand["devLetter"] as? String,
             let uuid = UUID(uuidString: address) else {
             os_log("Improperly formed connect command", log: log, type: .error)
             print(fullCommand)
