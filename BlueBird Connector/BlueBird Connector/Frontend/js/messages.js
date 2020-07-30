@@ -40,11 +40,6 @@ window.onresize = () => {
   })
 }
 
-/*const requestObject = {};
-requestObject.request = "someID"
-requestObject.body = "testing"
-sendMessageToBackend(requestObject)*/
-
 
 CallbackManager = {}
 

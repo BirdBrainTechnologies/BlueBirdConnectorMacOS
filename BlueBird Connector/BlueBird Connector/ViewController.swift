@@ -41,8 +41,6 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
         super.viewDidLoad()
         os_log("viewdidload", log: log, type: .debug)
         
-        //robotManager.delegate = self
-        //frontendServer.setRobotManager(robotManager)
         let delegate = RobotManagerDelegate(frontendServer: frontendServer, robotManager: robotManager, backendServer: backendServer)
         robotManager.delegate = delegate
         
@@ -73,20 +71,6 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
         
         self.view.addSubview(self.webView)
         frontendServer.setWebView(self.webView)
-        
-       /* let js = """
-            
-                window.webkit.messageHandlers.serverSubstitute.postMessage({paramter1 : "value1", parameter2 : "value2"})
-            
-        """
-        self.webView.evaluateJavaScript(js) { (response, error) in
-            if let _ = error {
-                print("error: \(error)")
-            }
-            else {
-                print("response: \(response)")
-            }
-        }*/
         
     }
 
@@ -127,24 +111,3 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
 
 }
 
-
-enum DeviceLetter: CaseIterable {
-    case A, B, C
-    
-    func toString() -> String {
-        switch self{
-        case .A: return "A"
-        case .B: return "B"
-        case .C: return "C"
-        }
-    }
-    
-    static func fromString(_ string: String) -> DeviceLetter? {
-        switch string {
-        case "A": return .A
-        case "B": return .B
-        case "C": return .C
-        default: return nil
-        }
-    }
-}

@@ -52,7 +52,6 @@ $(document).ready(function() {
     sendMessageToBackend(msgTypes.CONSOLE_LOG, {
       consoleLog: "Turning scan " + newScanState
     })
-    //cs.send(JSON.stringify(data));
     sendMessageToBackend(msgTypes.COMMAND, data)
     $.scanListRefresh();
   });
@@ -100,7 +99,6 @@ $.scanListRefresh = function() {
   //Loop through and populate row items
   $.each(scanDeviceList, function(i, item) {
     var name = (item.fancyName == null ? item.name : item.fancyName);
-    //addressTable[name] = item.address;
     var deviceName = getDeviceName(item.name);
     var deviceImage = getDeviceImage(deviceName);
 
@@ -123,7 +121,6 @@ $.scanListRefresh = function() {
         'command': 'scan',
         'scanState': 'off',
       }
-      //cs.send(JSON.stringify(stopData));
       sendMessageToBackend(msgTypes.COMMAND, stopScan)
       sendMessageToBackend(msgTypes.CONSOLE_LOG, {
         consoleLog: "Scan stopped"
@@ -144,8 +141,7 @@ $.scanListRefresh = function() {
         'command': 'connect',
         'address': item.address
       }
-      //console.log("Connection address = " + data.address);
-      //console.log("devLetter = " + data.devLetter);
+
       sendMessageToBackend(msgTypes.CONSOLE_LOG, {
         consoleLog: "Connection address = " + connect.address + "; devLetter = " + connect.devLetter
       })
@@ -154,7 +150,7 @@ $.scanListRefresh = function() {
       // revealed that a 10ms wait would space the commands out enough.
       // TODO: IS THIS NECESSARY?
       setTimeout(function() {
-        //cs.send(JSON.stringify(data));
+
         sendMessageToBackend(msgTypes.COMMAND, connect)
 
         // Clear the scan list and remove the devLetter from subsequent use on the connect button click event
@@ -163,7 +159,7 @@ $.scanListRefresh = function() {
         sendMessageToBackend(msgTypes.CONSOLE_LOG, {
           consoleLog: "removed item from scan list: " + item.name
         })
-        //hideUsedDevLetter(deviceName, devLetterList[0]);
+
         $.scanListRefresh();
         sendMessageToBackend(msgTypes.CONSOLE_LOG, {
           consoleLog: "done with send message timeout"
@@ -188,9 +184,7 @@ $.scanListRefresh = function() {
     });
 
     $('#robots-found').append(el);
-    //console.log($tr.wrap('<p>').html());
 
-    //if (devLetterList.length > 0)
     if (connectedDeviceList.length < 3)
       $('.connect').prop('disabled', false);
     else
@@ -213,15 +207,13 @@ $.connectedDevListRefresh = function() {
   $.each(connectedDeviceList, function(i, item) {
     var name = (item.deviceFancyName == null ? item.deviceName : item.deviceFancyName);
     var deviceName = getDeviceName(item.deviceName);
-    //var devLetter = connectedDeviceList[item.deviceConnection].devLetter;
     var devLetter = item.devLetter;
-    //hideUsedDevLetter(deviceName, devLetter);
     var deviceImage = getDeviceImage(deviceName);
     var devDisplay = getDeviceDisplay(deviceName);
 
     var el = $(
-      "             <div class=\"address\" style=\"display:none\">" + item.deviceAddress + "</div>" +
-      "             <div class=\"devLetter\" style=\"display:none\">" + devLetter + "</div>" +
+      //"             <div class=\"address\" style=\"display:none\">" + item.deviceAddress + "</div>" +
+      //"             <div class=\"devLetter\" style=\"display:none\">" + devLetter + "</div>" +
       "             <div class=\"row robot-item\">" +
       "               <div class=\"col-xs-2 img\">" + devLetter + " <img src=\"" + deviceImage + "\" alt=\"Hummingbird Bit\" /></div>" +
       "               <div class=\"col-xs-6 name\">" + name + "</div>" +
@@ -249,19 +241,10 @@ $.connectedDevListRefresh = function() {
     el.find('.button-disconnect').click(function() {
       var data = {
         'command': 'disconnect',
-        //'connection': item.deviceConnection,
         'devLetter': item.devLetter,
         'address': item.deviceAddress
       }
-      //cs.send(JSON.stringify(data));
       sendMessageToBackend(msgTypes.COMMAND, data)
-
-      //console.log("Disconnect Data");
-      //console.log(data);
-
-      //Disconnection in progress remove from  list
-      //el.remove();
-      //restoreUsedDevLetter(devLetter);
 
     });
 
@@ -329,54 +312,6 @@ function getDeviceName(devInstance) {
   }
   return devName;
 }
-
-/*function hideUsedDevLetter(deviceName, devLetter) {
-  console.log("hideUsedDevLetter");
-
-  var list = devLetterList;
-  var i = list.indexOf(devLetter);
-  if (i > -1)
-    list.splice(i, 1);
-  console.log(list);
-
-  // Update the device list of the given deviceName
-  var newOptions = populateSelectList(deviceName);
-  console.log(newOptions);
-  console.log($('select.' + deviceName));
-  $('select.' + deviceName).empty();
-  $('select.' + deviceName).append(newOptions);
-
-}*/
-
-/*function populateSelectList(deviceName) {
-  var optionList = "";
-  var list = devLetterList;
-
-  if (!(list == null)) {
-    //for (var i=0; i < list.length; i++)
-      //optionList +='<option value=\"' + list[i].toString() + '\">' + list[i].toString() + '</option>';
-    if (list.length > 0) {
-      optionList +='<option value=\"' + list[0].toString() + '\">' + list[0].toString() + '</option>';
-       $('.connect').prop('disabled', false);
-     }
-    else {
-      optionList +='<option value=\"' + ' ' + '\">' + ' ' + '</option>';
-       $('.connect').prop('disabled', true);
-    }
-    console.log(optionList);
-    return optionList;
-  } else return null;
-}*/
-
-/*function restoreUsedDevLetter(devLetter) {
-  var list = devLetterList;
-  var i = list.indexOf(devLetter);
-
-  if (i == -1)
-    list.push(parseInt(devLetter));
-  list.sort();
-  console.log(list);
-}*/
 
 function getDeviceImage(deviceName) {
   var deviceImage = "img-hummingbird-bit.svg" // default hummingbird image
