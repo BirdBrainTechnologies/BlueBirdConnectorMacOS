@@ -11,6 +11,7 @@
 		3119066824B0C86900CCE7C6 /* BackendServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3119066724B0C86900CCE7C6 /* BackendServer.swift */; };
 		3119066A24B8B79800CCE7C6 /* translations.js in Resources */ = {isa = PBXBuildFile; fileRef = 3119066924B8B79800CCE7C6 /* translations.js */; };
 		313ECBF724D31FC400FEA8C5 /* DeviceLetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECBF624D31FC400FEA8C5 /* DeviceLetter.swift */; };
+		313ECBF924D3211D00FEA8C5 /* RobotType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECBF824D3211D00FEA8C5 /* RobotType.swift */; };
 		3162728124BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */; };
 		31C1D5B824D0974900A83B21 /* RobotManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */; };
 		31C1D5BA24D1BCEF00A83B21 /* logo-snap.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */; };
@@ -89,6 +90,7 @@
 		3119066724B0C86900CCE7C6 /* BackendServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendServer.swift; sourceTree = "<group>"; };
 		3119066924B8B79800CCE7C6 /* translations.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = translations.js; sourceTree = "<group>"; };
 		313ECBF624D31FC400FEA8C5 /* DeviceLetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLetter.swift; sourceTree = "<group>"; };
+		313ECBF824D3211D00FEA8C5 /* RobotType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotType.swift; sourceTree = "<group>"; };
 		3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertisedNamePrefixesScanFilter.swift; sourceTree = "<group>"; };
 		31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotManagerDelegate.swift; sourceTree = "<group>"; };
 		31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "logo-snap.svg"; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 			isa = PBXGroup;
 			children = (
 				31C63E9624AF72D70051F104 /* Robot.swift */,
+				313ECBF824D3211D00FEA8C5 /* RobotType.swift */,
 				31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */,
 			);
 			path = Robot;
@@ -552,6 +555,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				313ECBF924D3211D00FEA8C5 /* RobotType.swift in Sources */,
 				3162728124BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift in Sources */,
 				31C63E9724AF72D70051F104 /* Robot.swift in Sources */,
 				3119066824B0C86900CCE7C6 /* BackendServer.swift in Sources */,
