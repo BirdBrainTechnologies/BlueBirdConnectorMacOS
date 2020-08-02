@@ -15,7 +15,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     
     private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "FrontendServer")
     
-    let robotManager: UARTDeviceManager<Robot>
+    //let robotManager: UARTDeviceManager<Robot>
     var webView: WKWebView?
     var documentIsReady: Bool = false
     var callbacksPending: [String] = []
@@ -24,11 +24,11 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
    /* func setRobotManager(_ manager: UARTDeviceManager<Robot>) {
         robotManager = manager
     }*/
-    init(robotManager: UARTDeviceManager<Robot>) {
+    /*init(robotManager: UARTDeviceManager<Robot>) {
         self.robotManager = robotManager
         
         super.init()
-    }
+    }*/
     
     func setWebView(_ view: WKWebView) {
         webView = view
@@ -166,7 +166,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         case "on":
             startScan()
         case "off":
-            if robotManager.stopScanning() {
+            if Shared.robotManager.stopScanning() {
                 notifiyScanState(isOn: false)
             } else {
                 os_log("Failed to stop scanning!", log: log, type: .error)
@@ -184,7 +184,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             return
         }*/
         
-        if robotManager.startScanning() {
+        if Shared.robotManager.startScanning() {
             os_log("Scanning...", log: log, type: .debug)
             notifiyScanState(isOn: true)
             availableDevices.forEach{(uuid, device) in
@@ -207,7 +207,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             return
         }
         os_log("connect to [%s]", log: log, type: .debug, address)
-        let _ = robotManager.connectToDevice(havingUUID: uuid)
+        let _ = Shared.robotManager.connectToDevice(havingUUID: uuid)
     }
     
     func handleDisconnectCommand(_ fullCommand: NSDictionary) {
@@ -223,7 +223,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             return
         }
         
-        let _ = robotManager.disconnectFromDevice(havingUUID: uuid)
+        let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
     }
     
     func handleOpenSnapCommand(_ fullCommand: NSDictionary) {

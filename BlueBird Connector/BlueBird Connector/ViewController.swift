@@ -17,7 +17,7 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
     private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "ViewController")
     
     var webView = WKWebView()
-    
+    /*
     let robotManager: UARTDeviceManager<Robot>
     let frontendServer: FrontendServer
     let backendServer: BackendServer
@@ -35,18 +35,19 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
         backendServer = BackendServer()
         super.init(coder: coder)
     }
-    
+    */
     
     override func viewDidLoad() {
         super.viewDidLoad()
         os_log("viewdidload", log: log, type: .debug)
         
-        let delegate = RobotManagerDelegate(frontendServer: frontendServer, robotManager: robotManager, backendServer: backendServer)
-        robotManager.delegate = delegate
+        //let delegate = RobotManagerDelegate(frontendServer: frontendServer, robotManager: robotManager, backendServer: backendServer)
+        let delegate = RobotManagerDelegate()
+        Shared.robotManager.delegate = delegate
         
         let config = WKWebViewConfiguration()
         let contentController = WKUserContentController()
-        contentController.add(self.frontendServer, name: "serverSubstitute")
+        contentController.add(Shared.frontendServer, name: "serverSubstitute")
         config.userContentController = contentController
         
         self.webView = WKWebView(frame: self.view.bounds, configuration: config)
@@ -70,7 +71,7 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
         }*/
         
         self.view.addSubview(self.webView)
-        frontendServer.setWebView(self.webView)
+        Shared.frontendServer.setWebView(self.webView)
         
     }
 

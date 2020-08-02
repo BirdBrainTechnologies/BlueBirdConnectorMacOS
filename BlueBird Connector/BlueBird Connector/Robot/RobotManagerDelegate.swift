@@ -15,7 +15,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
     
     private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "RobotManagerDelegate")
     
-    let frontendServer: FrontendServer
+    /*let frontendServer: FrontendServer
     let robotManager: UARTDeviceManager<Robot>
     let backendServer: BackendServer
     
@@ -23,16 +23,16 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         self.frontendServer = frontendServer
         self.robotManager = robotManager
         self.backendServer = backendServer
-    }
+    }*/
     
     func didUpdateState(to state: UARTDeviceManagerState) {
         os_log("UARTDeviceManagerDelegate.didUpdateState to: [%s]", log: log, type: .debug, state.rawValue)
         switch state {
         case .enabled:
-            frontendServer.startScan()
+            Shared.frontendServer.startScan()
         case .disabled:
             os_log("manager disabled", log: log, type: .debug)
-            frontendServer.notifyBleDisabled()
+            Shared.frontendServer.notifyBleDisabled()
         case .error:
             os_log("manager error", log: log, type: .error)
         }
@@ -46,7 +46,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
             return
         }
         
-        frontendServer.notifyDeviceDiscovery(uuid: uuid, advertisementSignature: advertisementSignature, rssi: rssi)
+        Shared.frontendServer.notifyDeviceDiscovery(uuid: uuid, advertisementSignature: advertisementSignature, rssi: rssi)
         
     }
 
@@ -56,40 +56,40 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
 
     func didDisappear(uuid: UUID) {
         os_log("DID DISAPPEAR [%s]", log: log, type: .debug, uuid.uuidString)
-        frontendServer.notifyDeviceDidDisappear(uuid: uuid)
+        Shared.frontendServer.notifyDeviceDidDisappear(uuid: uuid)
     }
 
     func didConnectTo(uuid: UUID) {
         os_log("DID CONNECT TO [%s]", log: log, type: .debug, uuid.uuidString)
-        guard let robot = robotManager.getDevice(uuid: uuid) else {
+        guard let robot = Shared.robotManager.getDevice(uuid: uuid) else {
             os_log("Connected robot not found with uuid [%s]", log: log, type: .error, uuid.uuidString)
             return
         }
         
         guard robot.type != .Unknown else {
             os_log("Connected to robot of unknown type!", log: log, type: .error)
-            let _ = robotManager.disconnectFromDevice(havingUUID: uuid)
+            let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
             return
         }
         
         guard robot.notificationsRunning else {
             os_log("Connected to robot failed to start notifications", log: log, type: .error)
-            let _ = robotManager.disconnectFromDevice(havingUUID: uuid)
+            let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
             return
         }
         
         var letterAssigned = false
         for devLetter in DeviceLetter.allCases {
-            if !letterAssigned && backendServer.connectedRobots[devLetter] == nil {
-                backendServer.connectedRobots[devLetter] = robot
+            if !letterAssigned && Shared.backendServer.connectedRobots[devLetter] == nil {
+                Shared.backendServer.connectedRobots[devLetter] = robot
                 letterAssigned = true
-                frontendServer.notifyDeviceDidConnect(uuid: uuid, name: robot.name, fancyName: robot.fancyName, deviceLetter: devLetter)
+                Shared.frontendServer.notifyDeviceDidConnect(uuid: uuid, name: robot.name, fancyName: robot.fancyName, deviceLetter: devLetter)
             }
         }
         
         if !letterAssigned {
             os_log("Too many connections", log: log, type: .error)
-            let _ = robotManager.disconnectFromDevice(havingUUID: uuid)
+            let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
         }
     }
 
@@ -99,10 +99,10 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
             os_log("Error: [%s]", log: log, type: .error, error.localizedDescription)
         }
         
-        for (letter, robot) in backendServer.connectedRobots {
+        for (letter, robot) in Shared.backendServer.connectedRobots {
             if robot.uuid == uuid {
-                backendServer.connectedRobots[letter] = nil
-                frontendServer.notifyDeviceDidDisconnect(uuid: uuid)
+                Shared.backendServer.connectedRobots[letter] = nil
+                Shared.frontendServer.notifyDeviceDidDisconnect(uuid: uuid)
             }
         }
     }
