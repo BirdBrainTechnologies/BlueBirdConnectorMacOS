@@ -15,15 +15,6 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
     
     private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "RobotManagerDelegate")
     
-    /*let frontendServer: FrontendServer
-    let robotManager: UARTDeviceManager<Robot>
-    let backendServer: BackendServer
-    
-    init(frontendServer: FrontendServer, robotManager: UARTDeviceManager<Robot>, backendServer: BackendServer) {
-        self.frontendServer = frontendServer
-        self.robotManager = robotManager
-        self.backendServer = backendServer
-    }*/
     
     func didUpdateState(to state: UARTDeviceManagerState) {
         os_log("UARTDeviceManagerDelegate.didUpdateState to: [%s]", log: log, type: .debug, state.rawValue)
@@ -61,19 +52,26 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
 
     func didConnectTo(uuid: UUID) {
         os_log("DID CONNECT TO [%s]", log: log, type: .debug, uuid.uuidString)
-        guard let robot = Shared.robotManager.getDevice(uuid: uuid) else {
+        guard let mRobot = Shared.robotManager.getDevice(uuid: uuid) else {
             os_log("Connected robot not found with uuid [%s]", log: log, type: .error, uuid.uuidString)
-            return
-        }
-        
-        guard robot.type != .Unknown else {
-            os_log("Connected to robot of unknown type!", log: log, type: .error)
             let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
             return
         }
         
-        guard robot.notificationsRunning else {
-            os_log("Connected to robot failed to start notifications", log: log, type: .error)
+        /*guard robot.type != .Unknown else {
+            os_log("Connected to robot of unknown type!", log: log, type: .error)
+            let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
+            return
+        }*/
+        
+        guard mRobot.notificationsRunning else {
+            os_log("Connected robot failed to start notifications", log: log, type: .error)
+            let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
+            return
+        }
+        
+        guard let robot = robotFactory(mRobot) else {
+            os_log("Failed to create robot type", log: log, type: .error)
             let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
             return
         }
@@ -90,6 +88,16 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         if !letterAssigned {
             os_log("Too many connections", log: log, type: .error)
             let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
+        }
+    }
+    
+    func robotFactory(_ mRobot: ManageableRobot) -> Robot? {
+        let prefix = mRobot.advertisementSignature?.advertisedName.prefix(2) ?? "XX"
+        switch prefix {
+        case "FN": return Finch(mRobot)
+        case "BB": return Hummingbird(mRobot)
+        case "MB": return Microbit(mRobot)
+        default: return nil
         }
     }
 

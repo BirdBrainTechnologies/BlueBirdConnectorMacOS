@@ -15,6 +15,11 @@
 		313ECBFB24D3238100FEA8C5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECBFA24D3238100FEA8C5 /* Utilities.swift */; };
 		313ECBFD24D32B7300FEA8C5 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECBFC24D32B7300FEA8C5 /* Shared.swift */; };
 		313ECBFF24D4AEB600FEA8C5 /* RobotState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECBFE24D4AEB600FEA8C5 /* RobotState.swift */; };
+		313ECC0124D710E500FEA8C5 /* ManageableRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0024D710E500FEA8C5 /* ManageableRobot.swift */; };
+		313ECC0324D710FB00FEA8C5 /* ManageableRobotDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0224D710FB00FEA8C5 /* ManageableRobotDelegate.swift */; };
+		313ECC0524D7110F00FEA8C5 /* Finch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0424D7110F00FEA8C5 /* Finch.swift */; };
+		313ECC0724D7112000FEA8C5 /* Hummingbird.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0624D7112000FEA8C5 /* Hummingbird.swift */; };
+		313ECC0924D7113700FEA8C5 /* Microbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0824D7113700FEA8C5 /* Microbit.swift */; };
 		3162728124BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */; };
 		31C1D5B824D0974900A83B21 /* RobotManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */; };
 		31C1D5BA24D1BCEF00A83B21 /* logo-snap.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */; };
@@ -97,6 +102,11 @@
 		313ECBFA24D3238100FEA8C5 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		313ECBFC24D32B7300FEA8C5 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		313ECBFE24D4AEB600FEA8C5 /* RobotState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotState.swift; sourceTree = "<group>"; };
+		313ECC0024D710E500FEA8C5 /* ManageableRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageableRobot.swift; sourceTree = "<group>"; };
+		313ECC0224D710FB00FEA8C5 /* ManageableRobotDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageableRobotDelegate.swift; sourceTree = "<group>"; };
+		313ECC0424D7110F00FEA8C5 /* Finch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Finch.swift; sourceTree = "<group>"; };
+		313ECC0624D7112000FEA8C5 /* Hummingbird.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hummingbird.swift; sourceTree = "<group>"; };
+		313ECC0824D7113700FEA8C5 /* Microbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Microbit.swift; sourceTree = "<group>"; };
 		3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertisedNamePrefixesScanFilter.swift; sourceTree = "<group>"; };
 		31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotManagerDelegate.swift; sourceTree = "<group>"; };
 		31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "logo-snap.svg"; sourceTree = "<group>"; };
@@ -374,6 +384,11 @@
 			isa = PBXGroup;
 			children = (
 				31C63E9624AF72D70051F104 /* Robot.swift */,
+				313ECC0024D710E500FEA8C5 /* ManageableRobot.swift */,
+				313ECC0224D710FB00FEA8C5 /* ManageableRobotDelegate.swift */,
+				313ECC0424D7110F00FEA8C5 /* Finch.swift */,
+				313ECC0624D7112000FEA8C5 /* Hummingbird.swift */,
+				313ECC0824D7113700FEA8C5 /* Microbit.swift */,
 				313ECBF824D3211D00FEA8C5 /* RobotType.swift */,
 				31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */,
 				313ECBFE24D4AEB600FEA8C5 /* RobotState.swift */,
@@ -566,13 +581,18 @@
 			files = (
 				313ECBF924D3211D00FEA8C5 /* RobotType.swift in Sources */,
 				3162728124BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift in Sources */,
+				313ECC0724D7112000FEA8C5 /* Hummingbird.swift in Sources */,
 				313ECBFF24D4AEB600FEA8C5 /* RobotState.swift in Sources */,
 				31C63E9724AF72D70051F104 /* Robot.swift in Sources */,
+				313ECC0124D710E500FEA8C5 /* ManageableRobot.swift in Sources */,
 				3119066824B0C86900CCE7C6 /* BackendServer.swift in Sources */,
+				313ECC0524D7110F00FEA8C5 /* Finch.swift in Sources */,
 				31C5171924ABD50C0051C05F /* FrontendServer.swift in Sources */,
 				31C516EF24ABD0930051C05F /* ViewController.swift in Sources */,
 				313ECBF724D31FC400FEA8C5 /* DeviceLetter.swift in Sources */,
+				313ECC0924D7113700FEA8C5 /* Microbit.swift in Sources */,
 				31C1D5B824D0974900A83B21 /* RobotManagerDelegate.swift in Sources */,
+				313ECC0324D710FB00FEA8C5 /* ManageableRobotDelegate.swift in Sources */,
 				313ECBFB24D3238100FEA8C5 /* Utilities.swift in Sources */,
 				313ECBFD24D32B7300FEA8C5 /* Shared.swift in Sources */,
 				31C516ED24ABD0930051C05F /* AppDelegate.swift in Sources */,

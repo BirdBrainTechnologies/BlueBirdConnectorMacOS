@@ -17,31 +17,12 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
     private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "ViewController")
     
     var webView = WKWebView()
-    /*
-    let robotManager: UARTDeviceManager<Robot>
-    let frontendServer: FrontendServer
-    let backendServer: BackendServer
     
-    
-    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-        robotManager = UARTDeviceManager<Robot>(scanFilter: Robot.scanFilter)
-        frontendServer = FrontendServer(robotManager: robotManager)
-        backendServer = BackendServer()
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    required init?(coder: NSCoder) {
-        robotManager = UARTDeviceManager<Robot>(scanFilter: Robot.scanFilter)
-        frontendServer = FrontendServer(robotManager: robotManager)
-        backendServer = BackendServer()
-        super.init(coder: coder)
-    }
-    */
     
     override func viewDidLoad() {
         super.viewDidLoad()
         os_log("viewdidload", log: log, type: .debug)
         
-        //let delegate = RobotManagerDelegate(frontendServer: frontendServer, robotManager: robotManager, backendServer: backendServer)
         let delegate = RobotManagerDelegate()
         Shared.robotManager.delegate = delegate
         

@@ -15,20 +15,11 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     
     private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "FrontendServer")
     
-    //let robotManager: UARTDeviceManager<Robot>
     var webView: WKWebView?
     var documentIsReady: Bool = false
     var callbacksPending: [String] = []
     var availableDevices = [UUID: AvailableDevice]()
     
-   /* func setRobotManager(_ manager: UARTDeviceManager<Robot>) {
-        robotManager = manager
-    }*/
-    /*init(robotManager: UARTDeviceManager<Robot>) {
-        self.robotManager = robotManager
-        
-        super.init()
-    }*/
     
     func setWebView(_ view: WKWebView) {
         webView = view

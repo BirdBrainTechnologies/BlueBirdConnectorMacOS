@@ -12,8 +12,8 @@ import Foundation
 import BirdbrainBLE
 
 class Shared {
-    private static let rmSingleton = UARTDeviceManager<Robot>(scanFilter: Robot.scanFilter)
-    public static var robotManager: UARTDeviceManager<Robot> {
+    private static let rmSingleton = UARTDeviceManager<ManageableRobot>(scanFilter: ManageableRobot.scanFilter)
+    public static var robotManager: UARTDeviceManager<ManageableRobot> {
         return rmSingleton
     }
     

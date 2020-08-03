@@ -87,20 +87,21 @@ class BackendServer {
     
     private func sensorRequest (_ request: HttpRequest) -> HttpResponse {
         let params = request.path.split(separator: "/")
+        let sensor = params[2]
         let port = String(params[3])
         
         var letter = "A"
         if params.count > 4 {
             letter = String(params[4])
         }
-        if params[2] == "Compass", params.count > 3 {
+        if sensor == "Compass", params.count > 3 {
             letter = String(params[3])
         }
-        guard let robot = getRobot(devLetterString: letter, acceptedTypes: [.Finch, .HummingbirdBit, .MicroBit]) else {
+        guard let robot = getRobot(devLetterString: letter) else {
             return NOT_CONNECTED
         }
         
-        switch params[2] {
+        switch sensor {
         case "button":
             switch port {
             case "A": return BackendServer.getRawResponse(String(robot.buttonA))
@@ -108,9 +109,7 @@ class BackendServer {
             default: return BackendServer.getRawResponse("Invalid button", .badRequest(nil))
             }
         case "orientation":
-            if robot.type == .Finch {
-                return NOT_CONNECTED
-            }
+            if robot is Finch { return NOT_CONNECTED }
             switch port {
             case "Screen Up": return BackendServer.getRawResponse(String(robot.accZ < -7.848))
             case "Screen Down": return BackendServer.getRawResponse(String(robot.accZ > 7.848))
@@ -123,7 +122,7 @@ class BackendServer {
                 return BackendServer.getRawResponse("Invalid orientation", .badRequest(nil))
             }
         case "finchOrientation":
-            if robot.type != .Finch {
+            guard let robot = robot as? Finch else {
                 return NOT_CONNECTED
             }
             switch port {
@@ -138,6 +137,10 @@ class BackendServer {
                 return BackendServer.getRawResponse("Invalid finch orientation", .badRequest(nil))
             }
         case "Accelerometer", "finchAccel":
+            if (sensor == "Accelerometer" && robot is Finch) ||
+                (sensor == "finchAccel" && !(robot is Finch)) {
+                return NOT_CONNECTED
+            }
             switch port {
             case "X": return BackendServer.getRawResponse(String(robot.accX))
             case "Y": return BackendServer.getRawResponse(String(robot.accY))
@@ -146,6 +149,10 @@ class BackendServer {
                 return INVALID_AXIS
             }
         case "Magnetometer", "finchMag":
+            if (sensor == "Magnetometer" && robot is Finch) ||
+                (sensor == "finchMag" && !(robot is Finch)) {
+                return NOT_CONNECTED
+            }
             switch port {
             case "X": return BackendServer.getRawResponse(String(robot.magX))
             case "Y": return BackendServer.getRawResponse(String(robot.magY))
@@ -154,63 +161,62 @@ class BackendServer {
                 return INVALID_AXIS
             }
         case "Compass", "finchCompass":
+            if (sensor == "Compass" && robot is Finch) ||
+                (sensor == "finchCompass" && !(robot is Finch)) {
+                return NOT_CONNECTED
+            }
             return BackendServer.getRawResponse(String(robot.compass))
         case "Distance":
-            switch robot.type {
-            case .Finch:
-                guard let distance = robot.finchDistance else { return NOT_CONNECTED }
-                return BackendServer.getRawResponse(String(distance))
-            case .HummingbirdBit:
-                guard let port = Int(port) else { return INVALID_PORT }
+            // if there is a port number, it is a hummingbird request
+            if let port = Int(port) {
+                guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
                 guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
                 let value = Int(round(Double(rawValue) * (117/100)))
                 return BackendServer.getRawResponse(String(value))
-            default:
-                return NOT_CONNECTED
+            } else {
+                guard let robot = robot as? Finch else { return NOT_CONNECTED }
+                guard let distance = robot.finchDistance else { return NOT_CONNECTED }
+                return BackendServer.getRawResponse(String(distance))
             }
         case "Dial":
-            guard robot.type == .HummingbirdBit else { return NOT_CONNECTED }
+            guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
             guard let port = Int(port) else { return INVALID_PORT }
             guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
             var scaledVal = Int( round(Double(rawValue) * (100 / 230)) )
             if scaledVal > 100 { scaledVal = 100 }
             return BackendServer.getRawResponse(String(scaledVal))
         case "Light":
-            //TODO: check port type first so you know what type of robot is requested.
-            switch robot.type {
-            case .Finch:
-                let onRight: Bool
-                switch params[3] {
-                case "Right": onRight = true
-                case "Left": onRight = false
-                default: return INVALID_PORT
-                }
+            switch params[3] {
+            case "Right", "Left":
+                guard let robot = robot as? Finch else { return NOT_CONNECTED }
+                var onRight = false
+                if params[3] == "Right" { onRight = true }
                 guard let lightValue = robot.getFinchLight(onRight: onRight) else {
                     return NOT_CONNECTED
                 }
                 return BackendServer.getRawResponse(String(lightValue))
-            case .HummingbirdBit:
+            case "1", "2", "3":
+                guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
                 guard let port = Int(port) else { return INVALID_PORT }
                 guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
                 let value = Double(rawValue) / 2.55
                 return BackendServer.getRawResponse(String(value))
-            default:
-                return NOT_CONNECTED
+            default: return INVALID_PORT
             }
         case "Sound":
-            guard robot.type == .HummingbirdBit else { return NOT_CONNECTED }
+            guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
             guard let port = Int(port) else { return INVALID_PORT }
             guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
             let value = Int( round(Double(rawValue) * (200/255)) )
             return BackendServer.getRawResponse(String(value))
         case "Other":
-            guard robot.type == .HummingbirdBit else { return NOT_CONNECTED }
+            guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
             guard let port = Int(port) else { return INVALID_PORT }
             guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
             let value = Double(rawValue) * (3.3/255)
             return BackendServer.getRawResponse(String(value))
         case "Line":
-            guard robot.type == .Finch else { return NOT_CONNECTED }
+            guard let robot = robot as? Finch else { return NOT_CONNECTED }
             let onRight: Bool
             switch params[3] {
             case "Right": onRight = true
@@ -222,7 +228,7 @@ class BackendServer {
             }
             return BackendServer.getRawResponse(String(lineValue))
         case "Encoder":
-            guard robot.type == .Finch else { return NOT_CONNECTED }
+            guard let robot = robot as? Finch else { return NOT_CONNECTED }
             let onRight: Bool
             switch params[3] {
             case "Right": onRight = true
@@ -250,7 +256,7 @@ class BackendServer {
         if params.count > 7 {
             letter = String(params[7])
         }
-        guard let robot = getRobot(devLetterString: letter, acceptedTypes: [.Finch, .HummingbirdBit]) else {
+        guard let robot = getRobot(devLetterString: letter) else {
             //return HttpResponse.badRequest(.text("Invalid device letter"))
             return NOT_CONNECTED
         }
@@ -261,16 +267,20 @@ class BackendServer {
             return INVALID_PARAMETERS
         }
         
-        if (port == "all") {
-            for i in 1 ..< 4 {
-                robot.setTriLED(port: i, R: R, G: G, B: B)
+        if let robot = robot as? Finch {
+            if (port == "all") {
+                for i in 1 ..< 4 {
+                    robot.setTriLED(port: i, R: R, G: G, B: B)
+                }
+            } else {
+                guard let p = Int(port) else { return INVALID_PORT }
+                robot.setTriLED(port: p, R: R, G: G, B: B)
             }
-        } else if let p = Int(port) {
+        } else if let robot = robot as? Hummingbird {
+            guard let p = Int(port) else { return INVALID_PORT }
             robot.setTriLED(port: p, R: R, G: G, B: B)
         } else {
-            os_log("Invalid port in request: [%s]", log: log, type: .error, String(port))
-            //return HttpResponse.badRequest(.text("Invalid port"))
-            return INVALID_PORT
+            return NOT_CONNECTED
         }
         
         //return HttpResponse.ok(.text("triled set"))
@@ -297,7 +307,7 @@ class BackendServer {
         let direction = String(params[4])
         
         guard let devLetter = DeviceLetter.fromString(letter),
-            let robot = connectedRobots[devLetter] else {
+            let robot = connectedRobots[devLetter] as? Finch else {
             os_log("Invalid device letter [%s] in request", log: log, type: .error, letter)
             return HttpResponse.badRequest(.text("Invalid device letter"))
         }
@@ -309,14 +319,14 @@ class BackendServer {
         let shouldFlip = (distance < 0)
         let shouldGoForward = (direction == "Forward" && !shouldFlip) || (direction == "Backward" && shouldFlip);
         let shouldGoBackward = (direction == "Backward" && !shouldFlip) || (direction == "Forward" && shouldFlip);
-        let moveTicks = Int(round(abs(distance * Robot.FINCH_TICKS_PER_CM)))
+        let moveTicks = Int(round(abs(distance * FinchConstants.FINCH_TICKS_PER_CM)))
         
         robot.setMotors(leftSpeed: speed, leftTicks: moveTicks, rightSpeed: speed, rightTicks: moveTicks)
         
         return HttpResponse.ok(.text("move set"))
     }
     
-    private func getRobot(devLetterString: String, acceptedTypes: [RobotType]) -> Robot? {
+    private func getRobot(devLetterString: String) -> Robot? {
         guard let devLetter = DeviceLetter.fromString(devLetterString) else {
             os_log("Invalid device letter [%s] in request", log: log, type: .error, devLetterString)
             return nil
@@ -325,11 +335,6 @@ class BackendServer {
             os_log("No robot in position [%s]", log: log, type: .error, devLetterString)
             return nil
         }
-        guard acceptedTypes.contains(robot.type) else {
-            os_log("Robot requested is of incompatable type", log: log, type: .error)
-            return nil
-        }
-        
         return robot
     }
 }

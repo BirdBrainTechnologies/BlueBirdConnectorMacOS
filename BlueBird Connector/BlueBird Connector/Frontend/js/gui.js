@@ -347,9 +347,9 @@ function updateInternetStatus() {
     $('#cloud-slider').prop('checked', false);
     internetUp = false;
   }
-  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+  /*sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "Updated internet status"
-  })
+  })*/
 }
 
 function updateBleStatus(isOn) {

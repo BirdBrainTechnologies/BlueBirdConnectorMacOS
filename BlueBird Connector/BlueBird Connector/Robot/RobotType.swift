@@ -23,14 +23,6 @@ enum RobotType {
         }
     }
     
-    var stringDescribing: String {
-        switch self {
-        case .Finch: return "Finch"
-        case .HummingbirdBit: return "Hummingbird"
-        case .MicroBit: return "micro:bit"
-        case .Unknown: return "UNKNOWN"
-        }
-    }
     
     var expectedRawStateByteCount: Int {
         switch self {
@@ -41,21 +33,6 @@ enum RobotType {
         }
     }
     
-    //MARK: Inputs
-    var accXindex: Int {
-        switch self {
-        case .HummingbirdBit, .MicroBit: return 4
-        case .Finch: return 13
-        case .Unknown: return 0
-        }
-    }
-    var buttonShakeIndex: Int {
-        switch self {
-        case .HummingbirdBit, .MicroBit: return 7
-        case .Finch: return 16
-        case .Unknown: return 0
-        }
-    }
     
     //MARK: Battery Thresholds
     var batteryVoltageIndex: Int? {
