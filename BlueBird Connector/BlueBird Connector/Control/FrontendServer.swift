@@ -40,28 +40,61 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     func notifyDeviceDiscovery(uuid: UUID, advertisementSignature: AdvertisementSignature, rssi: NSNumber) {
         availableDevices[uuid] = AvailableDevice(uuid: uuid, advertisementSignature: advertisementSignature, rssi: rssi)
         
-        let fancyName = advertisementSignature.memorableName ?? advertisementSignature.advertisedName
+        /*let fancyName = advertisementSignature.memorableName ?? advertisementSignature.advertisedName
         let args = "'" + uuid.uuidString + "', '" + advertisementSignature.advertisedName + "', '" + fancyName + "', " + rssi.stringValue
         let js = "CallbackManager.deviceDiscovered(" + args + ")"
-        sendToFrontend(js)
+        sendToFrontend(js)*/
+        sendAvailableDeviceUpdate()
     }
     
     func notifyDeviceDidDisappear(uuid: UUID) {
         availableDevices[uuid] = nil
-        let args = "'" + uuid.uuidString + "'"
-        let js = "CallbackManager.deviceDidDisappear(" + args + ")"
-        sendToFrontend(js)
+        //let args = "'" + uuid.uuidString + "'"
+        //let js = "CallbackManager.deviceDidDisappear(" + args + ")"
+        //sendToFrontend(js)
+        sendAvailableDeviceUpdate()
     }
     
     func notifyDeviceDidConnect(uuid: UUID, name: String, fancyName: String, deviceLetter: DeviceLetter) {
+        availableDevices[uuid]?.isConnected = true
+        
         let args = "'" + uuid.uuidString + "', '" + name + "', '" + fancyName + "', '" + deviceLetter.toString() + "'"
         let js = "CallbackManager.deviceDidConnect(" + args + ")"
         sendToFrontend(js)
     }
     
     func notifyDeviceDidDisconnect(uuid: UUID) {
+        availableDevices[uuid]?.isConnected = false
+        
         let args = "'" + uuid.uuidString + "'"
         let js = "CallbackManager.deviceDidDisconnect(" + args + ")"
+        sendToFrontend(js)
+    }
+    
+    func updateDeviceRSSI(uuid: UUID, rssi: NSNumber) {
+        guard let device = availableDevices[uuid] else {
+            os_log("Rediscovered unknown device?", log: log, type: .error)
+            return
+        }
+        if (rssi.intValue > (device.rssi.intValue + 20)) || (rssi.intValue < device.rssi.intValue - 20) {
+            availableDevices[uuid]?.rssi = rssi
+            sendAvailableDeviceUpdate()
+        }
+    }
+    func sendAvailableDeviceUpdate() {
+        var args = "[ "
+        availableDevices.forEach{(uuid, device) in
+            if !(device.isConnected) {
+                let fancyName = device.advertisementSignature.memorableName ?? device.advertisementSignature.advertisedName
+                args += "{address: '" + device.uuid.uuidString +
+                    "', name: '" + device.advertisementSignature.advertisedName +
+                    "', fancyName: '" + fancyName +
+                    "', rssi: " + device.rssi.stringValue +
+                    "},"
+            }
+        }
+        args = args.dropLast() + "]"
+        let js = "CallbackManager.updateScanDeviceList(" + args + ")"
         sendToFrontend(js)
     }
     
@@ -148,10 +181,6 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             os_log("Scan state not specified", log: log, type: .error)
             return
         }
-    /*    guard let robotManager = robotManager else {
-            os_log("cannot update scan state until robot manager has been set", log: log, type: .error)
-            return
-        }*/
         
         switch scanState {
         case "on":
@@ -170,27 +199,21 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     }
     
     func startScan() {
-   /*     guard let robotManager = robotManager else {
-            os_log("cannot start scan until robot manager has been set", log: log, type: .error)
-            return
-        }*/
-        
         if Shared.robotManager.startScanning() {
             os_log("Scanning...", log: log, type: .debug)
             notifiyScanState(isOn: true)
-            availableDevices.forEach{(uuid, device) in
-                notifyDeviceDiscovery(uuid: uuid, advertisementSignature: device.advertisementSignature, rssi: device.rssi)
-            }
+            /*availableDevices.forEach{(uuid, device) in
+                if !(device.isConnected) {
+                    notifyDeviceDiscovery(uuid: uuid, advertisementSignature: device.advertisementSignature, rssi: device.rssi)
+                }
+            }*/
+            sendAvailableDeviceUpdate()
         } else {
             os_log("Failed to start scanning!", log: log, type: .error)
         }
     }
     
     func handleConnectCommand(_ fullCommand: NSDictionary) {
-      /*  guard let robotManager = robotManager else {
-            os_log("cannot connect to robots until robot manager has been set", log: log, type: .error)
-            return
-        }*/
         guard let address = fullCommand["address"] as? String,
             let uuid = UUID(uuidString: address) else {
             os_log("Improperly formed connect command", log: log, type: .error)
@@ -202,10 +225,6 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     }
     
     func handleDisconnectCommand(_ fullCommand: NSDictionary) {
-      /*  guard let robotManager = robotManager else {
-            os_log("cannot disconnect from robots until robot manager has been set", log: log, type: .error)
-            return
-        }*/
         guard let devLetter = fullCommand["devLetter"] as? String,
             let uuidString = fullCommand["address"] as? String,
             let uuid = UUID(uuidString: uuidString) else {
@@ -260,11 +279,13 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
 struct AvailableDevice {
     let uuid: UUID
     let advertisementSignature: AdvertisementSignature
-    let rssi: NSNumber
+    var rssi: NSNumber
+    var isConnected: Bool
     
     init(uuid: UUID, advertisementSignature: AdvertisementSignature, rssi: NSNumber) {
         self.uuid = uuid
         self.rssi = rssi
         self.advertisementSignature = advertisementSignature
+        self.isConnected = false
     }
 }

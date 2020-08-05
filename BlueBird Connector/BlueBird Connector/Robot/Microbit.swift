@@ -13,6 +13,12 @@ class Microbit: Robot {
     var log: OSLog = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "Microbit")
     
     var manageableRobot: ManageableRobot
+    var currentRobotState: RobotState
+    var nextRobotState: RobotState
+    var commandPending: Data?
+    var setAllTimer: SetAllTimer
+    var isConnected: Bool
+    var writtenCondition: NSCondition = NSCondition()
     
     //Microbit specific values
     var buttonShakeIndex: Int = 7
@@ -37,5 +43,26 @@ class Microbit: Robot {
     
     required init(_ mRobot: ManageableRobot) {
         self.manageableRobot = mRobot
+        isConnected = true
+        currentRobotState = RobotState(robotType: .MicroBit)
+        nextRobotState = currentRobotState
+        setAllTimer = SetAllTimer()
+        setAllTimer.setRobot(self)
+        setAllTimer.resume()
+    }
+    
+    internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
+        guard nextCopy.ledArray != currentRobotState.ledArray,
+        nextCopy.ledArray != RobotState.flashSent,
+            let ledArrayCommand = nextCopy.ledArrayCommand() else {
+            return nil
+        }
+        
+        if nextCopy.ledArray.starts(with: "F") {
+            print("And now setting to \(RobotState.flashSent)")
+            nextRobotState.ledArray = RobotState.flashSent
+        }
+        
+        return ledArrayCommand
     }
 }

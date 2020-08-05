@@ -8,9 +8,35 @@
 
 import Foundation
 import GLKit
+import os
 
 enum BatteryStatus: Int {
     case red = 0, yellow, green
+}
+
+/**
+    Turn substring percent from a backend request into a UInt8 to send in a command
+ */
+public func percentToRaw(_ p: Substring) -> UInt8? {
+    guard var percent = Double(p) else {
+        return nil
+    }
+    if percent > 100 { percent = 100 }
+    if percent < 0 { percent = 0 }
+    return UInt8(round(percent * 255/100))
+}
+
+/**
+    Gets the unicode value for a character
+ */
+public func getUnicode(_ char: Character) -> UInt8{
+    let scalars = String(char).unicodeScalars
+    var val = scalars[scalars.startIndex].value
+    if val > 255 {
+        os_log("Unicode for character [%s] not supported.", log: OSLog.default, type: .error, String(char))
+        val = 254
+    }
+    return UInt8(val)
 }
 
 /**

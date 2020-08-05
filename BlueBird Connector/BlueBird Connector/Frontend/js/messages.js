@@ -63,7 +63,7 @@ CallbackManager.bleDisabled = function() {
   scanDeviceList = []
   $.scanListRefresh();
 }
-CallbackManager.deviceDiscovered = function(address, name, fancyName, rssi) {
+/*CallbackManager.deviceDiscovered = function(address, name, fancyName, rssi) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "device discovered: " + address + ", " + name + ", " + fancyName + ", " + rssi
   })
@@ -80,8 +80,21 @@ CallbackManager.deviceDiscovered = function(address, name, fancyName, rssi) {
   });
 
   $.scanListRefresh();
+}*/
+CallbackManager.updateScanDeviceList = function(newList) {
+  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+    consoleLog: "devices available: " + newList
+  })
+  scanDeviceList = newList
+
+  scanDeviceList.sort(function(a, b) {
+    //return (a.address > b.address) - (a.address < b.address);
+    return (a.rssi < b.rssi) - (a.rssi > b.rssi);
+  });
+
+  $.scanListRefresh();
 }
-CallbackManager.deviceDidDisappear = function(address) {
+/*CallbackManager.deviceDidDisappear = function(address) {
   scanDeviceList.forEach( (device, i) => {
     if (device.address == address) {
       scanDeviceList.splice(i, 1)
@@ -89,7 +102,7 @@ CallbackManager.deviceDidDisappear = function(address) {
   })
 
   $.scanListRefresh()
-}
+}*/
 CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "device did connect: " + address + ", " + name + ", " + fancyName + ", " + devLetter

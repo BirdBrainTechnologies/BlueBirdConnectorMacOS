@@ -43,6 +43,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
 
     func didRediscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
         os_log("DID REDISCOVER [%s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
+        Shared.frontendServer.updateDeviceRSSI(uuid: uuid, rssi: rssi)
     }
 
     func didDisappear(uuid: UUID) {
@@ -109,6 +110,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         
         for (letter, robot) in Shared.backendServer.connectedRobots {
             if robot.uuid == uuid {
+                Shared.backendServer.connectedRobots[letter]?.isConnected = false
                 Shared.backendServer.connectedRobots[letter] = nil
                 Shared.frontendServer.notifyDeviceDidDisconnect(uuid: uuid)
             }

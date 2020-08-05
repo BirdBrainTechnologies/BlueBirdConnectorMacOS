@@ -13,6 +13,12 @@ class Hummingbird: Robot {
     var log: OSLog = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "Hummingbird")
     
     var manageableRobot: ManageableRobot
+    var currentRobotState: RobotState
+    var nextRobotState: RobotState
+    var commandPending: Data?
+    var setAllTimer: SetAllTimer
+    var isConnected: Bool
+    var writtenCondition: NSCondition = NSCondition()
     
     //Microbit specific values
     var buttonShakeIndex: Int = 7
@@ -37,8 +43,28 @@ class Hummingbird: Robot {
     
     required init(_ mRobot: ManageableRobot) {
         self.manageableRobot = mRobot
+        isConnected = true
+        currentRobotState = RobotState(robotType: .HummingbirdBit)
+        nextRobotState = currentRobotState
+        setAllTimer = SetAllTimer()
+        setAllTimer.setRobot(self)
+        setAllTimer.resume()
     }
     
+    internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
+        guard nextCopy.ledArray != currentRobotState.ledArray,
+        nextCopy.ledArray != RobotState.flashSent,
+            let ledArrayCommand = nextCopy.ledArrayCommand() else {
+            return nil
+        }
+        
+        if nextCopy.ledArray.starts(with: "F") {
+            print("And now setting to \(RobotState.flashSent)")
+            nextRobotState.ledArray = RobotState.flashSent
+        }
+        
+        return ledArrayCommand
+    }
     
     //MARK: - Public Methods
     
@@ -48,7 +74,10 @@ class Hummingbird: Robot {
         return raw[port - 1]
     }
     
-    func setTriLED(port: Int, R: Int, G: Int, B: Int) {
-        
+    func setTriLED(port: Int, R: UInt8, G: UInt8, B: UInt8) -> Bool {
+        let i = port - 1
+        return setOutput(ifCheck: (port > 0 && port <= 2),
+                         when: {self.nextRobotState.trileds[i] == self.currentRobotState.trileds[i]},
+                         set: {self.nextRobotState.trileds[i] = TriLED(R, G, B)})
     }
 }

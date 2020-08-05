@@ -14,6 +14,12 @@ class Finch: Robot {
     var log: OSLog = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "Finch")
     
     var manageableRobot: ManageableRobot
+    var currentRobotState: RobotState
+    var nextRobotState: RobotState
+    var commandPending: Data?
+    var setAllTimer: SetAllTimer
+    var isConnected: Bool
+    let writtenCondition: NSCondition = NSCondition()
     
     //Finch specific values
     var buttonShakeIndex: Int = 16
@@ -50,9 +56,72 @@ class Finch: Robot {
     }
     
     required init(_ mRobot: ManageableRobot) {
-        self.manageableRobot = mRobot
+        manageableRobot = mRobot
+        isConnected = true
+        currentRobotState = RobotState(robotType: .Finch)
+        nextRobotState = currentRobotState
+        setAllTimer = SetAllTimer()
+        setAllTimer.setRobot(self)
+        setAllTimer.resume()
     }
     
+    internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
+        var mode: UInt8 = 0x00
+        let setMotors = (nextCopy.motors != currentRobotState.motors)
+        let setLedArray = (nextCopy.ledArray != currentRobotState.ledArray && nextCopy.ledArray != RobotState.flashSent)
+        var setSymbol = false
+        var setFlash = false
+        var ledArrayArray:[UInt8] = []
+        var motorArray:[UInt8] = []
+        
+        if setLedArray, let ledCommand = nextCopy.ledArrayCommand() {
+            ledArrayArray = Array(ledCommand)
+            setSymbol = (ledArrayArray[1] == 0x80)
+            setFlash = !setSymbol
+            ledArrayArray.removeFirst(2)
+        }
+        
+        if setMotors {
+            guard nextCopy.motors.count == 2 else {
+                NSLog("Finch motors not found in output state.")
+                return nil
+            }
+            let motors = nextCopy.motors
+            motorArray = motors[0].array() + motors[1].array()
+            
+            if nextCopy.motors == self.nextRobotState.motors {
+                self.nextRobotState.motors = [Motor(), Motor()]
+            } else {
+                print("the motors have already changed")
+            }
+        }
+        
+        if setMotors && setFlash {
+            mode = 0x80 + UInt8(ledArrayArray.count)
+        } else if setMotors && setSymbol {
+            mode = 0x60
+        } else if setMotors {
+            mode = 0x40
+        } else if setFlash {
+            mode = UInt8(ledArrayArray.count)
+        } else if setSymbol {
+            mode = 0x20
+        }
+        
+        if mode != 0 {
+            /* 0xD2, symbol/motors/flash--length,
+             L_Dir--Speed, L_Ticks_3, L_Ticks_2, L_Ticks_1,
+             R_Dir--Speed, R_Ticks_3, R_Ticks_2, R_Ticks_1,
+             M_L_4/C1, M_L_3/C2, M_L_2/C3, M_L_1/C4,
+             C5, C6, C7, C8, C9, C10 */
+            let command: [UInt8] = [0xD2, mode] + motorArray + ledArrayArray
+            let commandData = Data(bytes: UnsafePointer<UInt8>(command), count: command.count)
+            
+            return commandData
+        } else {
+            return nil
+        }
+    }
     
     //MARK: - Public Methods
     
@@ -103,8 +172,12 @@ class Finch: Robot {
     func setMotors(leftSpeed: Double, leftTicks: Int, rightSpeed: Double, rightTicks: Int) {
         
     }
-    func setTriLED(port: Int, R: Int, G: Int, B: Int) {
-        
+    func setTriLED(port: Int, R: UInt8, G: UInt8, B: UInt8) -> Bool {
+        let i = port - 1
+        print("set \(i) to \(R) \(G) \(B)")
+        return setOutput(ifCheck: (port > 0 && port <= 5),
+            when: {self.nextRobotState.trileds[i] == self.currentRobotState.trileds[i]},
+            set: {self.nextRobotState.trileds[i] = TriLED(R, G, B)})
     }
 }
 

@@ -15,16 +15,25 @@ protocol Robot {
     var log: OSLog { get }
     
     var manageableRobot: ManageableRobot { get }
+    var currentRobotState: RobotState { set get }
+    var nextRobotState: RobotState { set get }
+    var commandPending: Data? { set get }
+    var setAllTimer: SetAllTimer { get }
+    var isConnected: Bool { set get }
+    var writtenCondition: NSCondition { get }
     
     //Robot specific
     var buttonShakeIndex: Int { get }
     var accXindex: Int { get }
     
+    //calculated values
     var accelerometer: [Double]? { get }
     var magnetometer: [Double]? { get }
     var compass: Int { get }
  
     init(_ mRobot: ManageableRobot)
+    
+    func getAdditionalCommand(_ nextCopy: RobotState) -> Data?
 }
 
 extension Robot {
@@ -74,7 +83,80 @@ extension Robot {
         return Int(magnetometer?[2].rounded() ?? 0)
     }
     
+    mutating func setAll() {
+
+        if let command = self.commandPending {
+            print("sending a pending command.")
+            self.manageableRobot.sendData(command)
+            self.commandPending = nil
+            return
+        }
+        
+        
+        let nextCopy = self.nextRobotState
+        let changeOccurred = !(nextCopy == self.currentRobotState)
+
+        guard changeOccurred else { return }
+     
+        let command = nextCopy.setAllCommand()
+        let oldCommand = currentRobotState.setAllCommand()
+        
+        //reset the buzzer state so a buzzer command is only sent once
+        if (nextCopy.buzzer != nil) && (nextCopy.buzzer == self.nextRobotState.buzzer) {
+            self.nextRobotState.buzzer = Buzzer()
+        }
+        
+        var sentSetAll = false
+        if command != oldCommand {
+            var commandArray: [UInt8] = []
+            commandArray = Array(command)
+            NSLog("Sending set all. \(commandArray)")
+            //self.sendData(data: command)
+            self.manageableRobot.sendData(command)
+            sentSetAll = true
+        }
+        
+        if let additionalCommand = getAdditionalCommand(nextCopy) {
+            if sentSetAll {
+                commandPending = additionalCommand
+            } else {
+                self.manageableRobot.sendData(additionalCommand)
+            }
+        }
+        
+        currentRobotState = nextCopy
+        
+    }
     
+    /**
+     * Set a specific output to be set next time setAll is sent.
+     * Returns false if this output cannot be set
+     */
+    func setOutput(ifCheck isValid: Bool, when predicate: (() -> Bool), set work: (() -> ())) -> Bool {
+        
+        guard isConnected else {
+            os_log("Tried to set output on disconnected device [%s]", log: log, type: .error, self.name)
+            return false
+        }
+        if !isValid {
+            os_log("Tried to set output on device [%s] with invalid check", log: log, type: .error, self.name)
+            return false
+        }
+        
+        writtenCondition.lock()
+        
+        while !predicate() && isConnected {
+            print("waiting...")
+            writtenCondition.wait(until: Date(timeIntervalSinceNow: 0.05))
+        }
+        
+        work()
+        
+        writtenCondition.signal()
+        writtenCondition.unlock()
+        
+        return true
+    }
     
 }
 

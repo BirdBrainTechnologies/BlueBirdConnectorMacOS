@@ -40,6 +40,9 @@ class ManageableRobot: ManageableUARTDevice {
         self.uartDevice.delegate = self
     }
     
+    func sendData(_ data: Data) {
+        uartDevice.writeWithoutResponse(data: data)
+    }
     
 }
 

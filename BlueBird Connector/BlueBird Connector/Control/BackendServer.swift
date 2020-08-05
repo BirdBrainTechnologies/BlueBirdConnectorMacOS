@@ -46,6 +46,7 @@ class BackendServer {
         
         server["/hummingbird/out/move/:robot/:dir/:dist/:speed"] = finchMove(_:)
         server["/hummingbird/out/triled/:port/:R/:G/:B"] = triledRequest(_:)
+        server["/hummingbird/out/triled/:port/:R/:G/:B/:robot"] = triledRequest(_:)
         
         //micro:bit sensor requests
         server["/hummingbird/in/button/:btn"] = sensorRequest(_:)
@@ -261,25 +262,28 @@ class BackendServer {
             return NOT_CONNECTED
         }
         
-        guard let R = Int(params[4]), let G = Int(params[5]), let B = Int(params[6]) else {
+        guard let R = percentToRaw(params[4]), let G = percentToRaw(params[5]), let B = percentToRaw(params[6]) else {
             os_log("Invalid params in request: R [%s], G [%s], B [%s]", log: log, type: .error, String(params[4]), String(params[5]), String(params[6]))
             //return HttpResponse.badRequest(.text("Invalid params"))
             return INVALID_PARAMETERS
         }
         
+        var success = false
         if let robot = robot as? Finch {
             if (port == "all") {
-                for i in 1 ..< 4 {
-                    robot.setTriLED(port: i, R: R, G: G, B: B)
+                for i in 2 ..< 6 {
+                    success = robot.setTriLED(port: i, R: R, G: G, B: B)
                 }
             } else {
                 guard let p = Int(port) else { return INVALID_PORT }
-                robot.setTriLED(port: p, R: R, G: G, B: B)
+                success = robot.setTriLED(port: p, R: R, G: G, B: B)
             }
         } else if let robot = robot as? Hummingbird {
             guard let p = Int(port) else { return INVALID_PORT }
-            robot.setTriLED(port: p, R: R, G: G, B: B)
-        } else {
+            success = robot.setTriLED(port: p, R: R, G: G, B: B)
+        }
+        
+        if !success {
             return NOT_CONNECTED
         }
         
