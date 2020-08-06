@@ -44,9 +44,29 @@ class BackendServer {
     
     private func setupPaths() {
         
-        server["/hummingbird/out/move/:robot/:dir/:dist/:speed"] = finchMove(_:)
+        //outputs for any
+        server["/hummingbird/out/stopall"] = stopAllRequest(_:)
+        server["/hummingbird/out/stopall/:robot"] = stopAllRequest(_:)
+        server["/hummingbird/out/print/:printString"] = printRequest(_:)
+        server["/hummingbird/out/print/:printString/:robot"] = printRequest(_:)
+        server["/hummingbird/out/symbol/:robot/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b/:b"] = symbolRequest(_:)
+        //finch and hummingbird outputs
         server["/hummingbird/out/triled/:port/:R/:G/:B"] = triledRequest(_:)
         server["/hummingbird/out/triled/:port/:R/:G/:B/:robot"] = triledRequest(_:)
+        server["/hummingbird/out/playnote/:note/:duration"] = playNoteRequest(_:)
+        server["/hummingbird/out/playnote/:note/:duration/:robot"] = playNoteRequest(_:)
+        //hummingbird only outputs
+        server["/hummingbird/out/led/:port/:intensity"] = ledRequest(_:)
+        server["/hummingbird/out/led/:port/:intensity/:robot"] = ledRequest(_:)
+        server["/hummingbird/out/servo/:port/:value"] = servoRequest(_:)
+        server["/hummingbird/out/servo/:port/:value/:robot"] = servoRequest(_:)
+        server["/hummingbird/out/rotation/:port/:value"] = servoRequest(_:)
+        server["/hummingbird/out/rotation/:port/:value/:robot"] = servoRequest(_:)
+        //finch only outputs
+        server["/hummingbird/out/move/:robot/:dir/:dist/:speed"] = finchMove(_:)
+        server["/hummingbird/out/turn/:robot/:dir/:angle/:speed"] = finchTurn(_:)
+        server["/hummingbird/out/wheels/:robot/:leftSpeed/:rightSpeed"] = finchWheels(_:)
+        server["/hummingbird/out/stopFinch/:robot"] = stopFinch(_:)
         
         //micro:bit sensor requests
         server["/hummingbird/in/button/:btn"] = sensorRequest(_:)
@@ -78,11 +98,13 @@ class BackendServer {
         server["/hummingbird/in/Sound/:port/:robot"] = sensorRequest(_:)
         server["/hummingbird/in/Other/:port"] = sensorRequest(_:)
         server["/hummingbird/in/Other/:port/:robot"] = sensorRequest(_:)
-        //Finch only
+        //Finch only sensors
         server["/hummingbird/in/Line/:port"] = sensorRequest(_:)
         server["/hummingbird/in/Line/:port/:robot"] = sensorRequest(_:)
         server["/hummingbird/in/Encoder/:port"] = sensorRequest(_:)
         server["/hummingbird/in/Encoder/:port/:robot"] = sensorRequest(_:)
+        server["/hummingbird/in/finchIsMoving/static"] = sensorRequest(_:)
+        server["/hummingbird/in/finchIsMoving/static/:robot"] = sensorRequest(_:)
         
     }
     
@@ -91,14 +113,9 @@ class BackendServer {
         let sensor = params[2]
         let port = String(params[3])
         
-        var letter = "A"
-        if params.count > 4 {
-            letter = String(params[4])
-        }
-        if sensor == "Compass", params.count > 3 {
-            letter = String(params[3])
-        }
-        guard let robot = getRobot(devLetterString: letter) else {
+        var rIndex = 4
+        if sensor == "Compass" { rIndex = 3 }
+        guard let robot = getRobot(params: params, robotIndex: rIndex) else {
             return NOT_CONNECTED
         }
         
@@ -240,6 +257,11 @@ class BackendServer {
                 return NOT_CONNECTED
             }
             return BackendServer.getRawResponse(String(format: "%.2f", encoderValue))
+        case "finchIsMoving":
+            guard let robot = robot as? Finch, let isMoving = robot.isMoving else {
+                return NOT_CONNECTED
+            }
+            return BackendServer.getRawResponse(String(isMoving))
         default:
             return BackendServer.getRawResponse("Invalid sensor selection", .badRequest(nil))
         }
@@ -253,16 +275,12 @@ class BackendServer {
         let params = request.path.split(separator: "/")
         let port = params[3]
         
-        var letter = "A"
-        if params.count > 7 {
-            letter = String(params[7])
-        }
-        guard let robot = getRobot(devLetterString: letter) else {
+        guard let robot = getRobot(params: params, robotIndex: 7) else {
             //return HttpResponse.badRequest(.text("Invalid device letter"))
             return NOT_CONNECTED
         }
         
-        guard let R = percentToRaw(params[4]), let G = percentToRaw(params[5]), let B = percentToRaw(params[6]) else {
+        guard let R = UInt8(params[4]), let G = UInt8(params[5]), let B = UInt8(params[6]) else {
             os_log("Invalid params in request: R [%s], G [%s], B [%s]", log: log, type: .error, String(params[4]), String(params[5]), String(params[6]))
             //return HttpResponse.badRequest(.text("Invalid params"))
             return INVALID_PARAMETERS
@@ -291,6 +309,219 @@ class BackendServer {
         return BackendServer.getRawResponse("triled set")
     }
     
+    private func ledRequest (_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+        
+        guard let robot = getRobot(params: params, robotIndex: 5) else {
+            return NOT_CONNECTED
+        }
+        
+        guard var intensity = Int(params[4]), let port = Int(params[3]) else {
+            os_log("Invalid params in request: intensity [%s], port [%s]", log: log, type: .error, String(params[4]), String(params[3]))
+            return INVALID_PARAMETERS
+        }
+        
+        intensity = intensity.clamped(to: 0 ... 255)
+        
+        var success = false
+        if let robot = robot as? Hummingbird {
+            success = robot.setLED(port: port, intensity: UInt8(intensity))
+        }
+        
+        if !success {
+            return NOT_CONNECTED
+        }
+        
+        return BackendServer.getRawResponse("led set")
+    }
+    
+    private func printRequest (_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+        
+        guard let robot = getRobot(params: params, robotIndex: 4) else {
+            return NOT_CONNECTED
+        }
+        
+        if robot.setPrint(params[3]) {
+            return BackendServer.getRawResponse("print set")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    
+    private func symbolRequest (_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+
+        guard let robot = getRobot(params: params, robotIndex: 3) else {
+            return NOT_CONNECTED
+        }
+        
+        var symbol = ""
+        for i in 0..<25 {
+            symbol += params[4+i] == "true" ? "1" : "0"
+        }
+        if robot.setSymbol(symbol) {
+            return BackendServer.getRawResponse("symbol set")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    
+    private func playNoteRequest(_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+
+        guard let robot = getRobot(params: params, robotIndex: 5) else {
+            return NOT_CONNECTED
+        }
+        guard let note = Int(params[3]), let duration = Int(params[4]) else {
+            os_log("Invalid params in request: duration [%s], note [%s]", log: log, type: .error, String(params[4]), String(params[3]))
+            return INVALID_PARAMETERS
+        }
+        
+        if robot.setBuzzer(note: note, duration: duration) {
+            return BackendServer.getRawResponse("buzzer set")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    
+    private func servoRequest(_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+
+        guard let robot = getRobot(params: params, robotIndex: 5) as? Hummingbird else {
+            return NOT_CONNECTED
+        }
+        
+        guard var value = Int(params[4]), let port = Int(params[3]) else {
+            os_log("Invalid params in request: value [%s], port [%s]", log: log, type: .error, String(params[4]), String(params[3]))
+            return INVALID_PARAMETERS
+        }
+        //All scaling is done for servos before requests are made.
+        value = value.clamped(to: 0 ... 255)
+        
+        if robot.setServo(port: port, value: UInt8(value)) {
+            return BackendServer.getRawResponse("servo set")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    
+    private func stopAllRequest(_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+        
+        guard let robot = getRobot(params: params, robotIndex: 3) else {
+            return NOT_CONNECTED
+        }
+        
+        if robot.stopAll() {
+            return BackendServer.getRawResponse("all stopped")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    
+    
+    private func finchMove (_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+        
+        guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
+            return NOT_CONNECTED
+        }
+        
+        let direction = String(params[4])
+        guard let distance = Double(params[5]), let speed = Double(params[6]), (direction == "Forward" || direction == "Backward") else {
+            os_log("Invalid params in request: direction [%s], distance [%s], speed [%s]", log: log, type: .error, direction, String(params[5]), String(params[6]))
+            return INVALID_PARAMETERS
+        }
+        
+        let shouldFlip = (distance < 0)
+        let shouldGoForward = (direction == "Forward" && !shouldFlip) || (direction == "Backward" && shouldFlip)
+        let shouldGoBackward = (direction == "Backward" && !shouldFlip) || (direction == "Forward" && shouldFlip)
+        let moveTicks = Int(round(abs(distance * FinchConstants.FINCH_TICKS_PER_CM)))
+        
+        var success = true
+        if (moveTicks != 0) { //ticks=0 is the command for continuous motion
+            if (shouldGoForward) {
+                success = robot.setMotors(leftSpeed: speed, leftTicks: moveTicks, rightSpeed: speed, rightTicks: moveTicks)
+            } else if (shouldGoBackward) {
+                success = robot.setMotors(leftSpeed: -speed, leftTicks: moveTicks, rightSpeed: -speed, rightTicks: moveTicks)
+            }
+        }
+        if success {
+            return BackendServer.getRawResponse("finch moved")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    
+    private func finchTurn (_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+        
+        guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
+            return NOT_CONNECTED
+        }
+        
+        let direction = String(params[4])
+        guard let angle = Double(params[5]), let speed = Double(params[6]), (direction == "Right" || direction == "Left") else {
+            os_log("Invalid params in request: direction [%s], angle [%s], speed [%s]", log: log, type: .error, direction, String(params[5]), String(params[6]))
+            return INVALID_PARAMETERS
+        }
+        
+        let shouldFlip = (angle < 0)
+        let shouldTurnRight = (direction == "Right" && !shouldFlip) || (direction == "Left" && shouldFlip)
+        let shouldTurnLeft = (direction == "Left" && !shouldFlip) || (direction == "Right" && shouldFlip)
+        let turnTicks = Int(round(abs(angle * FinchConstants.FINCH_TICKS_PER_DEGREE)))
+        
+        var success = true
+        if (turnTicks != 0) { //ticks=0 is the command for continuous motion
+            if (shouldTurnRight) {
+                success = robot.setMotors(leftSpeed: speed, leftTicks: turnTicks, rightSpeed: -speed, rightTicks: turnTicks)
+            } else if (shouldTurnLeft) {
+                success = robot.setMotors(leftSpeed: -speed, leftTicks: turnTicks, rightSpeed: speed, rightTicks: turnTicks);
+            }
+        }
+        if success {
+            return BackendServer.getRawResponse("finch turned")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    
+    private func finchWheels (_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+        
+        guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
+            return NOT_CONNECTED
+        }
+        
+        guard let leftSpeed = Double(params[4]), let rightSpeed = Double(params[5]) else {
+            os_log("Invalid params in request: left speed [%s], right speed [%s]", log: log, type: .error, String(params[4]), String(params[5]))
+            return INVALID_PARAMETERS
+        }
+        
+        if robot.setMotors(leftSpeed: leftSpeed, leftTicks: 0, rightSpeed: rightSpeed, rightTicks: 0) {
+            return BackendServer.getRawResponse("finch wheels started")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    /**
+        Just stop the motors (finch only)
+     */
+    private func stopFinch (_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+        
+        guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
+            return NOT_CONNECTED
+        }
+        
+        if robot.setMotors(leftSpeed: 0, leftTicks: 0, rightSpeed: 0, rightTicks: 0) {
+            return BackendServer.getRawResponse("finch wheels stopped")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    
     private static func getRawResponse(_ text: String, _ type: HttpResponse? = nil) -> HttpResponse {
         if let type = type {
             return .raw(type.statusCode, type.reasonPhrase, ["Access-Control-Allow-Origin": "*", "Content-Type": "text/plain"], { writer in
@@ -303,34 +534,14 @@ class BackendServer {
         }
     }
     
-    private func finchMove (_ request: HttpRequest) -> HttpResponse {
-        print ("Got a request \(request.path)")
-        
-        let params = request.path.split(separator: "/")
-        let letter = String(params[3])
-        let direction = String(params[4])
-        
-        guard let devLetter = DeviceLetter.fromString(letter),
-            let robot = connectedRobots[devLetter] as? Finch else {
-            os_log("Invalid device letter [%s] in request", log: log, type: .error, letter)
-            return HttpResponse.badRequest(.text("Invalid device letter"))
-        }
-        guard let distance = Double(params[5]), let speed = Double(params[6]), (direction == "Forward" || direction == "Backward") else {
-            os_log("Invalid params in request: direction [%s], distance [%s], speed [%s]", log: log, type: .error, direction, String(params[5]), String(params[6]))
-            return HttpResponse.badRequest(.text("Invalid params"))
-        }
-        
-        let shouldFlip = (distance < 0)
-        let shouldGoForward = (direction == "Forward" && !shouldFlip) || (direction == "Backward" && shouldFlip);
-        let shouldGoBackward = (direction == "Backward" && !shouldFlip) || (direction == "Forward" && shouldFlip);
-        let moveTicks = Int(round(abs(distance * FinchConstants.FINCH_TICKS_PER_CM)))
-        
-        robot.setMotors(leftSpeed: speed, leftTicks: moveTicks, rightSpeed: speed, rightTicks: moveTicks)
-        
-        return HttpResponse.ok(.text("move set"))
-    }
     
-    private func getRobot(devLetterString: String) -> Robot? {
+    
+    private func getRobot(params: [Substring], robotIndex: Int) -> Robot? {
+        var devLetterString = "A"
+        if params.count > robotIndex {
+            devLetterString = String(params[robotIndex])
+        }
+        
         guard let devLetter = DeviceLetter.fromString(devLetterString) else {
             os_log("Invalid device letter [%s] in request", log: log, type: .error, devLetterString)
             return nil

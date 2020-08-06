@@ -17,14 +17,14 @@ enum BatteryStatus: Int {
 /**
     Turn substring percent from a backend request into a UInt8 to send in a command
  */
-public func percentToRaw(_ p: Substring) -> UInt8? {
+/*public func percentToRaw(_ p: Substring) -> UInt8? {
     guard var percent = Double(p) else {
         return nil
     }
     if percent > 100 { percent = 100 }
     if percent < 0 { percent = 0 }
     return UInt8(round(percent * 255/100))
-}
+}*/
 
 /**
     Gets the unicode value for a character
@@ -74,21 +74,12 @@ func byteToBits(_ byte: UInt8) -> [UInt8] {
 }
 
 /**
-    Bounds a UInt8 with a min and max value
+    Bounds a comparable (eg, Int, Double) within a given range (inclusive)
  */
-public func bound(_ value: UInt8, min: UInt8, max: UInt8) -> UInt8 {
-    var new_value = value < min ? min : value
-    new_value = value > max ? max : value
-    return new_value
-}
-
-/**
-    Bounds an Int with a min and max value
- */
-public func bound(_ value: Int, min: Int, max: Int) -> Int {
-    var new_value = value < min ? min : value
-    new_value = value > max ? max : value
-    return new_value
+extension Comparable {
+    func clamped(to limits: ClosedRange<Self>) -> Self {
+        return min(max(self, limits.lowerBound), limits.upperBound)
+    }
 }
 
 

@@ -225,6 +225,7 @@ struct Motor: Equatable {
         
         let cv:(Int8)->UInt8 = { velocity in
             var v = UInt8(abs(velocity)) //TODO: handle the case where velocity = -128? this will cause an overflow error here
+            if (v > 0 && v < 3) { v = 3 } //numbers below 3 don't cause movement
             if velocity > 0 { v += 128 }
             return v
         }

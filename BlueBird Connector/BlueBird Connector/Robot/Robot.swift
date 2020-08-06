@@ -10,7 +10,7 @@ import Foundation
 import BirdbrainBLE
 import os
 
-protocol Robot {
+protocol Robot: AnyObject {
     
     var log: OSLog { get }
     
@@ -21,10 +21,13 @@ protocol Robot {
     var setAllTimer: SetAllTimer { get }
     var isConnected: Bool { set get }
     var writtenCondition: NSCondition { get }
+    var inProgressPrintID: Int { set get }
     
     //Robot specific
     var buttonShakeIndex: Int { get }
     var accXindex: Int { get }
+    var type: RobotType { get }
+    var turnOffCommand: Data { get }
     
     //calculated values
     var accelerometer: [Double]? { get }
@@ -83,10 +86,12 @@ extension Robot {
         return Int(magnetometer?[2].rounded() ?? 0)
     }
     
-    mutating func setAll() {
+    func setAll() {
 
         if let command = self.commandPending {
-            print("sending a pending command.")
+            var commandArray: [UInt8] = []
+            commandArray = Array(command)
+            print("sending a pending command \(commandArray)")
             self.manageableRobot.sendData(command)
             self.commandPending = nil
             return
@@ -110,7 +115,7 @@ extension Robot {
         if command != oldCommand {
             var commandArray: [UInt8] = []
             commandArray = Array(command)
-            NSLog("Sending set all. \(commandArray)")
+            print("Sending set all. \(commandArray)")
             //self.sendData(data: command)
             self.manageableRobot.sendData(command)
             sentSetAll = true
@@ -120,6 +125,9 @@ extension Robot {
             if sentSetAll {
                 commandPending = additionalCommand
             } else {
+                var commandArray: [UInt8] = []
+                commandArray = Array(additionalCommand)
+                print("Sending additional command. \(commandArray)")
                 self.manageableRobot.sendData(additionalCommand)
             }
         }
@@ -158,6 +166,50 @@ extension Robot {
         return true
     }
     
+    func setPrint(_ printString: Substring) -> Bool {
+        inProgressPrintID = inProgressPrintID + 1
+        return printStringParts(printString, id: inProgressPrintID)
+    }
+    private func printStringParts(_ printString: Substring, id: Int) -> Bool {
+        guard inProgressPrintID == id else { return false }
+        
+        if printString.count > 10 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 6.0) {
+                let _ = self.printStringParts(printString.dropFirst(10), id: id)
+            }
+        }
+        
+        let arrayString = "F" + printString.prefix(10)
+        //succeeds if first part of string succeeds
+        return setOutput(ifCheck: (arrayString.count <= 11),
+            when: {self.nextRobotState.ledArray == self.currentRobotState.ledArray},
+            set: {self.nextRobotState.ledArray = arrayString})
+    }
+    func setSymbol(_ symbolString: String) -> Bool {
+        let sString = "S" + symbolString
+        
+        return setOutput(ifCheck: (sString.count == 26),
+            when: {self.nextRobotState.ledArray == self.currentRobotState.ledArray},
+            set: {self.nextRobotState.ledArray = sString})
+    }
+    func setBuzzer(note: Int, duration: Int) -> Bool {
+        guard (note > 0 && note < 256 && duration > 0 && duration < 65536),
+            let period = noteToPeriod(UInt8(note)) else {
+                return false
+        }
+        
+        return setOutput(ifCheck: (self.currentRobotState.buzzer != nil),
+        when: {self.nextRobotState.buzzer == self.currentRobotState.buzzer},
+        set: {self.nextRobotState.buzzer = Buzzer(period: period, duration: UInt16(duration))})
+    }
+    func stopAll() -> Bool {
+        let success = setOutput(ifCheck: (true), when: {return true},
+                  set: {self.nextRobotState = RobotState(robotType: self.type)})
+        print("stopAll success \(success)")
+        self.manageableRobot.sendData(turnOffCommand)
+        
+        return success
+    }
 }
 
 

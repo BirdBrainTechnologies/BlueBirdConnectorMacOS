@@ -19,10 +19,13 @@ class Microbit: Robot {
     var setAllTimer: SetAllTimer
     var isConnected: Bool
     var writtenCondition: NSCondition = NSCondition()
+    var inProgressPrintID: Int = 0
     
     //Microbit specific values
-    var buttonShakeIndex: Int = 7
-    var accXindex: Int = 4
+    let buttonShakeIndex: Int = 7
+    let accXindex: Int = 4
+    let type: RobotType = .MicroBit
+    let turnOffCommand: Data = Data(bytes: UnsafePointer<UInt8>([144, 0, 0, 0, 0, 0, 0, 0] as [UInt8]), count: 8)
     
     internal var accelerometer: [Double]? {
         guard let raw = self.manageableRobot.rawInputData else { return nil }

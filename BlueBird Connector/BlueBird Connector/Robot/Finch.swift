@@ -20,10 +20,13 @@ class Finch: Robot {
     var setAllTimer: SetAllTimer
     var isConnected: Bool
     let writtenCondition: NSCondition = NSCondition()
+    var inProgressPrintID: Int = 0
     
     //Finch specific values
-    var buttonShakeIndex: Int = 16
-    var accXindex: Int = 13
+    let buttonShakeIndex: Int = 16
+    let accXindex: Int = 13
+    let type: RobotType = .Finch
+    let turnOffCommand: Data = Data(bytes: UnsafePointer<UInt8>([0xDF] as [UInt8]), count: 1)
     
     internal var accelerometer: [Double]? {
         guard let raw = self.manageableRobot.rawInputData else { return nil }
@@ -36,7 +39,8 @@ class Finch: Robot {
         return rawToFinchMagnetometer(Array(raw[17...19]))
     }
     private var currentBeak: TriLED? { //TODO: this.
-        return TriLED(100, 100, 100)
+        guard currentRobotState.trileds.count > 0 else { return nil }
+        return currentRobotState.trileds[0]
     }
     
     var compass: Int {
@@ -53,6 +57,11 @@ class Finch: Robot {
         let msb = Int(raw[0])
         let lsb = Int(raw[1])
         return (msb << 8) + lsb
+    }
+    
+    var isMoving: Bool? {
+        guard let raw = self.manageableRobot.rawInputData else { return nil }
+        return (raw[4] > 127)
     }
     
     required init(_ mRobot: ManageableRobot) {
@@ -144,7 +153,7 @@ class Finch: Robot {
         }
         print("correcting raw light value \(raw) with \(R), \(G), \(B) -> \(correction)")
         let finalVal = raw - correction
-        return bound(Int(finalVal.rounded()), min: 0, max: 100)
+        return Int(finalVal.rounded()).clamped(to: 0 ... 100)
     }
     func getFinchLine(onRight getRightLineSensor: Bool) -> Int? {
         guard let rawData = self.manageableRobot.rawInputData else { return nil }
@@ -156,8 +165,8 @@ class Finch: Robot {
             raw = rawData[4]
             if raw > 127 { raw -= 128 }
         }
-        let final = bound(100 - Int(round(Double(raw - 6) * 100/121)), min: 0, max: 100)
-        return final
+        let final = (100 - Int(round(Double(raw - 6) * 100/121)))
+        return final.clamped(to: 0 ... 100)
     }
     func getFinchEncoder(onRight getRightEncoder: Bool) -> Double? {
         guard let rawData = self.manageableRobot.rawInputData else { return nil }
@@ -168,10 +177,21 @@ class Finch: Robot {
         let num = Int32(bitPattern: uNum) / 256
         return (Double(num) * 1/792)
     }
-    
-    func setMotors(leftSpeed: Double, leftTicks: Int, rightSpeed: Double, rightTicks: Int) {
-        
+    /**
+        Set finch motors. Speed is specified as a percent.
+     */
+    func setMotors(leftSpeed: Double, leftTicks: Int, rightSpeed: Double, rightTicks: Int) -> Bool {
+        return setOutput(ifCheck: (self.nextRobotState.motors.count == 2),
+            when: {self.nextRobotState.motors == self.currentRobotState.motors},
+            set: { self.nextRobotState.motors[0] = Motor(scaledSpeed(leftSpeed), leftTicks)
+                self.nextRobotState.motors[1] = Motor(scaledSpeed(rightSpeed), rightTicks)})
     }
+    private func scaledSpeed(_ speed: Double) -> Int8 {
+        let speedScaling = 36.0/100.0
+        let clampedSpeed = speed.clamped(to: -100.0 ... 100.0)
+        return Int8(round(clampedSpeed * speedScaling))
+    }
+    
     func setTriLED(port: Int, R: UInt8, G: UInt8, B: UInt8) -> Bool {
         let i = port - 1
         print("set \(i) to \(R) \(G) \(B)")

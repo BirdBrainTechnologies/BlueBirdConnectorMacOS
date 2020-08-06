@@ -19,10 +19,13 @@ class Hummingbird: Robot {
     var setAllTimer: SetAllTimer
     var isConnected: Bool
     var writtenCondition: NSCondition = NSCondition()
+    var inProgressPrintID: Int = 0
     
-    //Microbit specific values
-    var buttonShakeIndex: Int = 7
-    var accXindex: Int = 4
+    //Hummingbird specific values
+    let buttonShakeIndex: Int = 7
+    let accXindex: Int = 4
+    let type: RobotType = .HummingbirdBit
+    let turnOffCommand: Data = Data(bytes: UnsafePointer<UInt8>([0xCB, 0xFF, 0xFF, 0xFF] as [UInt8]), count: 4)
     
     internal var accelerometer: [Double]? {
         guard let raw = self.manageableRobot.rawInputData else { return nil }
@@ -79,5 +82,19 @@ class Hummingbird: Robot {
         return setOutput(ifCheck: (port > 0 && port <= 2),
                          when: {self.nextRobotState.trileds[i] == self.currentRobotState.trileds[i]},
                          set: {self.nextRobotState.trileds[i] = TriLED(R, G, B)})
+    }
+    
+    func setLED(port: Int, intensity: UInt8) -> Bool {
+        let i = port - 1
+        return setOutput(ifCheck: (port > 0 && port <= 3),
+                         when: {self.nextRobotState.leds[i] == self.currentRobotState.leds[i]},
+                         set: {self.nextRobotState.leds[i] = intensity})
+    }
+    
+    func setServo(port: Int, value: UInt8) -> Bool {
+        let i = port - 1
+        return setOutput(ifCheck: (port > 0 && port <= 4),
+            when: {self.nextRobotState.servos[i] == self.currentRobotState.servos[i]},
+            set: {self.nextRobotState.servos[i] = value})
     }
 }
