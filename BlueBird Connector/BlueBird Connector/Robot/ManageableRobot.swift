@@ -112,6 +112,7 @@ extension ManageableRobot: UARTDeviceDelegate {
             if self.batteryStatus != newStatus {
                 self.batteryStatus = newStatus
                 //let _ = FrontendCallbackCenter.shared.robotUpdateBattery(id: self.peripheral.identifier.uuidString, batteryStatus: newStatus.rawValue)
+                Shared.frontendServer.notifyDeviceBatteryUpdate(uuid: uuid, newState: newStatus)
             }
         }
     }

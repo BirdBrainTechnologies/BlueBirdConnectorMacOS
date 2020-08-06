@@ -99,8 +99,7 @@ $.scanListRefresh = function() {
   //Loop through and populate row items
   $.each(scanDeviceList, function(i, item) {
     var name = (item.fancyName == null ? item.name : item.fancyName);
-    var deviceName = getDeviceName(item.name);
-    var deviceImage = getDeviceImage(deviceName);
+    var deviceImage = getDeviceImage(item.name);
 
     console.log("Scan List Item:");
     console.log(item);
@@ -206,10 +205,10 @@ $.connectedDevListRefresh = function() {
   var refreshTable = {};
   $.each(connectedDeviceList, function(i, item) {
     var name = (item.deviceFancyName == null ? item.deviceName : item.deviceFancyName);
-    var deviceName = getDeviceName(item.deviceName);
+    var deviceName = item.deviceName;
     var devLetter = item.devLetter;
     var deviceImage = getDeviceImage(deviceName);
-    var devDisplay = getDeviceDisplay(deviceName);
+
 
     var el = $(
       //"             <div class=\"address\" style=\"display:none\">" + item.deviceAddress + "</div>" +
@@ -221,7 +220,7 @@ $.connectedDevListRefresh = function() {
 
       //Battery for Hummingbits and Finches only
       "                 <div style=\"display:inline-block\">" +
-      "                   <span " + devDisplay + " class=\"button button-battery button-battery-" + devLetter + " fa-stack fa-2x\"><i class=\"fas /*fa-battery-full fa-battery-half*/ /*fa-battery-quarter*/ fa-stack-2x\"></i></span> " +
+      "                   <span style=\"display:inline-block\" class=\"button button-battery button-battery-" + devLetter + " fa-stack fa-2x\"><i class=\"fas /*fa-battery-full fa-battery-half*/ /*fa-battery-quarter*/ fa-stack-2x\"></i></span> " +
 
       // Calibration button
       "                   <a class=\"button\" href=\"#\" onclick=\"return launchCalibrate(\'" + devLetter + "\', \'" + deviceName + "\');\"><span class=\"button-calibrate fa-stack fa-2x\">" +
@@ -237,6 +236,19 @@ $.connectedDevListRefresh = function() {
       "                 </span></a>" +
       "               </div>" +
       "             </div>");
+
+    let battery = el.find('.button-battery-' + devLetter + ' i')
+    switch (item.batteryStatus) {
+      case "green":
+        battery.addClass("fa-battery-full");
+        break;
+      case "yellow":
+        battery.addClass("fa-battery-half");
+        break;
+      case "green":
+        battery.addClass("fa-battery-quarter");
+      break
+    }
 
     el.find('.button-disconnect').click(function() {
       var data = {
@@ -295,36 +307,11 @@ function setConnectingState(state) {
     $('#connection-state').html(translationTable["connected"]);
 }
 
-function getDeviceName(devInstance) {
-  var str = devInstance.substring(0, 2);
-  var devName = null;
-  switch (str) {
-    case ("HB"):
-    case ("BB"):
-      devName = "Hummingbird";
-      break;
-    case ("MB"):
-      devName = "micro:bit";
-      break;
-    default:
-      devName = devInstance;
-      break;
-  }
-  return devName;
-}
-
 function getDeviceImage(deviceName) {
   var deviceImage = "img-hummingbird-bit.svg" // default hummingbird image
   if (deviceName.startsWith("MB")) deviceImage = "img-bit.svg";
   if (deviceName.startsWith("FN")) deviceImage = "img-finch.svg";
   return deviceImage;
-}
-
-function getDeviceDisplay(deviceName) {
-  var deviceDisplay = "style=\"display:inline-block\"";
-  if (deviceName == "micro:bit")
-    deviceDisplay = "style=\"display:none\"";
-  return deviceDisplay;
 }
 
 function removeFromScanList(deviceName) {

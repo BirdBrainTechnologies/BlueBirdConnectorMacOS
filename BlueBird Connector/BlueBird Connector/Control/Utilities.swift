@@ -11,7 +11,15 @@ import GLKit
 import os
 
 enum BatteryStatus: Int {
-    case red = 0, yellow, green
+    case red, yellow, green
+    
+    var description: String {
+        switch self {
+        case .green: return "green"
+        case .yellow: return "yellow"
+        case .red: return "red"
+        }
+    }
 }
 
 /**

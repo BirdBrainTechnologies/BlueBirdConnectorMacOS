@@ -71,6 +71,12 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         sendToFrontend(js)
     }
     
+    func notifyDeviceBatteryUpdate(uuid: UUID, newState: BatteryStatus) {
+        let args = "'" + uuid.uuidString + "', '" + newState.description + "'"
+        let js = "CallbackManager.deviceBatteryUpdate(" + args + ")"
+        sendToFrontend(js)
+    }
+    
     func updateDeviceRSSI(uuid: UUID, rssi: NSNumber) {
         guard let device = availableDevices[uuid] else {
             os_log("Rediscovered unknown device?", log: log, type: .error)

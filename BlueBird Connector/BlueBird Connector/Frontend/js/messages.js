@@ -63,24 +63,6 @@ CallbackManager.bleDisabled = function() {
   scanDeviceList = []
   $.scanListRefresh();
 }
-/*CallbackManager.deviceDiscovered = function(address, name, fancyName, rssi) {
-  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-    consoleLog: "device discovered: " + address + ", " + name + ", " + fancyName + ", " + rssi
-  })
-  scanDeviceList.push({
-    address: address,
-    name: name,
-    fancyName: fancyName,
-    rssi: rssi
-  })
-
-  scanDeviceList.sort(function(a, b) {
-    //return (a.address > b.address) - (a.address < b.address);
-    return (a.rssi < b.rssi) - (a.rssi > b.rssi);
-  });
-
-  $.scanListRefresh();
-}*/
 CallbackManager.updateScanDeviceList = function(newList) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "devices available: " + newList
@@ -94,15 +76,6 @@ CallbackManager.updateScanDeviceList = function(newList) {
 
   $.scanListRefresh();
 }
-/*CallbackManager.deviceDidDisappear = function(address) {
-  scanDeviceList.forEach( (device, i) => {
-    if (device.address == address) {
-      scanDeviceList.splice(i, 1)
-    }
-  })
-
-  $.scanListRefresh()
-}*/
 CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "device did connect: " + address + ", " + name + ", " + fancyName + ", " + devLetter
@@ -111,7 +84,8 @@ CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter)
     deviceAddress: address,
     deviceFancyName: fancyName,
     deviceName: name,
-    devLetter: devLetter
+    devLetter: devLetter,
+    batteryStatus: "unknown"
   })
   $.connectedDevListRefresh()
 }
@@ -122,6 +96,17 @@ CallbackManager.deviceDidDisconnect = function(address) {
   connectedDeviceList.forEach( (device, i) => {
     if (device.deviceAddress == address) {
       connectedDeviceList.splice(i, 1)
+    }
+  })
+  $.connectedDevListRefresh()
+}
+CallbackManager.deviceBatteryUpdate = function(address, batteryStatus) {
+  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+    consoleLog: "device battery update: " + address + " -> " + batteryStatus
+  })
+  connectedDeviceList.forEach( (device) => {
+    if (device.deviceAddress == address) {
+      device.batteryStatus = batteryStatus
     }
   })
   $.connectedDevListRefresh()
