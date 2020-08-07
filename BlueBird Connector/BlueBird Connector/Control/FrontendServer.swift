@@ -19,6 +19,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     var documentIsReady: Bool = false
     var callbacksPending: [String] = []
     var availableDevices = [UUID: AvailableDevice]()
+    var userRequestedScan: Bool = false
     
     
     func setWebView(_ view: WKWebView) {
@@ -38,20 +39,19 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     }
     
     func notifyDeviceDiscovery(uuid: UUID, advertisementSignature: AdvertisementSignature, rssi: NSNumber) {
-        availableDevices[uuid] = AvailableDevice(uuid: uuid, advertisementSignature: advertisementSignature, rssi: rssi)
-        
-        /*let fancyName = advertisementSignature.memorableName ?? advertisementSignature.advertisedName
-        let args = "'" + uuid.uuidString + "', '" + advertisementSignature.advertisedName + "', '" + fancyName + "', " + rssi.stringValue
-        let js = "CallbackManager.deviceDiscovered(" + args + ")"
-        sendToFrontend(js)*/
-        sendAvailableDeviceUpdate()
+        if availableDevices[uuid] == nil {
+            availableDevices[uuid] = AvailableDevice(uuid: uuid, advertisementSignature: advertisementSignature, rssi: rssi)
+            sendAvailableDeviceUpdate()
+        } else {
+            updateDeviceInfo(uuid: uuid, adSig: advertisementSignature, rssi: rssi)
+        }
     }
     
     func notifyDeviceDidDisappear(uuid: UUID) {
-        availableDevices[uuid] = nil
-        //let args = "'" + uuid.uuidString + "'"
-        //let js = "CallbackManager.deviceDidDisappear(" + args + ")"
-        //sendToFrontend(js)
+        if !(availableDevices[uuid]?.shouldAutoConnect ?? false) {
+            availableDevices[uuid] = nil
+        }
+        
         sendAvailableDeviceUpdate()
     }
     
@@ -66,6 +66,12 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     func notifyDeviceDidDisconnect(uuid: UUID) {
         availableDevices[uuid]?.isConnected = false
         
+        if !(availableDevices[uuid]?.disconnectRequested ?? true) {
+            os_log("User did not request disconnect. Attempting to reconnect automatically.", log: log, type: .error)
+            availableDevices[uuid]?.shouldAutoConnect = true
+            Shared.robotManager.startScanning()
+        }
+        
         let args = "'" + uuid.uuidString + "'"
         let js = "CallbackManager.deviceDidDisconnect(" + args + ")"
         sendToFrontend(js)
@@ -77,20 +83,36 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         sendToFrontend(js)
     }
     
-    func updateDeviceRSSI(uuid: UUID, rssi: NSNumber) {
+    func updateDeviceInfo(uuid: UUID, adSig: AdvertisementSignature?, rssi: NSNumber) {
         guard let device = availableDevices[uuid] else {
             os_log("Rediscovered unknown device?", log: log, type: .error)
             return
         }
-        if (rssi.intValue > (device.rssi.intValue + 20)) || (rssi.intValue < device.rssi.intValue - 20) {
-            availableDevices[uuid]?.rssi = rssi
-            sendAvailableDeviceUpdate()
+        if device.shouldAutoConnect {
+            print("should auto connect")
+            availableDevices[uuid]?.shouldAutoConnect = false
+            Shared.frontendServer.stopScan()
+            let _ = Shared.robotManager.connectToDevice(havingUUID: uuid)
+        } else {
+            var sendUpdate = false
+            if let sig = adSig {
+                availableDevices[uuid]?.advertisementSignature = sig
+                sendUpdate = true
+            }
+            if (rssi.intValue > (device.rssi.intValue + 20)) ||
+                (rssi.intValue < device.rssi.intValue - 20) {
+                availableDevices[uuid]?.rssi = rssi
+                sendUpdate = true
+            }
+            if sendUpdate { sendAvailableDeviceUpdate() }
         }
     }
     func sendAvailableDeviceUpdate() {
+        guard userRequestedScan else { return }
+        
         var args = "[ "
         availableDevices.forEach{(uuid, device) in
-            if !(device.isConnected) {
+            if !(device.isConnected || device.shouldAutoConnect) {
                 let fancyName = device.advertisementSignature.memorableName ?? device.advertisementSignature.advertisedName
                 args += "{address: '" + device.uuid.uuidString +
                     "', name: '" + device.advertisementSignature.advertisedName +
@@ -101,6 +123,10 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         }
         args = args.dropLast() + "]"
         let js = "CallbackManager.updateScanDeviceList(" + args + ")"
+        sendToFrontend(js)
+    }
+    func notifyCalibrationResult(_ success: Bool) {
+        let js = "CallbackManager.showCalibrationResult(" + String(success) + ")"
         sendToFrontend(js)
     }
     
@@ -168,6 +194,8 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
                     handleDisconnectCommand(body)
                 case "openSnap":
                     handleOpenSnapCommand(body)
+                case "calibrate":
+                    handleCalibrateCommand(body)
                 default:
                     os_log("Command not found [%s]", log: log, type: .error, command)
                 }
@@ -192,19 +220,24 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         case "on":
             startScan()
         case "off":
-            if Shared.robotManager.stopScanning() {
-                notifiyScanState(isOn: false)
-            } else {
-                os_log("Failed to stop scanning!", log: log, type: .error)
-            }
-            
+            stopScan()
         default:
             os_log("unknown scan state [%s]", log: log, type: .error, scanState)
             
         }
     }
     
+    func stopScan() {
+        userRequestedScan = false
+        if Shared.robotManager.stopScanning() {
+            notifiyScanState(isOn: false)
+        } else {
+            os_log("Failed to stop scanning!", log: log, type: .error)
+        }
+    }
+    
     func startScan() {
+        userRequestedScan = true
         if Shared.robotManager.startScanning() {
             os_log("Scanning...", log: log, type: .debug)
             notifiyScanState(isOn: true)
@@ -238,6 +271,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             print(fullCommand)
             return
         }
+        availableDevices[uuid]?.disconnectRequested = true
         
         let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
     }
@@ -276,7 +310,16 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             }
         }
         
+    }
+    
+    func handleCalibrateCommand(_ fullCommand: NSDictionary) {
+        guard let devLetter = fullCommand["devLetter"] as? String else {
+            os_log("Poorly formed calibrate command", log: log, type: .error)
+            print(fullCommand)
+            return
+        }
         
+        Shared.backendServer.calibrateRobot(devLetter: devLetter)
     }
     
 }
@@ -284,14 +327,18 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
 /* Structure that represents the available Robots. */
 struct AvailableDevice {
     let uuid: UUID
-    let advertisementSignature: AdvertisementSignature
+    var advertisementSignature: AdvertisementSignature
     var rssi: NSNumber
     var isConnected: Bool
+    var disconnectRequested: Bool //did the user request disconnection
+    var shouldAutoConnect: Bool //if we see this device, connect automatically if true
     
     init(uuid: UUID, advertisementSignature: AdvertisementSignature, rssi: NSNumber) {
         self.uuid = uuid
         self.rssi = rssi
         self.advertisementSignature = advertisementSignature
         self.isConnected = false
+        self.disconnectRequested = false
+        self.shouldAutoConnect = false
     }
 }

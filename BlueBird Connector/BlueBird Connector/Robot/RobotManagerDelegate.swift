@@ -43,7 +43,9 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
 
     func didRediscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
         os_log("DID REDISCOVER [%s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
-        Shared.frontendServer.updateDeviceRSSI(uuid: uuid, rssi: rssi)
+        
+        Shared.frontendServer.updateDeviceInfo(uuid: uuid, adSig: advertisementSignature, rssi: rssi)
+
     }
 
     func didDisappear(uuid: UUID) {

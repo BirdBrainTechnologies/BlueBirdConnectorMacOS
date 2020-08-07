@@ -31,17 +31,28 @@ class ManageableRobot: ManageableUARTDevice {
     }
     private var batteryStatus: BatteryStatus?
     private var type: RobotType
+    private var isCalibrating: Bool
     
     public required init (blePeripheral: BLEPeripheral) {
         self.uartDevice = BaseUARTDevice(blePeripheral: blePeripheral)
         self.notificationsRunning = self.uartDevice.startStateChangeNotifications()
         let prefix = self.uartDevice.advertisementSignature?.advertisedName.prefix(2) ?? ""
         self.type = RobotType.getTypeFromPrefix(prefix)
+        self.isCalibrating = false
         self.uartDevice.delegate = self
     }
     
     func sendData(_ data: Data) {
         uartDevice.writeWithoutResponse(data: data)
+    }
+    
+    func startCalibration() {
+        sendData(RobotConstants.CALIBRATE_COMMAND)
+        //Give calibration a chance to start. Otherwise, we will read an
+        // old calibration result in the notification data
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.isCalibrating = true
+        }
     }
     
 }
@@ -64,6 +75,27 @@ extension ManageableRobot: UARTDeviceDelegate {
         }
         
         self.rawInputState = rawState
+        
+        //Check the state of compass calibration
+        if self.isCalibrating {
+            var index = 7
+            if type == .Finch { index = 16 }
+            let byte = rawState.data[index]
+            let bits = byteToBits(byte)
+            print("CALIBRATION VALUES \(bits[2]) \(bits[3])")
+            
+            if bits[3] == 1 {
+                self.isCalibrating = false
+                print("CALIBRATION FAILED \(bits)")
+                Shared.frontendServer.notifyCalibrationResult(false)
+            } else if bits[2] == 1 {
+                self.isCalibrating = false
+                print("CALIBRATION SUCCESSFUL \(bits)")
+                Shared.frontendServer.notifyCalibrationResult(true)
+            } else {
+                print("CALIBRATION UNKNOWN \(bits)")
+            }
+        }
         
         //Check battery status.
         if let i = type.batteryVoltageIndex, let greenThreshold = type.batteryGreenThreshold, let yellowThreshold = type.batteryYellowThreshold {

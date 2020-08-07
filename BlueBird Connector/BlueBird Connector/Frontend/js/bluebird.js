@@ -936,3 +936,51 @@
             $('select.'+className).empty();
             $('select.'+className).append(newOptions);
           }
+
+
+          /* Close calibration modal */
+          function closeCalibrationModal() {
+              console.log("closeCalibrationModal");
+              removeVideos();
+
+              var devLetter = null;
+              if (usingSerialDevice())
+                  devLetter =  'A'  // Serial connection is always devLetter = A.
+                  else if (usingBLEDDevice())
+                      devLetter = getCalibrationDevLetter();
+
+              if (devLetter !== null) {
+                  var data = {
+                      'command' : 'calibrateStop',
+                      'devLetter' : devLetter
+                  }
+                  console.log(data);
+                  //Send message to app to stop calibration
+                  cs.send(JSON.stringify(data));
+              }
+
+              return false;
+          }
+
+
+
+          /* Close DapLinkModal modal */
+          function closeDapLinkModal() {
+              removeVideos();
+
+              var devLetter = null;
+              if (usingSerialDevice())
+                  devLetter =  'A'  // Serial connection is always devLetter = A.
+
+                  if (devLetter !== null) {
+                      var data = {
+                          'command' : 'DAPLinkStop',
+                          'devLetter' : devLetter
+                      }
+                      console.log(data);
+                      //Send message to app to stop calibration
+                      cs.send(JSON.stringify(data));
+                  }
+
+              return false;
+          }

@@ -522,6 +522,20 @@ class BackendServer {
         }
     }
     
+    
+    //MARK: Requests coming directly from frontend
+    
+    public func calibrateRobot(devLetter: String) {
+        guard let robot = getRobot(params: [devLetter.prefix(1)], robotIndex: 0) else {
+            return
+        }
+        
+        robot.startCalibration()
+    }
+    
+    
+    
+    //MARK: Helper functions
     private static func getRawResponse(_ text: String, _ type: HttpResponse? = nil) -> HttpResponse {
         if let type = type {
             return .raw(type.statusCode, type.reasonPhrase, ["Access-Control-Allow-Origin": "*", "Content-Type": "text/plain"], { writer in

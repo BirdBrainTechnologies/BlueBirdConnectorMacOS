@@ -210,6 +210,13 @@ extension Robot {
         
         return success
     }
+    func startCalibration() {
+        self.manageableRobot.startCalibration()
+    }
+}
+
+struct RobotConstants {
+    static public let CALIBRATE_COMMAND = Data(bytes: UnsafePointer<UInt8>([0xCE, 0xFF, 0xFF, 0xFF] as [UInt8]), count: 4)
 }
 
 

@@ -4,85 +4,45 @@ function closeModal() {
     removeVideos();
 }
 
-/* Close calibration modal */
-function closeCalibrationModal() {
-    console.log("closeCalibrationModal");
-    removeVideos();
-    
-    var devLetter = null;
-    if (usingSerialDevice())
-        devLetter =  'A'  // Serial connection is always devLetter = A.
-        else if (usingBLEDDevice())
-            devLetter = getCalibrationDevLetter();
-    
-    if (devLetter !== null) {
-        var data = {
-            'command' : 'calibrateStop',
-            'devLetter' : devLetter
-        }
-        console.log(data);
-        //Send message to app to stop calibration
-        cs.send(JSON.stringify(data));
-    }
-    
-    return false;
-}
 
-
-/* Close DapLinkModal modal */
-function closeDapLinkModal() {
-    removeVideos();
-    
-    var devLetter = null;
-    if (usingSerialDevice())
-        devLetter =  'A'  // Serial connection is always devLetter = A.
-        
-        if (devLetter !== null) {
-            var data = {
-                'command' : 'DAPLinkStop',
-                'devLetter' : devLetter
-            }
-            console.log(data);
-            //Send message to app to stop calibration
-            cs.send(JSON.stringify(data));
-        }
-    
-    return false;
-}
 
 /* Launch calibration modal and position elements */
+//function launchCalibrate(devLetter, deviceName) {
 function launchCalibrate(devLetter, deviceName) {
+  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+    consoleLog: "launch calibrate"
+  })
     closeModal();
-    setCalibrationDevLetter (devLetter);
-    
+    //setCalibrationDevLetter (devLetter);
+
     // set the appropriate calibration video
     var devVideo = getDeviceVideo(deviceName);
-    
+
     var data = {
         'command' : 'calibrate',
         'devLetter' : devLetter
     }
-    console.log(data);
-    cs.send(JSON.stringify(data));
-    
+    sendMessageToBackend(msgTypes.COMMAND, data)
+    //cs.send(JSON.stringify(data));
+
     launchVideo(devVideo);
 }
 
 function launchBluetooth() {
     launchVideo("Plug in Dongle_2.mp4");
-    
+
     // Show bluetooth spinner
     $('#indicators .fa-spin').css("display", "block");
-    
+
     return false;
 }
 
 /* Toggle connected section */
 function toggleConnected() {
     var visible = $('#connected').css('display') != 'none';
-    
+
     $('#connected').slideToggle();
-    
+
     if(!visible)
         $('body').css('backgroundColor', '#881199');
     else
@@ -98,7 +58,19 @@ function launchDAPLinkUpgradeVideo() {
 
 function launchNativeMacOSBLEvideo() {
     launchVideo("NativeMacBLEon.mp4");
-    
+
+}
+
+/*
+ * Get the correct video for the given device
+ */
+function getDeviceVideo(deviceName) {
+  var deviceImage = "HummBit_Calibration.mp4" // default hummingbird video
+  if (deviceName.startsWith("MB"))
+    deviceImage = "MicroBit_Calibration.mp4";
+  if (deviceName.startsWith("FN"))
+    deviceImage = "Finch_Calibration.mp4";
+  return deviceImage;
 }
 
 /*
@@ -109,22 +81,22 @@ function launchVideo(videoName) {
     const section = document.createElement('section');
     section.setAttribute("class", "modal");
     section.setAttribute("style", "display: none;")
-    
+
     //Make a container to hold everything
     const container = document.createElement('div');
     container.setAttribute("class", "container")
     container.setAttribute("style", "position: relative; margin: 0 auto; height: auto; width: 95%; top: 50%; transform: translateY(-50%);");
-    
+
     //Create the parts
     const header = document.createElement('h2');
     var icon = document.createElement('i');
     const span = document.createElement('span');
     var icon2 = document.createElement('i');
-    
+
     //Make a container for the video and any other animations
     const animation = document.createElement('div');
     animation.setAttribute("class", "animation");
-    
+
     //Set to close button action if close button required
     var onClickCloseBtn = null;
     console.log("launchVideo before switch for " + videoName);
@@ -135,16 +107,16 @@ function launchVideo(videoName) {
             span.textContent=" " + translationTable["Connection_Failure"] + " ";
             icon2.setAttribute("class", "fab fa-usb");
             break;
-        case "HummBit Figure 8_2.mp4":
-        case "MicroBit Figure 8_2.mp4":
+        case "HummBit_Calibration.mp4":
+        case "MicroBit_Calibration.mp4":
         case "Finch_Calibration.mp4":
             section.setAttribute("id", "calibrate-modal");
             icon.setAttribute("class", "fas fa-compass");
             icon2 = null;
-            
-            onClickCloseBtn = "return closeCalibrationModal();";
+
+            onClickCloseBtn = "return closeModal();";
             //<a href="#" onclick="return closeCalibrationModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
-            
+
             span.setAttribute("id", "CompassCalibrate");
             span.textContent=" " + translationTable["CompassCalibrate"] + " ";
             const status = document.createElement('div');
@@ -161,12 +133,12 @@ function launchVideo(videoName) {
         case "Reset Button Press.mp4": //daplink video
             //<a href="#" onclick="return closeDapLinkModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
             onClickCloseBtn = "return closeDapLinkModal();";
-            
+
             icon = null;
             span.setAttribute("id", "Update_firmware");
             span.textContent=" " + translationTable["Update_firmware"] + " ";
             icon2 = null;
-            
+
             section.setAttribute("data-backdrop", "static");
             section.setAttribute("data-keyboard", "false");
             break;
@@ -184,7 +156,7 @@ function launchVideo(videoName) {
     if (icon != null) { header.appendChild(icon); }
     header.appendChild(span);
     if (icon2 != null) { header.appendChild(icon2); }
-    
+
     //Make a close button if required
     if (onClickCloseBtn != null) {
         //<a href="#" onclick="return closeDapLinkModal();" class="close btn btn-modal"><i class="fas fa-times"></i></a>
@@ -197,7 +169,7 @@ function launchVideo(videoName) {
         closeBtn.appendChild(btnIcon);
         container.appendChild(closeBtn);
     }
-    
+
     //Make the video element
     const videoElement = document.createElement('video');
     videoElement.setAttribute("type", "video/mp4");
@@ -205,7 +177,7 @@ function launchVideo(videoName) {
     videoElement.setAttribute("loop", "loop");
     //videoElement.setAttribute("style", "position: relative; display: block; margin: 0 auto; height: auto; width: 95%; top: 50%; transform: translateY(-50%);")
     //videoElement.setAttribute("style", "position: relative; display: block; margin: 0 auto; height: auto; width: 95%;")
-    videoElement.src = "vid/" + videoName;
+    videoElement.src = videoName;
     //videoElement.autoplay = true;
     videoElement.muted = true; //video must be muted to autoplay on Android.
     //Wait until the video is ready to play to display it.
@@ -222,7 +194,7 @@ function launchVideo(videoName) {
     //document.body.appendChild(container);
     section.appendChild(container);
     document.body.appendChild(section);
-    
+
     /* If overlay of modal window is clicked, close calibration window */
     $(".modal").click(function() { closeModal(); close }).children().click(function(e) { return false; });
 };
@@ -247,13 +219,13 @@ function removeVideo(videoElement) {
     videoElement.pause();
     videoElement.removeAttribute('src'); // empty source
     videoElement.load();
-    
+
     //Remove the whole modal.
     //Each video is presented inside a div element inside a div element
     //inside a section. This is what must be removed. See launchVideo.
     const animation = videoElement.parentNode;
     const container = animation.parentNode;
     const section = container.parentNode
-    
+
     section.parentNode.removeChild(section);
 };

@@ -111,3 +111,17 @@ CallbackManager.deviceBatteryUpdate = function(address, batteryStatus) {
   })
   $.connectedDevListRefresh()
 }
+CallbackManager.showCalibrationResult = function(success) {
+  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+    consoleLog: "calibration result " + success + " is a " + (typeof success)
+  })
+  var ha = $('#calibrate-modal .animation').height();
+  var hi = $('#calibrate-modal .animation i').height();
+  $('#calibrate-modal .animation i').css('marginTop', ((ha-hi)/2)+'px');
+  if (success) {
+    $('#calibrate-modal .status').addClass('status-success');
+    setTimeout(function() { closeModal(); }, 3000);
+  } else {
+    $('#calibrate-modal .status').addClass('status-fail');
+  }
+}
