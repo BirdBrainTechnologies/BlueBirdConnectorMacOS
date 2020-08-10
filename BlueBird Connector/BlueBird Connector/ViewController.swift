@@ -40,6 +40,14 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
             return
         }
         
+        //Show resource directory contents - for debugging
+        /*do {
+            let docsArray = try FileManager.default.contentsOfDirectory(atPath: resourceDir)
+            print(docsArray)
+        } catch {
+            print(error)
+        }*/
+        
         let html = URL(fileURLWithPath: htmlPath)
         let dir = URL(fileURLWithPath: resourceDir, isDirectory: true)
         self.webView.loadFileURL(html, allowingReadAccessTo: dir)
@@ -88,7 +96,7 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         os_log("didFinish navigation", log: log, type: .debug)
-        self.webView.evaluateJavaScript("alert('Hello from evaluateJavascript()')", completionHandler: nil)
+        //self.webView.evaluateJavaScript("alert('Hello from evaluateJavascript()')", completionHandler: nil)
     }
 
 }

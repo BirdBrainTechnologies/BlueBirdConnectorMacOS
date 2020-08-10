@@ -77,7 +77,10 @@ function getDeviceVideo(deviceName) {
  * Add and launch a video
  */
 function launchVideo(videoName) {
-    console.log("launchVideo " + videoName);
+    sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+      consoleLog: "launchVideo " + videoName
+    })
+
     const section = document.createElement('section');
     section.setAttribute("class", "modal");
     section.setAttribute("style", "display: none;")
@@ -99,7 +102,7 @@ function launchVideo(videoName) {
 
     //Set to close button action if close button required
     var onClickCloseBtn = null;
-    console.log("launchVideo before switch for " + videoName);
+
     switch(videoName){
         case "Plug in Dongle_2.mp4":
             icon.setAttribute("class", "fab fa-bluetooth-b");
@@ -143,6 +146,9 @@ function launchVideo(videoName) {
             section.setAttribute("data-keyboard", "false");
             break;
         case "NativeMacBLEon.mp4":
+            sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+              consoleLog: "launching native mac video"
+            })
             section.setAttribute("id", "nativeMacOSBLE-modal");
             icon.setAttribute("class", "fab fa-bluetooth-b");
             span.setAttribute("id", "Connection_Failure");
@@ -182,11 +188,16 @@ function launchVideo(videoName) {
     videoElement.muted = true; //video must be muted to autoplay on Android.
     //Wait until the video is ready to play to display it.
     videoElement.addEventListener('canplay',function () {
-                                  console.log("launchVideo about to show " + videoName);
+                                  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+                                    consoleLog: "about to show " + videoName
+                                  })
                                   section.setAttribute("style", "display: block;");
                                   videoElement.play();
                                   },false);
-    console.log("launchVideo about to add to document: " + videoName);
+
+    sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+      consoleLog: "launchVideo about to add to document: " + videoName
+    })
     //connect up the finished parts
     container.appendChild(header);
     animation.appendChild(videoElement);

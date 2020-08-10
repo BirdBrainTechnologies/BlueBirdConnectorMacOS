@@ -16,8 +16,8 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "FrontendServer")
     
     var webView: WKWebView?
-    var documentIsReady: Bool = false
-    var callbacksPending: [String] = []
+    private var documentIsReady: Bool = false
+    private var callbacksPending: [String] = []
     var availableDevices = [UUID: AvailableDevice]()
     var userRequestedScan: Bool = false
     

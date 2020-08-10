@@ -50,6 +50,7 @@ CallbackManager.scanStarted = function() {
     $('#findBtnText').text(" "+translationTable["finding_robots"]);
   }
   updateBleStatus(true);
+  closeModal();
 }
 CallbackManager.scanEnded = function() {
   if ($('#find-button i').hasClass('fa-spin')) {
@@ -62,6 +63,7 @@ CallbackManager.bleDisabled = function() {
   CallbackManager.scanEnded();
   scanDeviceList = []
   $.scanListRefresh();
+  launchNativeMacOSBLEvideo();
 }
 CallbackManager.updateScanDeviceList = function(newList) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
