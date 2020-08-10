@@ -290,7 +290,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         if (openOnline) {
             urlString = "https://snap.berkeley.edu/snap/snap.html#present:Username=birdbraintech&ProjectName=" + projectName + "&editMode&lang=" + language;
         } else {
-            urlString = "snap/snap.html#open:snapProjects/" + projectName + ".xml&editMode&lang=" + language;
+            urlString = "http://localhost:30061/snap/snap.html#open:snapProjects/" + projectName + ".xml&editMode&lang=" + language;
         }
         guard let url = URL(string: urlString) else {
             os_log("Bad url string [%s]", log: log, type: .error, urlString)

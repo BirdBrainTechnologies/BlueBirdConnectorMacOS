@@ -43,6 +43,19 @@ class BackendServer {
     }
     
     private func setupPaths() {
+/*
+        //offline snap
+        server["/snap.html"] = handleSnapRequest(_:)
+        //server["/snap/(.+)"] = handleSnapRequest(_:)
+        server["/snap/:path"] = handleSnapRequest(_:)
+        if let resourcePath = Bundle.main.resourcePath {
+            //server["/snap/(.+)"] = resourcePath + "/Snap-6.1.4"
+            print("SETUP")
+            //server["/snap/snap.html"] = shareFilesFromDirectory(resourcePath + "/Snap-6.1.4")
+            //server["/snap/(.+)"] = HttpHandlers.directory("~/")
+            //server["/snap/:path"] = shareFilesFromDirectory(resourcePath + "/Snap-6.1.4")
+        }
+*/
         
         //outputs for any
         server["/hummingbird/out/stopall"] = stopAllRequest(_:)
@@ -566,4 +579,61 @@ class BackendServer {
         }
         return robot
     }
+    
+    //MARK: Snap!
+/*    private func handleSnapRequest (_ request: HttpRequest) -> HttpResponse {
+        print("Snap request!  \(request.path) \(request.params) \(request.queryParams)")
+      
+        if let docsPath = Bundle.main.resourcePath {
+            let sPath = docsPath + "/Snap-6.1.4"
+            do {
+                let docsArray = try FileManager.default.contentsOfDirectory(atPath: sPath)
+                print(docsArray)
+            } catch {
+                print(error)
+            }
+        }
+        
+        
+        guard var snapPath = Bundle.main.resourcePath else {
+            return .notFound
+        }
+        snapPath += "/Snap-6.1.4"
+        print(snapPath)
+        
+        let handler = shareFilesFromDirectory(snapPath)
+        let response = handler(request)
+        print(response.reasonPhrase)
+        
+        //let filePath = snapPath + request.path
+        guard let fileRelativePath = request.params.first else {
+            return .notFound
+        }
+        let filePath = snapPath + String.pathSeparator + fileRelativePath.value
+        print("looking for \(filePath)")
+        if let file = try? filePath.openForReading() {
+            print("found")
+            //let mimeType = "text/html"
+            let mimeType = fileRelativePath.value.mimeType()
+            var responseHeader: [String: String] = ["Content-Type": mimeType]
+            
+            if let attr = try? FileManager.default.attributesOfItem(atPath: filePath),
+                let fileSize = attr[FileAttributeKey.size] as? UInt64 {
+                //print("adding filesize \(fileSize)")
+                responseHeader["Content-Length"] = String(fileSize)
+            }
+            print(responseHeader)
+            return .raw(200, "OK", responseHeader, { writer in
+                do {
+                    try writer.write(file)
+                    file.close()
+                } catch {
+                    print(error)
+                }
+            })
+        }
+        
+        
+        return response
+    }*/
 }
