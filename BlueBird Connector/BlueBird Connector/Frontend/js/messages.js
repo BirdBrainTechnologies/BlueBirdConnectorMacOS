@@ -62,7 +62,9 @@ CallbackManager.bleDisabled = function() {
   updateBleStatus(false);
   CallbackManager.scanEnded();
   scanDeviceList = []
+  connectedDeviceList = []
   $.scanListRefresh();
+  $.connectedDevListRefresh();
   launchNativeMacOSBLEvideo();
 }
 CallbackManager.updateScanDeviceList = function(newList) {
@@ -90,6 +92,7 @@ CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter)
     batteryStatus: "unknown"
   })
   $.connectedDevListRefresh()
+  $.scanListRefresh();
 }
 CallbackManager.deviceDidDisconnect = function(address) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
@@ -101,6 +104,7 @@ CallbackManager.deviceDidDisconnect = function(address) {
     }
   })
   $.connectedDevListRefresh()
+  $.scanListRefresh();
 }
 CallbackManager.deviceBatteryUpdate = function(address, batteryStatus) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {

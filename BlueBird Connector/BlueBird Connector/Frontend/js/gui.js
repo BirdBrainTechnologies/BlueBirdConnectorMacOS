@@ -1,6 +1,6 @@
 var connectedDeviceList = [];
 var scanDeviceList = [];
-//var devLetterList = ['A', 'B', 'C'];
+
 //Table to use for translations
 var translationTable = null;
 var language = "en";
@@ -12,11 +12,16 @@ var connectButton =
       "                   <i class=\"fas fa-circle fa-stack-2x\"></i>"+
       "                   <i class=\"fas fa-plus fa-stack-1x fa-inverse\"></i>"+
       "                 </span></a>"+
-      "               </div>"+
+//      "               </div>"+
       "             </div>";
 
 
-//Row Selection Logic
+
+/**
+ * This function runs as soon as the document is ready. It sends a message to
+ * the backend, informing it of that status. It sets the language and checks
+ * whether the internet is connected.
+ */
 $(document).ready(function() {
 
   sendMessageToBackend(msgTypes.DOCUMENT_STATUS, {
@@ -24,7 +29,7 @@ $(document).ready(function() {
     language: navigator.language,
     languages: navigator.languages
   })
-  console.log("DOCUMENT READY");
+
   setLanguage();
   updateInternetStatus();
   setInterval(updateInternetStatus, 2000)
@@ -34,7 +39,6 @@ $(document).ready(function() {
   // Scan button - "find robots"
   $('#find-button').on('click', function(e) {
     $('#robots-found').empty();
-    console.log("find-button clicked");
     sendMessageToBackend(msgTypes.CONSOLE_LOG, {
       consoleLog: "find-button clicked"
     })
@@ -44,7 +48,7 @@ $(document).ready(function() {
       newScanState = 'off';
     else
       newScanState = 'on';
-    console.log("Turning scan " + newScanState);
+
     var data = {
       'command': 'scan',
       'scanState': newScanState,
@@ -56,65 +60,59 @@ $(document).ready(function() {
     $.scanListRefresh();
   });
 
+  //Set up the snap button
   $('#programming-buttons .launch-snap-btn').on('click', function(e) {
     launchSnap();
   });
 
+  //Set up cloud switch
   $('.switch').on('click', function(e) {
-    console.log("Internet Up: " + internetUp);
     if (!(internetUp)) {
       $('#cloud-slider').prop('checked', false);
       return false;
     }
 
-    console.log("Slider state: " + $('#cloud-slider').prop('checked'));
-
     var checked = $('#cloud-slider').prop('checked');
     if (checked) {
       $('#cloud-slider').prop('checked', false);
-      console.log("Unchecking slider new state: " + $('#cloud-slider').prop('checked'));
     } else {
       $('#cloud-slider').prop('checked', true);
-      console.log("Checking slider new state : " + $('#cloud-slider').prop('checked'));
     }
   });
 
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-    consoleLog: "END"
+    consoleLog: "SETUP END"
   })
-  //toggleConnected();
+
 });
 
-// scanListRefresh
-// Populate the list of advertising devices
-//
+/**
+ * scanListRefresh - Show the current list of discovered devices
+ */
 $.scanListRefresh = function() {
-  console.log("scanListRefresh:");
-  console.log(scanDeviceList);
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "scanListRefresh: " + scanDeviceList
   })
-  $('.connect').prop('disabled', true);
+
   $('#robots-found').empty();
   //Loop through and populate row items
   $.each(scanDeviceList, function(i, item) {
     var name = (item.fancyName == null ? item.name : item.fancyName);
     var deviceImage = getDeviceImage(item.name);
-
-    console.log("Scan List Item:");
-    console.log(item);
+    var btn = (connectedDeviceList.length < 3 ? connectButton : "");
 
     var el = $(
-      //"<div class=\"address\" style=\"display:none\">" + item.address + "</div>" +
-      //"<div class=\"devLetter\" style=\"display:none\">" + devLetterList[0] + "</div>" +
       "<div class=\"row robot-item\"><a href=\"#\"> " +
       "<div class=\"row robot-item\">" +
       "<div class=\"col-xs-2 img\"><img src=\"" + deviceImage + "\" alt=\"Bit\" /></div>" +
       "<div class=\"col-xs-8 name\">" + name + "</div>" +
-      connectButton + "</a>");
+      btn + "</a>");
 
     //the connect button click event
     el.find('a').click(function() {
+      //if we already have 3 connections, do not add any more.
+      if (connectedDeviceList.length >= 3) { return; }
+
       // Stop the scanning
       var stopScan = {
         'command': 'scan',
@@ -127,13 +125,8 @@ $.scanListRefresh = function() {
 
       // Show the spinner of a device about to appear connected
       setConnectedDisplay("show");
-      sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-        consoleLog: "Connected display set to show"
-      })
+
       setConnectingState("Connecting");
-      sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-        consoleLog: "Connecting state set to connecting"
-      })
 
       // Send the actual connect command
       var connect = {
@@ -152,31 +145,20 @@ $.scanListRefresh = function() {
 
         sendMessageToBackend(msgTypes.COMMAND, connect)
 
-        // Clear the scan list and remove the devLetter from subsequent use on the connect button click event
-        //console.log("Removing from scan list on connect button click event: " + deviceName + "  " + name);
+        //remove the connecting item from the scan list
         removeFromScanList(item.name);
+
+        $.scanListRefresh();
+
         sendMessageToBackend(msgTypes.CONSOLE_LOG, {
           consoleLog: "removed item from scan list: " + item.name
         })
 
-        $.scanListRefresh();
-        sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-          consoleLog: "done with send message timeout"
-        })
       }, 10);
 
-      //Connection in progress remove from scan list
+      //Connection in progress remove from displayed scan list
       el.remove();
-      // Put up modal to say connection in progress...
-      $('#scanning').css({
-        "display": "block"
-      });
-      //Just in case something goes wrong. Do not let the connection progress modal get stuck on
-      connectTimer = setTimeout(function() {
-        $('#scanning').css({
-          "display": "none"
-        });
-      }, 3000);
+
       sendMessageToBackend(msgTypes.CONSOLE_LOG, {
         consoleLog: "Connect button click complete"
       })
@@ -184,20 +166,13 @@ $.scanListRefresh = function() {
 
     $('#robots-found').append(el);
 
-    if (connectedDeviceList.length < 3)
-      $('.connect').prop('disabled', false);
-    else
-      $('.connect').prop('disabled', true);
-
   });
 };
 
-//
-// connectedDevListRefresh
-// Populate the list of connected devices
-//
+/**
+ * connectedDevListRefresh - Populate the list of connected devices
+ */
 $.connectedDevListRefresh = function() {
-  console.log("connectedDevListRefresh");
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "connectedDevListRefresh"
   })
@@ -211,8 +186,6 @@ $.connectedDevListRefresh = function() {
 
 
     var el = $(
-      //"             <div class=\"address\" style=\"display:none\">" + item.deviceAddress + "</div>" +
-      //"             <div class=\"devLetter\" style=\"display:none\">" + devLetter + "</div>" +
       "             <div class=\"row robot-item\">" +
       "               <div class=\"col-xs-2 img\">" + devLetter + " <img src=\"" + deviceImage + "\" alt=\"Hummingbird Bit\" /></div>" +
       "               <div class=\"col-xs-6 name\">" + name + "</div>" +
@@ -237,6 +210,7 @@ $.connectedDevListRefresh = function() {
       "               </div>" +
       "             </div>");
 
+    //Add the battery icon, but only if we know the battery status
     let battery = el.find('.button-battery-' + devLetter + ' i')
     switch (item.batteryStatus) {
       case "green":
@@ -250,6 +224,7 @@ $.connectedDevListRefresh = function() {
       break
     }
 
+    //Set up disconnect button
     el.find('.button-disconnect').click(function() {
       var data = {
         'command': 'disconnect',
@@ -257,7 +232,6 @@ $.connectedDevListRefresh = function() {
         'address': item.deviceAddress
       }
       sendMessageToBackend(msgTypes.COMMAND, data)
-
     });
 
     // Hash device entry by its dev letter for sorting
@@ -265,6 +239,7 @@ $.connectedDevListRefresh = function() {
 
   });
 
+  //Sort the elements in the refresh table and add to connected robots table
   var keys = [];
   for (var key in refreshTable) {
     if (refreshTable.hasOwnProperty(key)) {
@@ -272,7 +247,6 @@ $.connectedDevListRefresh = function() {
     }
   }
   keys.sort();
-
   $('#robots-connected').empty();
   for (i in keys) {
     var key = keys[i];
@@ -280,6 +254,7 @@ $.connectedDevListRefresh = function() {
     $('#robots-connected').append(devEntry);
   }
 
+  //Only show the display if there are connected devices
   if (!(jQuery.isEmptyObject(connectedDeviceList))) {
     setConnectedDisplay("show");
     setConnectingState("Connected");
@@ -288,17 +263,26 @@ $.connectedDevListRefresh = function() {
   }
 };
 
+/**
+ * setConnectedDisplay - Show or hide the list of connected devices
+ *
+ * @param  {string} state "show" or "hide"
+ */
 function setConnectedDisplay(state) {
   if (state == "show") {
     $('#connected').css('display', 'block');
-    //setConnectingState("Connecting");
-    $('body').css('backgroundColor', '#881199'); // redundant, doesn't change?
   } else if (state == "hide") {
     $('#connected').css('display', 'none');
-    $('body').css('backgroundColor', '#881199'); // redundant, doesn't change?
   }
 }
 
+/**
+ * setConnectingState - Set the header of the connected robot list. If a robot
+ * is in the process of connecting, show the spinner. Otherwise, show
+ * "Connected".
+ *
+ * @param  {string} state "Connected" or "Connecting"
+ */
 function setConnectingState(state) {
   if (state == "Connecting")
     //$('#connection-state').html("<i class=\"fas fa-sync-alt fa-spin\"></i>" + " " + translationTable["connected"]);  //Do not change "Connected" to "Connecting"
@@ -307,6 +291,13 @@ function setConnectingState(state) {
     $('#connection-state').html(translationTable["connected"]);
 }
 
+/**
+ * getDeviceImage - Get an image file name based on the type of robot (defined
+ * by the first two letters of the robot advertised name).
+ *
+ * @param  {string} deviceName Advertised name beginning with two letter device type code.
+ * @return {string}            Image file name
+ */
 function getDeviceImage(deviceName) {
   var deviceImage = "img-hummingbird-bit.svg" // default hummingbird image
   if (deviceName.startsWith("MB")) deviceImage = "img-bit.svg";
@@ -314,16 +305,24 @@ function getDeviceImage(deviceName) {
   return deviceImage;
 }
 
+/**
+ * removeFromScanList - Remove deviceName from the list of available devices.
+ * Used when a connection is requested.
+ *
+ * @param  {string} deviceName Name of the device to remove
+ */
 function removeFromScanList(deviceName) {
-  // Remove connected device from scan list
   for (var j = scanDeviceList.length - 1; j >= 0; --j) {
     if (scanDeviceList[j].name == deviceName) {
-      console.log("Removing " + scanDeviceList[j].name + " from scan list");
       scanDeviceList.splice(j, 1);
     }
   }
 }
 
+/**
+ * updateInternetStatus - Updates the internet indicator. Called on an interval,
+ * starting when the document is ready.
+ */
 function updateInternetStatus() {
   if (navigator.onLine) {
     $('#indicator-wifi').addClass("indicator-on");
@@ -334,11 +333,14 @@ function updateInternetStatus() {
     $('#cloud-slider').prop('checked', false);
     internetUp = false;
   }
-  /*sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-    consoleLog: "Updated internet status"
-  })*/
 }
 
+/**
+ * updateBleStatus - Updates the ble indicator. Called by a callback from the
+ * backend.
+ *
+ * @param  {boolean} isOn true if ble is enabled.
+ */
 function updateBleStatus(isOn) {
   if (isOn) {
     $('#indicator-bluetooth').addClass("indicator-on");
@@ -348,6 +350,11 @@ function updateBleStatus(isOn) {
   }
 }
 
+/**
+ * launchSnap - Send a message to the backend asking it to open snap, deciding
+ * which project to start with and whether to open online or offline based on
+ * the user's selection.
+ */
 function launchSnap() {
   let projectName = ""
   if (connectedDeviceList.length == 1) {
@@ -375,7 +382,6 @@ function launchSnap() {
     language: language
   })
 }
-
 function allRobotsAreFinches() {
   let onlyFinches = true;
   for (let i = 0; i < connectedDeviceList.length; i++) {

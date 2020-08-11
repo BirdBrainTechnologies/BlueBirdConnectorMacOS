@@ -30,7 +30,7 @@ input:checked + .slider:before { -webkit-transform: translateX(26px); -ms-transf
 .bounce { display: inline-block; position: relative; -moz-animation: bounce 1s infinite linear; -o-animation: bounce 1s infinite linear; -webkit-animation: bounce 1s infinite linear; animation: bounce 1s infinite linear; }
 
 /* !core */
-body { background-color: #089BAB; color: #535353; font-family: 'Nunito', Helvetica, Arial, sans-serif; font-size: 16px; }
+body { background-color: #881199; color: #535353; font-family: 'Nunito', Helvetica, Arial, sans-serif; font-size: 16px; }
 h1 { font-family: 'Raleway', Helvetica, Arial, sans-serif; font-size: 1.75em; text-transform: uppercase; margin-top: 0; padding-top: 0; }
 
 /* !header */
@@ -109,10 +109,10 @@ h1 { font-family: 'Raleway', Helvetica, Arial, sans-serif; font-size: 1.75em; te
 
 .modal { background-color: rgba(255,255,255, 0.85); display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 100; }
 
-.modal .container { background-color: #fff; border-radius: 10px; overflow: hidden; padding:0; position: relative;     
+.modal .container { background-color: #fff; border-radius: 10px; overflow: hidden; padding:0; position: relative;
     /* Steve container to width of .gif images */
        max-width: 800px;}
-video {max-width: 800px;} 
+video {max-width: 800px;}
 
 .modal h2 { background-color: #881199; color: #fff; font-size: 2.25em; margin: 0; padding: 0.5em 0 0.6em 0.85em; text-align: center; }
 .modal a.close { color: #fff; float: right; opacity: 1; font-size: 1.75em; opacity: 1; padding: 0.85em;}
