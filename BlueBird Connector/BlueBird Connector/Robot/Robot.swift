@@ -166,6 +166,13 @@ extension Robot {
         return true
     }
     
+    
+    //MARK: Public set functions available for all Robots.
+    
+    /**
+        Set a string to print to the led array. Print no more than 10 characters at a time.
+        Each character takes 600ms to print.
+     */
     func setPrint(_ printString: Substring) -> Bool {
         inProgressPrintID = inProgressPrintID + 1
         return printStringParts(printString, id: inProgressPrintID)
@@ -185,6 +192,10 @@ extension Robot {
             when: {self.nextRobotState.ledArray == self.currentRobotState.ledArray},
             set: {self.nextRobotState.ledArray = arrayString})
     }
+    
+    /**
+        Set a symbol to show on the led array.
+     */
     func setSymbol(_ symbolString: String) -> Bool {
         let sString = "S" + symbolString
         
@@ -192,6 +203,10 @@ extension Robot {
             when: {self.nextRobotState.ledArray == self.currentRobotState.ledArray},
             set: {self.nextRobotState.ledArray = sString})
     }
+    
+    /**
+        Set the buzzer to sound a given note (defined by midi note number) for a given duration.
+     */
     func setBuzzer(note: Int, duration: Int) -> Bool {
         guard (note > 0 && note < 256 && duration > 0 && duration < 65536),
             let period = noteToPeriod(UInt8(note)) else {
@@ -202,6 +217,10 @@ extension Robot {
         when: {self.nextRobotState.buzzer == self.currentRobotState.buzzer},
         set: {self.nextRobotState.buzzer = Buzzer(period: period, duration: UInt16(duration))})
     }
+    
+    /**
+        Reset the robot to initial off state.
+     */
     func stopAll() -> Bool {
         let success = setOutput(ifCheck: (true), when: {return true},
                   set: {self.nextRobotState = RobotState(robotType: self.type)})
@@ -210,6 +229,10 @@ extension Robot {
         
         return success
     }
+    
+    /**
+        Start magnetometer calibration
+     */
     func startCalibration() {
         self.manageableRobot.startCalibration()
     }

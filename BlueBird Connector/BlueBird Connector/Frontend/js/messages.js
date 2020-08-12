@@ -1,3 +1,10 @@
+
+/**
+ * sendMessageToBackend - Send a message of a given type to backend
+ *
+ * @param  {msgTypes} type    The type of message
+ * @param  {Object} details   Object containing all message details
+ */
 function sendMessageToBackend(type, details) {
   this.message = details
   this.message.type = type
@@ -15,6 +22,9 @@ const msgTypes = {
   COMMAND: "command"
 }
 
+/**
+ * Send javascript errors to the backend.
+ */
 window.onerror = (msg, url, line, column, error) => {
   const message = {
     message: msg,
@@ -32,6 +42,9 @@ window.onerror = (msg, url, line, column, error) => {
 
 };
 
+/**
+ * Let the backend know that the document has resized.
+ */
 window.onresize = () => {
   sendMessageToBackend(msgTypes.DOCUMENT_STATUS, {
     documentStatus: "onresize",
@@ -41,8 +54,14 @@ window.onresize = () => {
 }
 
 
+/**
+ * Object to hold all possible callbacks from the backend.
+ */
 CallbackManager = {}
 
+/**
+ * CallbackManager.scanStarted - Ble scanning has started. Update display.
+ */
 CallbackManager.scanStarted = function() {
   scanDeviceList = []
   if (!($('#find-button i').hasClass('fa-spin'))){
@@ -52,12 +71,21 @@ CallbackManager.scanStarted = function() {
   updateBleStatus(true);
   closeModal();
 }
+
+/**
+ * CallbackManager.scanEnded - Ble scanning has ended. Update display.
+ */
 CallbackManager.scanEnded = function() {
   if ($('#find-button i').hasClass('fa-spin')) {
     $('#find-button i').removeClass('fa-spin');
     $('#findBtnText').text(" "+translationTable["find_robots"]);
   }
 }
+
+/**
+ * CallbackManager.bleDisabled - Computer's ble has been disabled. Update
+ * display and show instructions to enable.
+ */
 CallbackManager.bleDisabled = function() {
   updateBleStatus(false);
   CallbackManager.scanEnded();
@@ -67,6 +95,13 @@ CallbackManager.bleDisabled = function() {
   $.connectedDevListRefresh();
   launchNativeMacOSBLEvideo();
 }
+
+/**
+ * CallbackManager.updateScanDeviceList - Update displayed list of available
+ * devices.
+ *
+ * @param  {array} newList list of currently available devices.
+ */
 CallbackManager.updateScanDeviceList = function(newList) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "devices available: " + newList
@@ -80,6 +115,16 @@ CallbackManager.updateScanDeviceList = function(newList) {
 
   $.scanListRefresh();
 }
+
+/**
+ * CallbackManager.deviceDidConnect - A connection has been established to the
+ * given device. Update lists.
+ *
+ * @param  {string} address   device uuid
+ * @param  {string} name      device advertised name
+ * @param  {string} fancyName device memorable name
+ * @param  {string} devLetter letter assigned to device
+ */
 CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "device did connect: " + address + ", " + name + ", " + fancyName + ", " + devLetter
@@ -94,6 +139,14 @@ CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter)
   $.connectedDevListRefresh()
   $.scanListRefresh();
 }
+
+/**
+ * CallbackManager.deviceDidDisconnect - Connection to specified device lost.
+ * Update lists.
+ *
+ * @param  {type} address description
+ * @return {type}         description
+ */
 CallbackManager.deviceDidDisconnect = function(address) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "device did disconnect: " + address
@@ -106,6 +159,14 @@ CallbackManager.deviceDidDisconnect = function(address) {
   $.connectedDevListRefresh()
   $.scanListRefresh();
 }
+
+/**
+ * CallbackManager.deviceBatteryUpdate - New battery status information received
+ * from device. Update display.
+ *
+ * @param  {string} address       uuid of updated device
+ * @param  {string} batteryStatus new status
+ */
 CallbackManager.deviceBatteryUpdate = function(address, batteryStatus) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "device battery update: " + address + " -> " + batteryStatus
@@ -117,6 +178,13 @@ CallbackManager.deviceBatteryUpdate = function(address, batteryStatus) {
   })
   $.connectedDevListRefresh()
 }
+
+/**
+ * CallbackManager.showCalibrationResult - Calibration completed with given
+ * result. Display result to calibration modal.
+ *
+ * @param  {boolean} success true if calibraton succeeded
+ */
 CallbackManager.showCalibrationResult = function(success) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
     consoleLog: "calibration result " + success + " is a " + (typeof success)

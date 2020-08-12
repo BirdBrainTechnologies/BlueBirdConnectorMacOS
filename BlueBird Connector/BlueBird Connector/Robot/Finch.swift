@@ -38,10 +38,14 @@ class Finch: Robot {
         guard let raw = self.manageableRobot.rawInputData else { return nil }
         return rawToFinchMagnetometer(Array(raw[17...19]))
     }
-    private var currentBeak: TriLED? { //TODO: this.
+    //Current value of beak led. Used to correct light sensor values.
+    private var currentBeak: TriLED? {
         guard currentRobotState.trileds.count > 0 else { return nil }
         return currentRobotState.trileds[0]
     }
+    
+    
+    //MARK: Public calculated values
     
     var compass: Int {
         if let acc = accelerometer, let mag = magnetometer, let compass = DoubleToCompass(acc: acc, mag: mag) {
@@ -64,6 +68,8 @@ class Finch: Robot {
         return (raw[4] > 127)
     }
     
+    
+    //MARK: init
     required init(_ mRobot: ManageableRobot) {
         manageableRobot = mRobot
         isConnected = true
@@ -74,6 +80,11 @@ class Finch: Robot {
         setAllTimer.resume()
     }
     
+    //MARK: Internal methods
+    
+    /**
+        Get the command to set the led array and motors to their next values.
+     */
     internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
         var mode: UInt8 = 0x00
         let setMotors = (nextCopy.motors != currentRobotState.motors)
@@ -134,6 +145,9 @@ class Finch: Robot {
     
     //MARK: - Public Methods
     
+    /**
+        Get the value of the specified light sensor, corrected based on the current value of the beak led.
+     */
     func getFinchLight(onRight getRightLightSensor: Bool) -> Int? {
         guard let rawData = self.manageableRobot.rawInputData else { return nil }
         //We must add a correction to remove the light cast by the finch beak
@@ -155,6 +169,10 @@ class Finch: Robot {
         let finalVal = raw - correction
         return Int(finalVal.rounded()).clamped(to: 0 ... 100)
     }
+    
+    /**
+        Get the current line sensor value
+     */
     func getFinchLine(onRight getRightLineSensor: Bool) -> Int? {
         guard let rawData = self.manageableRobot.rawInputData else { return nil }
         var raw: UInt8
@@ -168,6 +186,10 @@ class Finch: Robot {
         let final = (100 - Int(round(Double(raw - 6) * 100/121)))
         return final.clamped(to: 0 ... 100)
     }
+    
+    /**
+        Get the current encoder value
+     */
     func getFinchEncoder(onRight getRightEncoder: Bool) -> Double? {
         guard let rawData = self.manageableRobot.rawInputData else { return nil }
         var i = 7
@@ -177,6 +199,7 @@ class Finch: Robot {
         let num = Int32(bitPattern: uNum) / 256
         return (Double(num) * 1/792)
     }
+    
     /**
         Set finch motors. Speed is specified as a percent.
      */
@@ -192,9 +215,12 @@ class Finch: Robot {
         return Int8(round(clampedSpeed * speedScaling))
     }
     
+    /**
+        Set the specified led (Beak at port 0, Tail at ports 1 to 5)
+     */
     func setTriLED(port: Int, R: UInt8, G: UInt8, B: UInt8) -> Bool {
         let i = port - 1
-        print("set \(i) to \(R) \(G) \(B)")
+
         return setOutput(ifCheck: (port > 0 && port <= 5),
             when: {self.nextRobotState.trileds[i] == self.currentRobotState.trileds[i]},
             set: {self.nextRobotState.trileds[i] = TriLED(R, G, B)})
