@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3102E6A324E1945500EB485F /* NativeMacBLEon.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3102E6A224E1941E00EB485F /* NativeMacBLEon.mp4 */; };
+		3102E6AA24E4322C00EB485F /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 3102E6A924E4322C00EB485F /* Credits.html */; };
 		3119066624B0C82300CCE7C6 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = 3119066524B0C82300CCE7C6 /* Swifter */; };
 		3119066824B0C86900CCE7C6 /* BackendServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3119066724B0C86900CCE7C6 /* BackendServer.swift */; };
 		3119066A24B8B79800CCE7C6 /* translations.js in Resources */ = {isa = PBXBuildFile; fileRef = 3119066924B8B79800CCE7C6 /* translations.js */; };
@@ -96,6 +97,7 @@
 
 /* Begin PBXFileReference section */
 		3102E6A224E1941E00EB485F /* NativeMacBLEon.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = NativeMacBLEon.mp4; sourceTree = "<group>"; };
+		3102E6A924E4322C00EB485F /* Credits.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		3119066724B0C86900CCE7C6 /* BackendServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendServer.swift; sourceTree = "<group>"; };
 		3119066924B8B79800CCE7C6 /* translations.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = translations.js; sourceTree = "<group>"; };
 		313ECBF624D31FC400FEA8C5 /* DeviceLetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLetter.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 				31C5172224ABDE580051C05F /* css */,
 				31C5171D24ABDE1B0051C05F /* js */,
 				31C63E8924AE79A20051F104 /* index.html */,
+				3102E6A924E4322C00EB485F /* Credits.html */,
 			);
 			path = Frontend;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				31C5175024ABDF030051C05F /* img-bit.svg in Resources */,
 				31C1D5BA24D1BCEF00A83B21 /* logo-snap.svg in Resources */,
 				31C5172424ABDE610051C05F /* custom.css in Resources */,
+				3102E6AA24E4322C00EB485F /* Credits.html in Resources */,
 				31C5174E24ABDEF80051C05F /* birdbrain-technologies-logo.svg in Resources */,
 				31C5174024ABDEC00051C05F /* fa-solid-900.eot in Resources */,
 				31C5176124ABDF470051C05F /* Nunito-Regular.ttf in Resources */,
