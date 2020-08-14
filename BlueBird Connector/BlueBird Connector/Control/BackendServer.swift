@@ -19,7 +19,6 @@ class BackendServer {
     
     //Standard Responses
     private let NOT_CONNECTED = getRawResponse("Not Connected")
-    //private let INVALID_DEVICE_LETTER = getRawResponse("Invalid device letter", .badRequest(nil))
     private let INVALID_PARAMETERS = getRawResponse("Invalid parameters", .badRequest(nil))
     private let INVALID_PORT = getRawResponse("Invalid port", .badRequest(nil))
     private let INVALID_AXIS = getRawResponse("Invalid axis", .badRequest(nil))
@@ -35,7 +34,8 @@ class BackendServer {
         
         do {
             try server.start(30061)
-            print("Server has started ( port = \(try server.port()) ). Try to connect now...")
+            let port = try server.port()
+            os_log("Server has started on port [%s].", log: log, type: .debug, String(port))
         } catch {
             os_log("Server start error: [%s]", log: log, type: .error, error.localizedDescription)
         }
@@ -43,11 +43,19 @@ class BackendServer {
     }
     
     private func setupPaths() {
-/*
+
         //offline snap
-        server["/snap.html"] = handleSnapRequest(_:)
+        //server["/snap.html"] = handleSnapRequest(_:)
         //server["/snap/(.+)"] = handleSnapRequest(_:)
-        server["/snap/:path"] = handleSnapRequest(_:)
+        
+        //These look good
+        server["/snap/:filename"] = handleSnapRequest(_:)
+        server["/snap/*/:filename"] = handleSnapRequest(_:)
+        server["/snap/*/*/:filename"] = handleSnapRequest(_:)
+        server["/snap/*/*/*/:filename"] = handleSnapRequest(_:)
+        server["/snap/*/*/*/*/:filename"] = handleSnapRequest(_:)
+        
+                
         if let resourcePath = Bundle.main.resourcePath {
             //server["/snap/(.+)"] = resourcePath + "/Snap-6.1.4"
             print("SETUP")
@@ -55,7 +63,7 @@ class BackendServer {
             //server["/snap/(.+)"] = HttpHandlers.directory("~/")
             //server["/snap/:path"] = shareFilesFromDirectory(resourcePath + "/Snap-6.1.4")
         }
-*/
+
         
         //outputs for any
         server["/hummingbird/out/stopall"] = stopAllRequest(_:)
@@ -80,6 +88,7 @@ class BackendServer {
         server["/hummingbird/out/turn/:robot/:dir/:angle/:speed"] = finchTurn(_:)
         server["/hummingbird/out/wheels/:robot/:leftSpeed/:rightSpeed"] = finchWheels(_:)
         server["/hummingbird/out/stopFinch/:robot"] = stopFinch(_:)
+        server["/hummingbird/out/resetEncoders/:robot"] = resetEncoders(_:)
         
         //micro:bit sensor requests
         server["/hummingbird/in/button/:btn"] = sensorRequest(_:)
@@ -118,13 +127,17 @@ class BackendServer {
         server["/hummingbird/in/Encoder/:port/:robot"] = sensorRequest(_:)
         server["/hummingbird/in/finchIsMoving/static"] = sensorRequest(_:)
         server["/hummingbird/in/finchIsMoving/static/:robot"] = sensorRequest(_:)
+        //java/python only
+        server["/hummingbird/in/isHummingbird/static/:robot"] = sensorRequest(_:)
+        server["/hummingbird/in/isMicrobit/static/:robot"] = sensorRequest(_:)
+        server["/hummingbird/in/isFinch/static/:robot"] = sensorRequest(_:)
         
     }
     
     private func sensorRequest (_ request: HttpRequest) -> HttpResponse {
         let params = request.path.split(separator: "/")
         let sensor = params[2]
-        let port = String(params[3])
+        let port = (params.count > 3 ? String(params[3]) : "")
         
         var rIndex = 4
         if sensor == "Compass" { rIndex = 3 }
@@ -140,7 +153,6 @@ class BackendServer {
             default: return BackendServer.getRawResponse("Invalid button", .badRequest(nil))
             }
         case "orientation":
-            if robot is Finch { return NOT_CONNECTED }
             switch port {
             case "Screen Up": return BackendServer.getRawResponse(String(robot.accZ < -7.848))
             case "Screen Down": return BackendServer.getRawResponse(String(robot.accZ > 7.848))
@@ -202,8 +214,9 @@ class BackendServer {
             if let port = Int(port) {
                 guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
                 guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
-                let value = Int(round(Double(rawValue) * (117/100)))
-                return BackendServer.getRawResponse(String(value))
+                /*let value = Int(round(Double(rawValue) * (117/100)))
+                return BackendServer.getRawResponse(String(value))*/
+                return BackendServer.getRawResponse(String(rawValue))
             } else {
                 guard let robot = robot as? Finch else { return NOT_CONNECTED }
                 guard let distance = robot.finchDistance else { return NOT_CONNECTED }
@@ -213,9 +226,10 @@ class BackendServer {
             guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
             guard let port = Int(port) else { return INVALID_PORT }
             guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
-            var scaledVal = Int( round(Double(rawValue) * (100 / 230)) )
+            /*var scaledVal = Int( round(Double(rawValue) * (100 / 230)) )
             if scaledVal > 100 { scaledVal = 100 }
-            return BackendServer.getRawResponse(String(scaledVal))
+            return BackendServer.getRawResponse(String(scaledVal))*/
+            return BackendServer.getRawResponse(String(rawValue))
         case "Light":
             switch params[3] {
             case "Right", "Left":
@@ -230,22 +244,25 @@ class BackendServer {
                 guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
                 guard let port = Int(port) else { return INVALID_PORT }
                 guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
-                let value = Double(rawValue) / 2.55
-                return BackendServer.getRawResponse(String(value))
+                /*let value = Double(rawValue) / 2.55
+                return BackendServer.getRawResponse(String(value))*/
+                return BackendServer.getRawResponse(String(rawValue))
             default: return INVALID_PORT
             }
         case "Sound":
             guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
             guard let port = Int(port) else { return INVALID_PORT }
             guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
-            let value = Int( round(Double(rawValue) * (200/255)) )
-            return BackendServer.getRawResponse(String(value))
+            /*let value = Int( round(Double(rawValue) * (200/255)) )
+            return BackendServer.getRawResponse(String(value))*/
+            return BackendServer.getRawResponse(String(rawValue))
         case "Other":
             guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
             guard let port = Int(port) else { return INVALID_PORT }
             guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
-            let value = Double(rawValue) * (3.3/255)
-            return BackendServer.getRawResponse(String(value))
+            /*let value = Double(rawValue) * (3.3/255)
+            return BackendServer.getRawResponse(String(value))*/
+            return BackendServer.getRawResponse(String(rawValue))
         case "Line":
             guard let robot = robot as? Finch else { return NOT_CONNECTED }
             let onRight: Bool
@@ -275,6 +292,12 @@ class BackendServer {
                 return NOT_CONNECTED
             }
             return BackendServer.getRawResponse(String(isMoving))
+        case "isMicrobit":
+            return BackendServer.getRawResponse(String(robot is Microbit))
+        case "isHummingbird":
+            return BackendServer.getRawResponse(String(robot is Hummingbird))
+        case "isFinch":
+            return BackendServer.getRawResponse(String(robot is Finch))
         default:
             return BackendServer.getRawResponse("Invalid sensor selection", .badRequest(nil))
         }
@@ -535,6 +558,20 @@ class BackendServer {
         }
     }
     
+    private func resetEncoders (_ request: HttpRequest) -> HttpResponse {
+        let params = request.path.split(separator: "/")
+        
+        guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
+            return NOT_CONNECTED
+        }
+        
+        if robot.resetEncoders() {
+            return BackendServer.getRawResponse("finch encoders reset")
+        } else {
+            return NOT_CONNECTED
+        }
+    }
+    
     
     //MARK: Requests coming directly from frontend
     
@@ -636,4 +673,49 @@ class BackendServer {
         
         return response
     }*/
+    private func handleSnapRequest (_ request: HttpRequest) -> HttpResponse {
+        
+        let params = request.path.split(separator: "/")
+        print(params)
+        
+        guard var snapPath = Bundle.main.resourcePath else {
+            return .notFound
+        }
+        snapPath += "/Snap-6.1.4"
+        print(snapPath)
+        
+        /*guard let fileRelativePath = request.params.first else {
+            return .notFound
+        }
+        let filePath = snapPath + String.pathSeparator + fileRelativePath.value*/
+        let filePath = snapPath + request.path.dropFirst(5)
+        print("looking for \(filePath)")
+        if let file = try? filePath.openForReading() {
+            print("found")
+            //let mimeType = fileRelativePath.value.mimeType()
+            let mimeType = filePath.mimeType()
+            var responseHeader: [String: String] = ["Content-Type": mimeType]
+            
+            if let attr = try? FileManager.default.attributesOfItem(atPath: filePath),
+                let fileSize = attr[FileAttributeKey.size] as? UInt64 {
+                responseHeader["Content-Length"] = String(fileSize)
+            }
+            print(responseHeader)
+            return .raw(200, "OK", responseHeader, { writer in
+                do {
+                    try writer.write(file)
+                    file.close()
+                } catch {
+                    print(error)
+                }
+            })
+        }
+        
+        return .notFound
+    }
+    
+    
+    
 }
+
+

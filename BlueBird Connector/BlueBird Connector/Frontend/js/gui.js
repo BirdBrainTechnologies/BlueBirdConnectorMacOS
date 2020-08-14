@@ -91,7 +91,7 @@ $(document).ready(function() {
  */
 $.scanListRefresh = function() {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-    consoleLog: "scanListRefresh: " + scanDeviceList
+    consoleLog: "scanListRefresh: " + scanDeviceList.map(i => JSON.stringify(i))
   })
 
   $('#robots-found').empty();
@@ -111,7 +111,12 @@ $.scanListRefresh = function() {
     //the connect button click event
     el.find('a').click(function() {
       //if we already have 3 connections, do not add any more.
-      if (connectedDeviceList.length >= 3) { return; }
+      if (connectedDeviceList.length >= 3) {
+        sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+          consoleLog: "Ignoring click to connect. Max connected devices already reached. device count = " + connectedDeviceList.length
+        })
+        return;
+      }
 
       // Stop the scanning
       var stopScan = {
@@ -135,7 +140,7 @@ $.scanListRefresh = function() {
       }
 
       sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-        consoleLog: "Connection address = " + connect.address + "; devLetter = " + connect.devLetter
+        consoleLog: "Connection address = " + connect.address
       })
 
       // There appeared to be a conflict between stopping the scan and connecting, so experimentation

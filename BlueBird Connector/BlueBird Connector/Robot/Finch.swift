@@ -225,9 +225,17 @@ class Finch: Robot {
             when: {self.nextRobotState.trileds[i] == self.currentRobotState.trileds[i]},
             set: {self.nextRobotState.trileds[i] = TriLED(R, G, B)})
     }
+    /**
+        Reset the finch encoders
+     */
+    func resetEncoders() -> Bool {
+        self.manageableRobot.sendData(FinchConstants.RESET_ENCODERS_COMMAND)
+        return true
+    }
 }
 
 struct FinchConstants {
     static public let FINCH_TICKS_PER_CM = 49.7;
     static public let FINCH_TICKS_PER_DEGREE = 4.335;
+    static public let RESET_ENCODERS_COMMAND = Data(bytes: UnsafePointer<UInt8>([0xD5] as [UInt8]), count: 1)
 }

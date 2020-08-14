@@ -103,13 +103,12 @@ CallbackManager.bleDisabled = function() {
  * @param  {array} newList list of currently available devices.
  */
 CallbackManager.updateScanDeviceList = function(newList) {
-  sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-    consoleLog: "devices available: " + newList
-  })
+  /*sendMessageToBackend(msgTypes.CONSOLE_LOG, {
+    consoleLog: "devices available: " + newList.map(i => JSON.stringify(i))
+  })*/
   scanDeviceList = newList
 
   scanDeviceList.sort(function(a, b) {
-    //return (a.address > b.address) - (a.address < b.address);
     return (a.rssi < b.rssi) - (a.rssi > b.rssi);
   });
 
