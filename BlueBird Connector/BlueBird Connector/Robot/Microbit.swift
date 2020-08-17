@@ -37,6 +37,9 @@ class Microbit: Robot {
         return [Double(rawToMagnetometer(raw[8], raw[9])), Double(rawToMagnetometer(raw[10], raw[11])), Double(rawToMagnetometer(raw[12], raw[13]))]
     }
     
+    
+    //MARK: Public calculated values
+    
     var compass: Int {
         guard let raw = self.manageableRobot.rawInputData else { return 0 }
         let rawAcc = Array(raw[accXindex...(accXindex + 2)])
@@ -44,6 +47,8 @@ class Microbit: Robot {
         return rawToCompass(rawAcc: rawAcc, rawMag: rawMag) ?? 0
     }
     
+    
+    //MARK: init
     required init(_ mRobot: ManageableRobot) {
         self.manageableRobot = mRobot
         isConnected = true
@@ -54,6 +59,12 @@ class Microbit: Robot {
         setAllTimer.resume()
     }
     
+    
+    //MARK: Internal methods
+    
+    /**
+       Get the command to set the led array to its next value.
+    */
     internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
         guard nextCopy.ledArray != currentRobotState.ledArray,
         nextCopy.ledArray != RobotState.flashSent,

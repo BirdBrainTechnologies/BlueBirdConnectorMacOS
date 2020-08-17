@@ -80,6 +80,7 @@ class Finch: Robot {
         setAllTimer.resume()
     }
     
+    
     //MARK: Internal methods
     
     /**

@@ -15,7 +15,12 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
     
     private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "RobotManagerDelegate")
     
-    
+    /**
+        When the manager is enabled, start scan immediately. The frontendServer will notify
+        the frontend of the change automatically. When disabled, just notify the frontend.
+        The manager sends an update at the start of the program, and whenever the user
+        enables or disables ble.
+     */
     func didUpdateState(to state: UARTDeviceManagerState) {
         os_log("UARTDeviceManagerDelegate.didUpdateState to: [%s]", log: log, type: .debug, state.rawValue)
         switch state {
@@ -28,7 +33,9 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
             os_log("manager error", log: log, type: .error)
         }
     }
-
+    /**
+        Called when a new device is discovered. Send the info to update the frontend.
+     */
     func didDiscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
         
         os_log("DID DISCOVER [%s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
@@ -40,19 +47,28 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         Shared.frontendServer.notifyDeviceDiscovery(uuid: uuid, advertisementSignature: advertisementSignature, rssi: rssi)
         
     }
-
+    /**
+        Called when a previously discovered device is seen again. Update frontend if there
+        are changes in the info.
+     */
     func didRediscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
         os_log("DID REDISCOVER [%s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
         
         Shared.frontendServer.updateDeviceInfo(uuid: uuid, adSig: advertisementSignature, rssi: rssi)
 
     }
-
+    /**
+        Called when a device hasn't been seen in a while.
+     */
     func didDisappear(uuid: UUID) {
         os_log("DID DISAPPEAR [%s]", log: log, type: .debug, uuid.uuidString)
         Shared.frontendServer.notifyDeviceDidDisappear(uuid: uuid)
     }
-
+    /**
+        Called when a connection to a device has been established. Make sure everything is set
+        up properly, add the device to the backend's list of connected devices, and then notify the
+        frontend.
+     */
     func didConnectTo(uuid: UUID) {
         os_log("DID CONNECT TO [%s]", log: log, type: .debug, uuid.uuidString)
         guard let mRobot = Shared.robotManager.getDevice(uuid: uuid) else {
@@ -60,12 +76,6 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
             let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
             return
         }
-        
-        /*guard robot.type != .Unknown else {
-            os_log("Connected to robot of unknown type!", log: log, type: .error)
-            let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
-            return
-        }*/
         
         guard mRobot.notificationsRunning else {
             os_log("Connected robot failed to start notifications", log: log, type: .error)
@@ -110,8 +120,10 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
             let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
         }*/
     }
-    
-    func robotFactory(_ mRobot: ManageableRobot) -> Robot? {
+    /**
+        Helper function creates a robot object of the correct type for the given connected device.
+     */
+    private func robotFactory(_ mRobot: ManageableRobot) -> Robot? {
         let prefix = mRobot.advertisementSignature?.advertisedName.prefix(2) ?? "XX"
         switch prefix {
         case "FN": return Finch(mRobot)
@@ -120,7 +132,9 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         default: return nil
         }
     }
-
+    /**
+        Called when a device disconnects either by user choice or otherwise.
+     */
     func didDisconnectFrom(uuid: UUID, error: Error?) {
         os_log("DID DISCONNECT FROM [%s]", log: log, type: .debug, uuid.uuidString)
         if let error = error {
@@ -135,7 +149,9 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
             }
         }
     }
-
+    /**
+        Called on connection failure.
+     */
     func didFailToConnectTo(uuid: UUID, error: Error?) {
         os_log("DID FAIL TO CONNECT TO [%s] with error [%s]", log: log, type: .error, uuid.uuidString, error?.localizedDescription ?? "no error")
     }

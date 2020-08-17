@@ -37,6 +37,9 @@ class Hummingbird: Robot {
         return [Double(rawToMagnetometer(raw[8], raw[9])), Double(rawToMagnetometer(raw[10], raw[11])), Double(rawToMagnetometer(raw[12], raw[13]))]
     }
     
+    
+    //MARK: Public calculated values
+    
     var compass: Int {
         guard let raw = self.manageableRobot.rawInputData else { return 0 }
         let rawAcc = Array(raw[accXindex...(accXindex + 2)])
@@ -44,6 +47,8 @@ class Hummingbird: Robot {
         return rawToCompass(rawAcc: rawAcc, rawMag: rawMag) ?? 0
     }
     
+    
+    //MARK: init
     required init(_ mRobot: ManageableRobot) {
         self.manageableRobot = mRobot
         isConnected = true
@@ -54,6 +59,12 @@ class Hummingbird: Robot {
         setAllTimer.resume()
     }
     
+    
+    //MARK: Internal methods
+    
+    /**
+       Get the command to set the led array to its next value.
+    */
     internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
         guard nextCopy.ledArray != currentRobotState.ledArray,
         nextCopy.ledArray != RobotState.flashSent,
@@ -69,14 +80,21 @@ class Hummingbird: Robot {
         return ledArrayCommand
     }
     
+    
     //MARK: - Public Methods
     
+    /**
+        Get the raw value of the sensor at a given port
+     */
     func getHummingbirdSensor(_ port: Int) -> UInt8? {
         if (port > 3 || port < 1) { return nil }
         guard let raw = self.manageableRobot.rawInputData else { return nil }
         return raw[port - 1]
     }
     
+    /**
+        Set the intensities of the tri-led at the specified port
+     */
     func setTriLED(port: Int, R: UInt8, G: UInt8, B: UInt8) -> Bool {
         let i = port - 1
         return setOutput(ifCheck: (port > 0 && port <= 2),
@@ -84,6 +102,9 @@ class Hummingbird: Robot {
                          set: {self.nextRobotState.trileds[i] = TriLED(R, G, B)})
     }
     
+    /**
+        Set the intensity of the led at the specified port
+     */
     func setLED(port: Int, intensity: UInt8) -> Bool {
         let i = port - 1
         return setOutput(ifCheck: (port > 0 && port <= 3),
@@ -91,6 +112,9 @@ class Hummingbird: Robot {
                          set: {self.nextRobotState.leds[i] = intensity})
     }
     
+    /**
+        Set the value of the servo at the given port
+     */
     func setServo(port: Int, value: UInt8) -> Bool {
         let i = port - 1
         return setOutput(ifCheck: (port > 0 && port <= 4),
