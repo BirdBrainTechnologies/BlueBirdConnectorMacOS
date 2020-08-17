@@ -136,6 +136,11 @@ CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter)
     batteryStatus: "unknown"
   })
   $.connectedDevListRefresh()
+  scanDeviceList.forEach((device, i) => {
+    if (device.address == address) {
+      scanDeviceList.splice(i, 1)
+    }
+  });
   $.scanListRefresh();
 }
 

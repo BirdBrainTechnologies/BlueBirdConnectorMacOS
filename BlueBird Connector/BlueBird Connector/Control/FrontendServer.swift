@@ -10,6 +10,7 @@ import Foundation
 import WebKit
 import BirdbrainBLE
 import os
+import Cocoa
 
 class FrontendServer: NSObject, WKScriptMessageHandler {
     
@@ -21,6 +22,15 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     var availableDevices = [UUID: AvailableDevice]()
     var userRequestedScan: Bool = false
     var managerIsScanning: Bool = false
+    var screenIsSleeping: Bool = false
+    
+    
+    override init() {
+        super.init()
+        //Sign up for sleep/wake notifications
+        NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.screensDidWakeNotification, object: nil, queue: nil, using: screenDidWake(n:))
+        NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.screensDidSleepNotification, object: nil, queue: nil, using: screenDidSleep(n:))
+    }
     
     /**
         Add the frontend to update
@@ -30,12 +40,40 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     }
     
     
+    //MARK: Sleep/wake notifications
+    
+    /**
+        When the computer falls asleep, disconnect from all robots and stop a scan if running.
+        Robots will automatically reconnect with the next scan (which should start when the
+        screen wakes back up).
+     */
+    private func screenDidSleep(n: Notification) {
+        print("screenDidSleep")
+        screenIsSleeping = true
+        stopScan()
+        
+        for (_, robot) in Shared.backendServer.connectedRobots {
+            let _ = Shared.robotManager.disconnectFromDevice(havingUUID: robot.uuid)
+        }
+    }
+    /**
+        When the computer wakes, if there are any robots waiting to reconnect, start a scan.
+     */
+    private func screenDidWake(n: Notification) {
+        print("screenDidWake")
+        screenIsSleeping = false
+        if getAutoReconnectCount() > 0 && !managerIsScanning{
+            managerIsScanning = Shared.robotManager.startScanning()
+        }
+    }
+    
+    
     //MARK: Public methods for updating the frontend
     
     /**
         Notify the frontend of a change in scanning
      */
-    func notifiyScanState(isOn: Bool) {
+    func notifyScanState(isOn: Bool) {
         if (isOn) {
             sendToFrontend("CallbackManager.scanStarted()")
         } else {
@@ -65,7 +103,8 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         Notify the frontend that a device that was previously available, has not been seen in a while.
      */
     func notifyDeviceDidDisappear(uuid: UUID) {
-        if !(availableDevices[uuid]?.shouldAutoConnect ?? false) {
+        //if !(availableDevices[uuid]?.shouldAutoConnect ?? false) {
+        if availableDevices[uuid]?.shouldAutoConnectAs == nil {
             availableDevices[uuid] = nil
         }
         
@@ -76,6 +115,12 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
      */
     func notifyDeviceDidConnect(uuid: UUID, name: String, fancyName: String, deviceLetter: DeviceLetter) {
         availableDevices[uuid]?.isConnected = true
+        availableDevices[uuid]?.shouldAutoConnectAs = deviceLetter
+        
+        sendAvailableDeviceUpdate()
+        if getAutoReconnectCount() == 0 {
+            stopScan()
+        }
         
         let args = "'" + uuid.uuidString + "', '" + name + "', '" + fancyName + "', '" + deviceLetter.toString() + "'"
         let js = "CallbackManager.deviceDidConnect(" + args + ")"
@@ -86,14 +131,24 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         If the user did not request this disconnection, flag the device for auto reconnect.
      */
     func notifyDeviceDidDisconnect(uuid: UUID) {
+        guard let device = availableDevices[uuid] else {
+            os_log("Disconnected from unknown device", log: log, type: .error)
+            return
+        }
         availableDevices[uuid]?.isConnected = false
         
-        if !(availableDevices[uuid]?.disconnectRequested ?? true) {
-            os_log("User did not request disconnect. Attempting to reconnect automatically.", log: log, type: .error)
-            availableDevices[uuid]?.shouldAutoConnect = true
-            //Do not notify the frontend of this scan, just scan in the background and try to find it
-            if Shared.robotManager.startScanning() {
-                managerIsScanning = true
+        if device.disconnectRequested {
+            availableDevices[uuid]?.shouldAutoConnectAs = nil
+        } else {
+        //if !(availableDevices[uuid]?.disconnectRequested ?? true) {
+            os_log("User did not request disconnect. Attempting to reconnect automatically. Screen is sleeping? [%s] Manager is scanning? [%s]", log: log, type: .debug, String(screenIsSleeping), String(managerIsScanning))
+            //availableDevices[uuid]?.shouldAutoConnect = true
+            
+            //if the screen is sleeping, it will start the scan when it wakes.
+            if !screenIsSleeping && !managerIsScanning {
+                //Do not notify the frontend of this scan, just scan in the background and try to find it
+                os_log("Starting scan.", log: log, type: .debug)
+                managerIsScanning = Shared.robotManager.startScanning()
             }
         }
         
@@ -117,10 +172,11 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             os_log("Rediscovered unknown device?", log: log, type: .error)
             return
         }
-        if device.shouldAutoConnect {
+        //if device.shouldAutoConnect {
+        if device.shouldAutoConnectAs != nil {
             print("should auto connect")
-            availableDevices[uuid]?.shouldAutoConnect = false
-            stopScan()
+            //availableDevices[uuid]?.shouldAutoConnect = false
+            //stopScan()
             let _ = Shared.robotManager.connectToDevice(havingUUID: uuid)
         } else {
             var sendUpdate = false
@@ -129,8 +185,8 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
                 availableDevices[uuid]?.advertisementSignature = sig
                 sendUpdate = true
             }
-            if (rssi.intValue > (device.rssi.intValue + 20)) ||
-                (rssi.intValue < device.rssi.intValue - 20) {
+            if (rssi.intValue > (device.rssi.intValue + 30)) ||
+                (rssi.intValue < device.rssi.intValue - 30) {
                 availableDevices[uuid]?.rssi = rssi
                 sendUpdate = true
             }
@@ -157,7 +213,8 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         
         var args = "[ "
         availableDevices.forEach{(uuid, device) in
-            if !(device.isConnected || device.shouldAutoConnect) {
+            //if !(device.isConnected || device.shouldAutoConnect) {
+            if !(device.isConnected || (device.shouldAutoConnectAs != nil)) {
                 let fancyName = device.advertisementSignature.memorableName ?? device.advertisementSignature.advertisedName
                 args += "{address: '" + device.uuid.uuidString +
                     "', name: '" + device.advertisementSignature.advertisedName +
@@ -200,30 +257,56 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
      */
     func stopScan() {
         userRequestedScan = false
+        guard managerIsScanning else {
+            os_log("stopScan called when no scan is running", log: log, type: .debug)
+            return
+        }
+        
         if Shared.robotManager.stopScanning() {
             managerIsScanning = false
-            notifiyScanState(isOn: false)
+            notifyScanState(isOn: false)
         } else {
             os_log("Failed to stop scanning!", log: log, type: .error)
         }
     }
     /**
-        Start scanning for devices
+        Start scanning for devices. Called when the user clicks the find robots button, but also
+        when ble is enabled (which happens when the app starts up if ble is already on, and
+        tends to happen periodically while the computer sleeps).
      */
     func startScan() {
+        //Do not scan if screen is asleep
+        if screenIsSleeping { return }
+        
+        //we assume that the user is requesting a scan when they turn on ble
         userRequestedScan = true
-        if Shared.robotManager.startScanning() {
-            os_log("Scanning...", log: log, type: .debug)
-            managerIsScanning = true
+        
+        if !managerIsScanning {
+            managerIsScanning = Shared.robotManager.startScanning()
         } else {
-            os_log("Failed to start scanning!", log: log, type: .error)
+            os_log("startScan called when scan was already running", log: log, type: .debug)
         }
-        //If a scan was already running, startScanning will fail, but we still
+        
+        //If a scan was already running, we don't need to start a scan, but we still
         // want to notify the frontend
         if managerIsScanning {
-            notifiyScanState(isOn: true)
+            os_log("Scanning...", log: log, type: .debug)
+            notifyScanState(isOn: true)
             sendAvailableDeviceUpdate()
         }
+    }
+    /**
+        Get a count of how many devices would autoreconnect on discovery
+     */
+    private func getAutoReconnectCount() -> Int {
+        var count = 0
+        for (_, device) in availableDevices {
+            //if device.shouldAutoConnect { count += 1 }
+            if !device.isConnected && device.shouldAutoConnectAs != nil {
+                count += 1
+            }
+        }
+        return count
     }
     
     
@@ -327,8 +410,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         Handle requests to disconnect from a robot
      */
     func handleDisconnectCommand(_ fullCommand: NSDictionary) {
-        guard let devLetter = fullCommand["devLetter"] as? String,
-            let uuidString = fullCommand["address"] as? String,
+        guard let uuidString = fullCommand["address"] as? String,
             let uuid = UUID(uuidString: uuidString) else {
             os_log("Improperly formed disconnect command", log: log, type: .error)
             print(fullCommand)
@@ -398,7 +480,10 @@ struct AvailableDevice {
     var rssi: NSNumber
     var isConnected: Bool
     var disconnectRequested: Bool //did the user request disconnection
-    var shouldAutoConnect: Bool //if we see this device, connect automatically if true
+    //var shouldAutoConnect: Bool //if we see this device, connect automatically if true
+    
+    //if not nil, auto reconnect and use this device letter if possible
+    var shouldAutoConnectAs: DeviceLetter?
     
     init(uuid: UUID, advertisementSignature: AdvertisementSignature, rssi: NSNumber) {
         self.uuid = uuid
@@ -406,6 +491,6 @@ struct AvailableDevice {
         self.advertisementSignature = advertisementSignature
         self.isConnected = false
         self.disconnectRequested = false
-        self.shouldAutoConnect = false
+        //self.shouldAutoConnect = false
     }
 }

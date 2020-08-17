@@ -79,8 +79,25 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
             return
         }
         
-        var letterAssigned = false
-        for devLetter in DeviceLetter.allCases {
+        //var letterAssigned = false
+        var letterAssigned: DeviceLetter?
+        if let letter = Shared.frontendServer.availableDevices[uuid]?.shouldAutoConnectAs, Shared.backendServer.connectedRobots[letter] == nil {
+            letterAssigned = letter
+        } else {
+            for devLetter in DeviceLetter.allCases {
+                if (letterAssigned == nil && Shared.backendServer.connectedRobots[devLetter] == nil) {
+                    letterAssigned = devLetter
+                }
+            }
+        }
+        if let l = letterAssigned {
+            Shared.backendServer.connectedRobots[l] = robot
+            Shared.frontendServer.notifyDeviceDidConnect(uuid: uuid, name: robot.name, fancyName: robot.fancyName, deviceLetter: l)
+        } else {
+            os_log("Too many connections", log: log, type: .error)
+            let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
+        }
+        /*for devLetter in DeviceLetter.allCases {
             if !letterAssigned && Shared.backendServer.connectedRobots[devLetter] == nil {
                 Shared.backendServer.connectedRobots[devLetter] = robot
                 letterAssigned = true
@@ -91,7 +108,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         if !letterAssigned {
             os_log("Too many connections", log: log, type: .error)
             let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
-        }
+        }*/
     }
     
     func robotFactory(_ mRobot: ManageableRobot) -> Robot? {

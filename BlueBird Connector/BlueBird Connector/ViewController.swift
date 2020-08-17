@@ -82,6 +82,7 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
         self.webView.frame = self.view.bounds
     }
 
+    
     //MARK: WKNavigationDelegate methods
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {

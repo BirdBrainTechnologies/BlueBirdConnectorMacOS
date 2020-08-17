@@ -117,7 +117,7 @@ $.scanListRefresh = function() {
         })
         return;
       }
-
+/*
       // Stop the scanning
       var stopScan = {
         'command': 'scan',
@@ -127,7 +127,7 @@ $.scanListRefresh = function() {
       sendMessageToBackend(msgTypes.CONSOLE_LOG, {
         consoleLog: "Scan stopped"
       })
-
+*/
       // Show the spinner of a device about to appear connected
       setConnectedDisplay("show");
 
@@ -146,20 +146,20 @@ $.scanListRefresh = function() {
       // There appeared to be a conflict between stopping the scan and connecting, so experimentation
       // revealed that a 10ms wait would space the commands out enough.
       // TODO: IS THIS NECESSARY?
-      setTimeout(function() {
+//      setTimeout(function() {
 
         sendMessageToBackend(msgTypes.COMMAND, connect)
 
         //remove the connecting item from the scan list
-        removeFromScanList(item.name);
+/*        removeFromScanList(item.name);
 
         $.scanListRefresh();
 
         sendMessageToBackend(msgTypes.CONSOLE_LOG, {
           consoleLog: "removed item from scan list: " + item.name
-        })
+        })*/
 
-      }, 10);
+//      }, 10);
 
       //Connection in progress remove from displayed scan list
       el.remove();
@@ -233,7 +233,6 @@ $.connectedDevListRefresh = function() {
     el.find('.button-disconnect').click(function() {
       var data = {
         'command': 'disconnect',
-        'devLetter': item.devLetter,
         'address': item.deviceAddress
       }
       sendMessageToBackend(msgTypes.COMMAND, data)
@@ -316,13 +315,13 @@ function getDeviceImage(deviceName) {
  *
  * @param  {string} deviceName Name of the device to remove
  */
-function removeFromScanList(deviceName) {
+/*function removeFromScanList(deviceName) {
   for (var j = scanDeviceList.length - 1; j >= 0; --j) {
     if (scanDeviceList[j].name == deviceName) {
       scanDeviceList.splice(j, 1);
     }
   }
-}
+}*/
 
 /**
  * updateInternetStatus - Updates the internet indicator. Called on an interval,
@@ -390,7 +389,7 @@ function launchSnap() {
 function allRobotsAreFinches() {
   let onlyFinches = true;
   for (let i = 0; i < connectedDeviceList.length; i++) {
-    if (connectedDeviceList[i].deviceName.startsWith("FN")) {
+    if (!connectedDeviceList[i].deviceName.startsWith("FN")) {
       onlyFinches = false;
     }
   }
