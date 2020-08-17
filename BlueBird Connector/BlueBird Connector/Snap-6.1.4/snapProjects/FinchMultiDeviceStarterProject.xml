@@ -1,0 +1,1384 @@
+<project name="FinchMultiDeviceStarterProject" app="Snap! 5.0, http://snap.berkeley.edu" version="1">
+    <notes></notes>
+    <thumbnail>
+        data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAAB4CAYAAAB1ovlvAAADXklEQVR4Xu3XvUqjYRSF0TdYiKU2Wilo6w+IFt6Znd6Kt+RF2GprlWEsBqaY8TTbDWGlSXM4h6zvCSGb7Xa7XV4ESgIbAZbknf0SEKAQqgICrPI7LkANVAUEWOV3XIAaqAoIsMrvuAA1UBUQYJXfcQFqoCogwCq/4wLUQFVAgFV+xwWogaqAAKv8jgtQA1UBAVb5HRegBqoCAqzyOy5ADVQFBFjld1yAGqgKCLDK77gANVAVEGCV33EBaqAqIMAqv+MC1EBVQIBVfscFqIGqgACr/I4LUANVAQFW+R0XoAaqAgKs8jsuQA1UBQRY5XdcgBqoCgiwyu+4ADVQFRBgld9xAWqgKiDAKr/jAtRAVUCAVX7HBaiBqoAAq/yOC1ADVQEBVvkdF6AGqgICrPI7LkANVAUEWOV3XIAaqAoIsMrvuAA1UBUQ4D/4X15e1t7e3rq+vl5XV1drs9lUH9SuHhfgP57s29vbenx8XB8fH2t/f3/d39+v8/Pzr/ezs7Nd7eHHP5cA/0P++vq6np6e/pr4/Pxcx8fH6/b29ivIh4eHdXR09OMPblcOCvCbAJ+fn9d2u/0z9TvAk5OTvwI8PDzclR5+/HMI8Juf4Pf393VwcLDu7u7WxcXF10/w6enpjz+oXT0owG/+hNzc3KzLy0t/QkLfAAGGYK2dCQhw5mQqJCDAEKy1MwEBzpxMhQQEGIK1diYgwJmTqZCAAEOw1s4EBDhzMhUSEGAI1tqZgABnTqZCAgIMwVo7ExDgzMlUSECAIVhrZwICnDmZCgkIMARr7UxAgDMnUyEBAYZgrZ0JCHDmZCokIMAQrLUzAQHOnEyFBAQYgrV2JiDAmZOpkIAAQ7DWzgQEOHMyFRIQYAjW2pmAAGdOpkICAgzBWjsTEODMyVRIQIAhWGtnAgKcOZkKCQgwBGvtTECAMydTIQEBhmCtnQkIcOZkKiQgwBCstTMBAc6cTIUEBBiCtXYmIMCZk6mQgABDsNbOBAQ4czIVEhBgCNbamYAAZ06mQgICDMFaOxMQ4MzJVEhAgCFYa2cCApw5mQoJCDAEa+1MQIAzJ1MhAQGGYK2dCQhw5mQqJCDAEKy1MwEBzpxMhQQEGIK1diYgwJmTqZCAAEOw1s4EBDhzMhUSEGAI1tqZwC+DkAu3aOeKRQAAAABJRU5ErkJggg==
+    </thumbnail>
+    <stage name="Stage" width="480" height="360" costume="0" color="255,255,255,1" tempo="60" threadsafe="false"
+           volume="100" pan="0" lines="round" ternary="false" codify="false" inheritance="true" sublistIDs="false"
+           scheduled="false" id="1">
+        <pentrails>
+            data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAOhUlEQVR4Xu3VwQkAAAjEMN1/abewn7jAQRC64wgQIECAAIF3gX1fNEiAAAECBAiMAHsCAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQIHLFxAWmhEwHPAAAAAElFTkSuQmCC
+        </pentrails>
+        <costumes>
+            <list struct="atomic" id="2"></list>
+        </costumes>
+        <sounds>
+            <list struct="atomic" id="3"></list>
+        </sounds>
+        <variables></variables>
+        <blocks></blocks>
+        <scripts>
+            <script x="29" y="22">
+                <block s="receiveInteraction">
+                    <l>
+                        <option>stopped</option>
+                    </l>
+                </block>
+                <custom-block s="stop all %txt">
+                    <l>A</l>
+                </custom-block>
+            </script>
+            <script x="188" y="24">
+                <block s="receiveInteraction">
+                    <l>
+                        <option>stopped</option>
+                    </l>
+                </block>
+                <custom-block s="stop all %txt">
+                    <l>B
+                    </l>
+                </custom-block>
+            </script>
+            <script x="347" y="19">
+                <block s="receiveInteraction">
+                    <l>
+                        <option>stopped</option>
+                    </l>
+                </block>
+                <custom-block s="stop all %txt">
+                    <l>C</l>
+                </custom-block>
+            </script>
+        </scripts>
+        <sprites>
+            <sprite name="Sprite" idx="1" x="0" y="0" heading="90" scale="1" volume="100" pan="0" rotation="1"
+                    draggable="true" costume="0" color="80,80,80,1" pen="tip" id="20">
+                <costumes>
+                    <list struct="atomic" id="21"></list>
+                </costumes>
+                <sounds>
+                    <list struct="atomic" id="22"></list>
+                </sounds>
+                <blocks></blocks>
+                <variables></variables>
+                <scripts></scripts>
+            </sprite>
+        </sprites>
+    </stage>
+    <hidden>receiveCondition</hidden>
+    <headers></headers>
+    <code></code>
+    <blocks>
+        <block-definition s="Finch %&apos;devId&apos; Distance (cm)" type="reporter" category="sensing">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+            </inputs>
+            <script>
+                <block s="doDeclareVariables">
+                    <list>
+                        <l>value</l>
+                    </list>
+                </block>
+                <block s="doSetVar">
+                    <l>value</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/in/Distance/static/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+                <block s="doIfElse">
+                    <block s="reportNot">
+                        <block s="reportEquals">
+                            <block var="value"/>
+                            <l>Not Connected</l>
+                        </block>
+                    </block>
+                    <script>
+                        <block s="doReport">
+                            <block s="reportRound">
+                                <block s="reportProduct">
+                                    <l>0.0919</l>
+                                    <block var="value"/>
+                                </block>
+                            </block>
+                            <comment w="90" collapsed="false">0.0919 Scaling factor</comment>
+                        </block>
+                    </script>
+                    <script>
+                        <block s="doReport">
+                            <l>Not Connected</l>
+                        </block>
+                    </script>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; %&apos;port&apos; Light" type="reporter" category="sensing">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%txt" readonly="true">Right<options>Left&#xD;Right</options></input>
+            </inputs>
+            <script>
+                <block s="doReport">
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/in/Light/</l>
+                                <block var="port"/>
+                                <l>/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; %&apos;port&apos; Line" type="reporter" category="sensing">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%txt" readonly="true">Right<options>Left&#xD;Right</options></input>
+            </inputs>
+            <script>
+                <block s="doDeclareVariables">
+                    <list>
+                        <l>value</l>
+                    </list>
+                </block>
+                <block s="doSetVar">
+                    <l>value</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/in/Line/</l>
+                                <block var="port"/>
+                                <l>/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+                <block s="doIfElse">
+                    <block s="reportNot">
+                        <block s="reportEquals">
+                            <block var="value"/>
+                            <l>Not Connected</l>
+                        </block>
+                    </block>
+                    <script>
+                        <block s="doReport">
+                            <block s="reportRound">
+                                <block var="value"/>
+                            </block>
+                        </block>
+                    </script>
+                    <script>
+                        <block s="doReport">
+                            <l>Not Connected</l>
+                        </block>
+                    </script>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; %&apos;port&apos; Encoder (rotations)" type="reporter" category="sensing">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%txt" readonly="true">Right<options>Left&#xD;Right</options></input>
+            </inputs>
+            <script>
+                <block s="doDeclareVariables">
+                    <list>
+                        <l>value</l>
+                    </list>
+                </block>
+                <block s="doSetVar">
+                    <l>value</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/in/Encoder/</l>
+                                <block var="port"/>
+                                <l>/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+                <block s="doIfElse">
+                    <block s="reportNot">
+                        <block s="reportEquals">
+                            <block var="value"/>
+                            <l>Not Connected</l>
+                        </block>
+                    </block>
+                    <script>
+                        <block s="doReport">
+                            <block var="value"/>
+                        </block>
+                    </script>
+                    <script>
+                        <block s="doReport">
+                            <l>Not Connected</l>
+                        </block>
+                    </script>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; Reset Encoders" type="command" category="sensing">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+            </inputs>
+            <script>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/resetEncoders/</l>
+                                        <block var="devId"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
+                </block>
+                <block s="doWait">
+                    <l>0.2</l>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; Play Note %&apos;note&apos; for %&apos;beats&apos; beats" type="command"
+                          category="sound">
+            <header></header>
+            <code></code>
+            <translations>ko:Finch _ 번 음을 _ 박자로 연주하기&#xD;de:Finch Spiele Note _ für _ Schläge&#xD;pt:Finch Toque Notas _ por _ Batidas&#xD;fr:Finch Jouer la note _ pour _ battement(s)&#xD;nl:Finch Speel Noot _ voor _ Beats&#xD;zh_CN:Finch 演奏 音阶 _ 于 _ 拍&#xD;zh_TW:Finch 演奏 音階 _ 於 _ 拍&#xD;ar:Finch تشغيل الموسيقى _ _&#xD;dk:Finch Spil tone _ i _ slag&#xD;he:Finch נגן תו _ במשך _ פעימות&#xD;es:Finch Emitir un sonido _ por _ pulsos&#xD;ca:Finch Toca nota _ durant _ temps&#xD;fi:Finch Soita sävel _ _ iskun ajan&#xD;sv:Finch Spela not _ _&#xD;</translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%n">60<options>§_pianoKeyboardMenu</options></input>
+                <input type="%n">0.5</input>
+            </inputs>
+            <script>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="note"/>
+                        <l>135</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>note</l>
+                            <l>135</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <l>32</l>
+                        <block var="note"/>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>note</l>
+                            <l>32</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="beats"/>
+                        <l>16</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>beats</l>
+                            <l>16</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <l>0</l>
+                        <block var="beats"/>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>beats</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doSetVar">
+                    <l>beats</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block s="reportQuotient">
+                                <l>60000</l>
+                                <block s="getTempo"></block>
+                            </block>
+                            <block var="beats"/>
+                        </block>
+                        <comment w="242" collapsed="false">BPM = tempo&#xD;60 * 1000/BPM = BPMS beats per millisecond&#xD;beats
+                            = Duration in ms = BPMS * number of beats
+                        </comment>
+                    </block>
+                </block>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/playnote/</l>
+                                        <block var="note"/>
+                                        <l>/</l>
+                                        <block var="beats"/>
+                                        <l>/</l>
+                                        <block var="devId"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
+                </block>
+                <block s="doWait">
+                    <block s="reportQuotient">
+                        <block var="beats"/>
+                        <l>1000</l>
+                    </block>
+                    <comment w="205" collapsed="false">block for number of seconds</comment>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; Move %&apos;direction&apos; %&apos;distance&apos; cm at %&apos;speed&apos; %" type="command"
+                          category="motion">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%txt" readonly="true">Forward<options>Forward&#xD;Backward</options></input>
+                <input type="%n">10</input>
+                <input type="%n">50</input>
+            </inputs>
+            <script>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="distance"/>
+                        <l>-10000</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>distance</l>
+                            <l>-10000</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="distance"/>
+                        <l>10000</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>distance</l>
+                            <l>10000</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="speed"/>
+                        <l>0</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>speed</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="speed"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>speed</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doDeclareVariables">
+                    <list><l>wasMoving</l><l>isMoving</l><l>commandSendTime</l></list>
+                </block>
+                <block s="doSetVar">
+                    <l>isMoving</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/in/finchIsMoving/static/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+                <block s="doSetVar"><l>wasMoving</l><block var="isMoving"/></block>
+                <block s="doSetVar">
+                    <l>commandSendTime</l>
+                    <block s="reportDate">
+                        <l>
+                            <option>time in milliseconds</option>
+                        </l>
+                    </block>
+                </block>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/move/</l>
+                                        <block var="devId"/>
+                                        <l>/</l>
+                                        <block var="direction"/>
+                                        <l>/</l>
+                                        <block var="distance"/>
+                                        <l>/</l>
+                                        <block var="speed"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
+                </block>
+                <block s="doUntil">
+                    <block s="reportOr">
+                        <block s="reportAnd">
+                            <block s="reportOr">
+                                <block s="reportEquals"><block var="wasMoving"/><l>true</l></block>
+                                <block s="reportGreaterThan">
+                                    <block s="reportDate">
+                                        <l>
+                                            <option>time in milliseconds</option>
+                                        </l>
+                                    </block>
+                                    <block s="reportSum">
+                                        <block var="commandSendTime"/>
+                                        <l>500</l>
+                                    </block>
+                                </block>
+                            </block>
+                            <block s="reportEquals"><block var="isMoving"/><l>false</l></block>
+                        </block>
+                        <block s="reportEquals"><block var="isMoving"/><l>Not Connected</l></block>
+                    </block>
+                    <script>
+                        <block s="doSetVar"><l>wasMoving</l><block var="isMoving"/></block>
+                        <block s="doWait"><l>0.01</l></block>
+                        <block s="doSetVar">
+                            <l>isMoving</l>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/in/finchIsMoving/static/</l>
+                                        <block var="devId"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </block>
+                    </script>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; Turn %&apos;direction&apos; %&apos;angle&apos; ° at %&apos;speed&apos; %" type="command"
+                          category="motion">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%txt" readonly="true">Right<options>Right&#xD;Left</options></input>
+                <input type="%n">90</input>
+                <input type="%n">50</input>
+            </inputs>
+            <script>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="angle"/>
+                        <l>-360000</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>angle</l>
+                            <l>-360000</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="angle"/>
+                        <l>360000</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>angle</l>
+                            <l>360000</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="speed"/>
+                        <l>0</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>speed</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="speed"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>speed</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doDeclareVariables">
+                    <list><l>wasMoving</l><l>isMoving</l><l>commandSendTime</l></list>
+                </block>
+                <block s="doSetVar">
+                    <l>isMoving</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/in/finchIsMoving/static/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+                <block s="doSetVar"><l>wasMoving</l><block var="isMoving"/></block>
+                <block s="doSetVar">
+                    <l>commandSendTime</l>
+                    <block s="reportDate">
+                        <l>
+                            <option>time in milliseconds</option>
+                        </l>
+                    </block>
+                </block>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/turn/</l>
+                                        <block var="devId"/>
+                                        <l>/</l>
+                                        <block var="direction"/>
+                                        <l>/</l>
+                                        <block var="angle"/>
+                                        <l>/</l>
+                                        <block var="speed"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
+                </block>
+                <block s="doUntil">
+                    <block s="reportOr">
+                        <block s="reportAnd">
+                            <block s="reportOr">
+                                <block s="reportEquals"><block var="wasMoving"/><l>true</l></block>
+                                <block s="reportGreaterThan">
+                                    <block s="reportDate">
+                                        <l>
+                                            <option>time in milliseconds</option>
+                                        </l>
+                                    </block>
+                                    <block s="reportSum">
+                                        <block var="commandSendTime"/>
+                                        <l>500</l>
+                                    </block>
+                                </block>
+                            </block>
+                            <block s="reportEquals"><block var="isMoving"/><l>false</l></block>
+                        </block>
+                        <block s="reportEquals"><block var="isMoving"/><l>Not Connected</l></block>
+                    </block>
+                    <script>
+                        <block s="doSetVar"><l>wasMoving</l><block var="isMoving"/></block>
+                        <block s="doWait"><l>0.01</l></block>
+                        <block s="doSetVar">
+                            <l>isMoving</l>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/in/finchIsMoving/static/</l>
+                                        <block var="devId"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </block>
+                    </script>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; Wheels L %&apos;left&apos; % R %&apos;right&apos; %" type="command" category="motion">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%n">0</input>
+                <input type="%n">0</input>
+            </inputs>
+            <script>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="left"/>
+                        <l>-100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>left</l>
+                            <l>-100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="left"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>left</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="right"/>
+                        <l>-100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>right</l>
+                            <l>-100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="right"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>right</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/wheels/</l>
+                                        <block var="devId"/>
+                                        <l>/</l>
+                                        <block var="left"/>
+                                        <l>/</l>
+                                        <block var="right"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; Stop" type="command" category="motion">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+            </inputs>
+            <script>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/stopFinch/</l>
+                                        <block var="devId"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
+                </block>
+                <block s="doWait">
+                    <l>0</l>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; Beak R %&apos;redLED&apos; % G %&apos;greenLED&apos; % B %&apos;blueLED&apos; %"
+                          type="command" category="looks">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%n">0</input>
+                <input type="%n">0</input>
+                <input type="%n">0</input>
+            </inputs>
+            <script>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="redLED"/>
+                        <l>0</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>redLED</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="redLED"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>redLED</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doSetVar">
+                    <l>redLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="redLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="true">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="greenLED"/>
+                        <l>0</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>greenLED</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="greenLED"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>greenLED</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doSetVar">
+                    <l>greenLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="greenLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="true">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="blueLED"/>
+                        <l>0</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>blueLED</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="blueLED"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>blueLED</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doSetVar">
+                    <l>blueLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="blueLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="true">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/triled/1/</l>
+                                        <block var="redLED"/>
+                                        <l>/</l>
+                                        <block var="greenLED"/>
+                                        <l>/</l>
+                                        <block var="blueLED"/>
+                                        <l>/</l>
+                                        <block var="devId"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; Tail %&apos;port&apos; R %&apos;redLED&apos; % G %&apos;greenLED&apos; % B %&apos;blueLED&apos; %"
+                type="command" category="looks">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%txt" readonly="true">all<options>all&#xD;1&#xD;2&#xD;3&#xD;4</options></input>
+                <input type="%n">0</input>
+                <input type="%n">0</input>
+                <input type="%n">0</input>
+            </inputs>
+            <script>
+                <block s="doIf">
+                    <block s="reportNot">
+                            <block s="reportEquals">
+                                <block var="port"/>
+                                <l>all</l>
+                            </block>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>port</l>
+                            <block s="reportSum">
+                                <block var="port"/>
+                                <l>1</l>
+                            </block>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="redLED"/>
+                        <l>0</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>redLED</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="redLED"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>redLED</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doSetVar">
+                    <l>redLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="redLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="true">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="greenLED"/>
+                        <l>0</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>greenLED</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="greenLED"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>greenLED</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doSetVar">
+                    <l>greenLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="greenLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="true">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="blueLED"/>
+                        <l>0</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>blueLED</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportGreaterThan">
+                        <block var="blueLED"/>
+                        <l>100</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>blueLED</l>
+                            <l>100</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doSetVar">
+                    <l>blueLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="blueLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="true">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/triled/</l>
+                                        <block var="port"/>
+                                        <l>/</l>
+                                        <block var="redLED"/>
+                                        <l>/</l>
+                                        <block var="greenLED"/>
+                                        <l>/</l>
+                                        <block var="blueLED"/>
+                                        <l>/</l>
+                                        <block var="devId"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="micro:bit %&apos;devId&apos; Button %&apos;button&apos;" type="predicate"
+                          category="sensing">
+            <header></header>
+            <code></code>
+            <translations>ko:micro:bit _ 버튼 _&#xD;de:micro:bit _ Knopf _&#xD;pt:micro:bit _ Tecla _&#xD;fr:micro:bit _ Bouton _&#xD;nl:micro:bit _ Knop _&#xD;zh_CN:micro:bit _ 按钮 _&#xD;zh_TW:micro:bit _ 按鈕 _&#xD;ar:micro:bit _ زر _&#xD;dk:micro:bit _ Knap _&#xD;he:micro:bit _ לחצן _&#xD;es:micro:bit _ Pulsador _&#xD;ca:micro:bit _ Botó _&#xD;fi:micro:bit _ Painike _&#xD;sv:micro:bit _ Knapp _&#xD;</translations>
+            <inputs>
+                <input type="%s" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%txt" readonly="true">A<options>A&#xD;B</options></input>
+            </inputs>
+            <script>
+                <block s="doIfElse">
+                    <block s="reportEquals">
+                        <block s="reportURL">
+                            <block s="reportJoinWords">
+                                <list>
+                                    <l>http://127.0.0.1:30061/hummingbird/in/button</l>
+                                    <l>/</l>
+                                    <block var="button"/>
+                                    <l>/</l>
+                                    <block var="devId"/>
+                                </list>
+                            </block>
+                        </block>
+                        <l>true</l>
+                    </block>
+                    <script>
+                        <block s="doReport">
+                            <block s="reportBoolean">
+                                <l>
+                                    <bool>true</bool>
+                                </l>
+                            </block>
+                        </block>
+                    </script>
+                    <script>
+                        <block s="doReport">
+                            <block s="reportBoolean">
+                                <l>
+                                    <bool>false</bool>
+                                </l>
+                            </block>
+                        </block>
+                    </script>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; %&apos;dim&apos;" type="predicate" category="sensing">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%txt" readonly="true">Beak Up<options>Beak Up&#xD;Beak Down&#xD;Tilt Left&#xD;Tilt Right&#xD;Level&#xD;Upside Down&#xD;Shake</options></input>
+            </inputs>
+            <script>
+                <block s="doIfElse">
+                    <block s="reportEquals">
+                        <block s="reportURL">
+                            <block s="reportJoinWords">
+                                <list>
+                                    <l>http://127.0.0.1:30061/hummingbird/in/finchOrientation/</l>
+                                    <block var="dim"/>
+                                    <l>/</l>
+                                    <block var="devId"/>
+                                </list>
+                            </block>
+                        </block>
+                        <l>true</l>
+                    </block>
+                    <script>
+                        <block s="doReport">
+                            <block s="reportBoolean">
+                                <l>
+                                    <bool>true</bool>
+                                </l>
+                            </block>
+                        </block>
+                    </script>
+                    <script>
+                        <block s="doReport">
+                            <block s="reportBoolean">
+                                <l>
+                                    <bool>false</bool>
+                                </l>
+                            </block>
+                        </block>
+                    </script>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; %&apos;device&apos; %&apos;dim&apos;" type="reporter" category="sensing">
+            <header></header>
+            <code></code>
+            <translations></translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%s" readonly="true">Accelerometer (m/s²)<options>Accelerometer (m/s²)&#xD;Magnetometer (µT)</options></input>
+                <input type="%txt" readonly="true">X<options>X&#xD;Y&#xD;Z</options></input>
+            </inputs>
+            <script>
+                <block s="doIf">
+                    <block s="reportEquals">
+                        <block var="device"/>
+                        <l>Accelerometer (m/s²)</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>device</l>
+                            <l>finchAccel</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
+                    <block s="reportEquals">
+                        <block var="device"/>
+                        <l>Magnetometer (µT)</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>device</l>
+                            <l>finchMag</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doReport">
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/in/</l>
+                                <block var="device"/>
+                                <l>/</l>
+                                <block var="dim"/>
+                                <l>/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="Finch %&apos;devId&apos; Compass" type="reporter" category="sensing">
+            <header></header>
+            <code></code>
+            <translations>ko:Finch _ 나침반 센서&#xD;de:Finch _ Kompass&#xD;pt:Finch _ Bússola&#xD;fr:Finch _ Compas&#xD;nl:Finch _ Kompas&#xD;zh_CN:Finch _ 指南针&#xD;zh_TW:Finch _ 指南針&#xD;ar:Finch _ بوصلة&#xD;dk:Finch _ Kompas&#xD;he:Finch _ מצפן&#xD;es:Finch _ Brujula&#xD;ca:Finch _ Brúixola&#xD;fi:Finch _ Kompassi&#xD;sv:Finch _ Kompass&#xD;</translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+            </inputs>
+            <script>
+                <block s="doReport">
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/in/</l>
+                                <l>finchCompass/static</l>
+                                <l>/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="micro:bit Print %&apos;devId&apos; %&apos;string&apos;" type="command" category="looks">
+            <header></header>
+            <code></code>
+            <translations>ko:micro:bit _ 출력 _&#xD;de:micro:bit _ Drucke _&#xD;pt:micro:bit _ Imprimir _&#xD;fr:micro:bit _ Imprimer _&#xD;nl:micro:bit _ Schrijf _&#xD;zh_CN:micro:bit _ 打印 _&#xD;zh_TW:micro:bit _ 打印 _&#xD;ar:micro:bit _ طباعة _&#xD;dk:micro:bit _ Vis _&#xD;he:micro:bit _ הדפס _&#xD;es:micro:bit _ Imprimir _&#xD;ca:micro:bit _ Escriu _&#xD;fi:micro:bit _ Näytä teksti _&#xD;sv:micro:bit _ Visa text _&#xD;</translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%s">Hello</input>
+            </inputs>
+            <script>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/print/</l>
+                                        <block var="string"/>
+                                        <l>/</l>
+                                        <block var="devId"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                </block>
+                <block s="doWait">
+                    <block s="reportProduct">
+                        <block s="reportStringSize">
+                            <block var="string"/>
+                        </block>
+                        <l>0.6</l>
+                    </block>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition
+                s="micro:bit %&apos;devId&apos; Display $nl %&apos;11&apos; %&apos;12&apos; %&apos;13&apos; %&apos;14&apos; %&apos;15&apos; $nl %&apos;21&apos; %&apos;22&apos; %&apos;23&apos; %&apos;24&apos; %&apos;25&apos; $nl %&apos;31&apos; %&apos;32&apos; %&apos;33&apos; %&apos;34&apos; %&apos;35&apos; $nl %&apos;41&apos; %&apos;42&apos; %&apos;43&apos; %&apos;44&apos; %&apos;45&apos; $nl %&apos;51&apos; %&apos;52&apos; %&apos;53&apos; %&apos;54&apos; %&apos;55&apos;"
+                type="command" category="looks">
+            <header></header>
+            <code></code>
+            <translations>ko:micro:bit _ 보이기 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;de:micro:bit _ LED Anzeige _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;pt:micro:bit _ Visor _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;fr:micro:bit _ Display _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;nl:micro:bit _ Scherm _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;zh_CN:micro:bit _ 显示 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;zh_TW:micro:bit _ 顯示 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;ar:micro:bit _ عرض _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;dk:micro:bit _ Display _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;he:micro:bit _ מסך _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;es:micro:bit _ Monitor _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;ca:micro:bit _ Pantalla _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;fi:micro:bit _ Näytä _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;sv:micro:bit _ Skärm _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _&#xD;</translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+                <input type="%b">false</input>
+            </inputs>
+            <script>
+                <block s="doReport">
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/symbol/</l>
+                                <block var="devId"/>
+                                <l>/</l>
+                                <block var="11"/>
+                                <l>/</l>
+                                <block var="12"/>
+                                <l>/</l>
+                                <block var="13"/>
+                                <l>/</l>
+                                <block var="14"/>
+                                <l>/</l>
+                                <block var="15"/>
+                                <l>/</l>
+                                <block var="21"/>
+                                <l>/</l>
+                                <block var="22"/>
+                                <l>/</l>
+                                <block var="23"/>
+                                <l>/</l>
+                                <block var="24"/>
+                                <l>/</l>
+                                <block var="25"/>
+                                <l>/</l>
+                                <block var="31"/>
+                                <l>/</l>
+                                <block var="32"/>
+                                <l>/</l>
+                                <block var="33"/>
+                                <l>/</l>
+                                <block var="34"/>
+                                <l>/</l>
+                                <block var="35"/>
+                                <l>/</l>
+                                <block var="41"/>
+                                <l>/</l>
+                                <block var="42"/>
+                                <l>/</l>
+                                <block var="43"/>
+                                <l>/</l>
+                                <block var="44"/>
+                                <l>/</l>
+                                <block var="45"/>
+                                <l>/</l>
+                                <block var="51"/>
+                                <l>/</l>
+                                <block var="52"/>
+                                <l>/</l>
+                                <block var="53"/>
+                                <l>/</l>
+                                <block var="54"/>
+                                <l>/</l>
+                                <block var="55"/>
+                                <l>/</l>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+            </script>
+        </block-definition>
+        <block-definition s="stop all %&apos;devId&apos;" type="command" category="control">
+            <header></header>
+            <code></code>
+            <translations>ko:모두 멈추기 _&#xD;de:stoppe alles _&#xD;pt:pare todos _&#xD;fr:stop tout _&#xD;nl:stop alle _&#xD;zh_CN:停止 全部 _&#xD;zh_TW:停止 全部 _&#xD;ar:توقف الكل _&#xD;dk:stop alle _&#xD;he:להפסיק הכל _&#xD;es:detener todo _&#xD;ca:atura tot _&#xD;fi:pysäytä kaikki _&#xD;sv:stop allt _&#xD;</translations>
+            <inputs>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+            </inputs>
+            <script>
+                <block s="doReport">
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/stopall/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
+                </block>
+            </script>
+        </block-definition>
+    </blocks>
+    <variables></variables>
+</project>
