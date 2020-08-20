@@ -120,6 +120,7 @@ class BackendServer {
         server["/hummingbird/in/Sound/:port/:robot"] = sensorRequest(_:)
         server["/hummingbird/in/Other/:port"] = sensorRequest(_:)
         server["/hummingbird/in/Other/:port/:robot"] = sensorRequest(_:)
+        server["/hummingbird/in/sensor/:port/:robot"] = sensorRequest(_:)
         //Finch only sensors
         server["/hummingbird/in/Line/:port"] = sensorRequest(_:)
         server["/hummingbird/in/Line/:port/:robot"] = sensorRequest(_:)
@@ -262,6 +263,11 @@ class BackendServer {
             guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
             /*let value = Double(rawValue) * (3.3/255)
             return BackendServer.getRawResponse(String(value))*/
+            return BackendServer.getRawResponse(String(rawValue))
+        case "sensor": //used in java and python libraries
+            guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }
+            guard let port = Int(port) else { return INVALID_PORT }
+            guard let rawValue = robot.getHummingbirdSensor(port) else { return NOT_CONNECTED }
             return BackendServer.getRawResponse(String(rawValue))
         case "Line":
             guard let robot = robot as? Finch else { return NOT_CONNECTED }

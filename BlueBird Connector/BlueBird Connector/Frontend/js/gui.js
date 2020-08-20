@@ -224,7 +224,7 @@ $.connectedDevListRefresh = function() {
       case "yellow":
         battery.addClass("fa-battery-half");
         break;
-      case "green":
+      case "red":
         battery.addClass("fa-battery-quarter");
       break
     }

@@ -17,6 +17,11 @@ class Shared {
         return rmSingleton
     }
     
+    private static let rmdSingleton = RobotManagerDelegate()
+    public static var robotManagerDelegate: RobotManagerDelegate {
+        return rmdSingleton
+    }
+    
     private static let fsSingleton = FrontendServer()
     public static var frontendServer: FrontendServer {
         return fsSingleton

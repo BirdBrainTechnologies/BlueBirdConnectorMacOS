@@ -86,6 +86,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         is notified in that way.
      */
     func notifyBleDisabled() {
+        if screenIsSleeping { return }
         sendToFrontend("CallbackManager.bleDisabled()")
     }
     /**
@@ -137,12 +138,9 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         }
         availableDevices[uuid]?.isConnected = false
         
-        if device.disconnectRequested {
-            availableDevices[uuid]?.shouldAutoConnectAs = nil
-        } else {
-        //if !(availableDevices[uuid]?.disconnectRequested ?? true) {
+        if (device.shouldAutoConnectAs != nil) {
             os_log("User did not request disconnect. Attempting to reconnect automatically. Screen is sleeping? [%s] Manager is scanning? [%s]", log: log, type: .debug, String(screenIsSleeping), String(managerIsScanning))
-            //availableDevices[uuid]?.shouldAutoConnect = true
+            
             
             //if the screen is sleeping, it will start the scan when it wakes.
             if !screenIsSleeping && !managerIsScanning {
@@ -172,11 +170,10 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             os_log("Rediscovered unknown device?", log: log, type: .error)
             return
         }
-        //if device.shouldAutoConnect {
+        
         if device.shouldAutoConnectAs != nil {
-            print("should auto connect")
-            //availableDevices[uuid]?.shouldAutoConnect = false
-            //stopScan()
+            //This device was connected. Disconnect has not been requested by the user
+            // so we will automatically reconnect on rediscovery.
             let _ = Shared.robotManager.connectToDevice(havingUUID: uuid)
         } else {
             var sendUpdate = false
@@ -213,7 +210,6 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         
         var args = "[ "
         availableDevices.forEach{(uuid, device) in
-            //if !(device.isConnected || device.shouldAutoConnect) {
             if !(device.isConnected || (device.shouldAutoConnectAs != nil)) {
                 let fancyName = device.advertisementSignature.memorableName ?? device.advertisementSignature.advertisedName
                 args += "{address: '" + device.uuid.uuidString +
@@ -301,7 +297,6 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     private func getAutoReconnectCount() -> Int {
         var count = 0
         for (_, device) in availableDevices {
-            //if device.shouldAutoConnect { count += 1 }
             if !device.isConnected && device.shouldAutoConnectAs != nil {
                 count += 1
             }
@@ -416,7 +411,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             print(fullCommand)
             return
         }
-        availableDevices[uuid]?.disconnectRequested = true
+        availableDevices[uuid]?.shouldAutoConnectAs = nil
         
         let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
     }
@@ -479,8 +474,6 @@ struct AvailableDevice {
     var advertisementSignature: AdvertisementSignature
     var rssi: NSNumber
     var isConnected: Bool
-    var disconnectRequested: Bool //did the user request disconnection
-    //var shouldAutoConnect: Bool //if we see this device, connect automatically if true
     
     //if not nil, auto reconnect and use this device letter if possible
     var shouldAutoConnectAs: DeviceLetter?
@@ -490,7 +483,5 @@ struct AvailableDevice {
         self.rssi = rssi
         self.advertisementSignature = advertisementSignature
         self.isConnected = false
-        self.disconnectRequested = false
-        //self.shouldAutoConnect = false
     }
 }

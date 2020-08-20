@@ -23,8 +23,7 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
         super.viewDidLoad()
         os_log("viewdidload", log: log, type: .debug)
         
-        let delegate = RobotManagerDelegate()
-        Shared.robotManager.delegate = delegate
+        Shared.robotManager.delegate = Shared.robotManagerDelegate
         
         let config = WKWebViewConfiguration()
         let contentController = WKUserContentController()
