@@ -616,6 +616,8 @@
                         </block>
                     </script>
                 </block>
+                <custom-block s="Finch Stop"><comment w="170" collapsed="true">Compensate for firmware bug</comment></custom-block>
+                <block s="doWait"><l>0.1</l></block>
             </script>
         </block-definition>
         <block-definition s="Finch Turn %&apos;direction&apos; %&apos;angle&apos; ° at %&apos;speed&apos; %" type="command"
@@ -747,6 +749,8 @@
                         </block>
                     </script>
                 </block>
+                <custom-block s="Finch Stop"><comment w="170" collapsed="true">Compensate for firmware bug</comment></custom-block>
+                <block s="doWait"><l>0.1</l></block>
             </script>
         </block-definition>
         <block-definition s="Finch Wheels L %&apos;left&apos; % R %&apos;right&apos; %" type="command" category="motion">
@@ -807,75 +811,22 @@
                     </script>
                 </block>
                 <block s="doRun">
-                    <block s="reportJSFunction">
-                        <list>
-                            <l>left</l>
-                            <l>right</l>
-                        </list>
-                        <l>
-                            ////////////////////////////////////////////////////////////////////////////////
-                            // In order to avoid sending more messages than the app can handle, whenever we
-                            // send a message we also save it in a persistent global variable. When the
-                            // message is processed in the app, the callback checks if the global variable
-                            // still matches what it was changed to. If it was, it deletes the global
-                            // variable. Otherwise the message is resent with new data.
-                            //
-                            // When this block is called it checks if the global value has been set. If it
-                            // has, it sends a message. Otherwise it just updates the value and lets the
-                            // callback handle it.
-                            //
-                            // We can&apos;t run code beforehand to define values so we must check each block
-                            // call if they are set.
-
-                            if (window.birdbrain === undefined || window.birdbrain.wheels === undefined) {
-                            window.birdbrain = window.birdbrain || {};
-                            window.birdbrain.wheels = {
-                            // By attaching this function to a global variable, it is only
-                            // defined once instead of every time this block is called, improving
-                            // performance significantly.
-
-                            setWheels: function (left, right) {
-                            function callback() {
-                            if ((window.birdbrain.wheels.speeds[0] === left) && (window.birdbrain.wheels.speeds[1] === right)) {
-                            delete window.birdbrain.wheels.speeds;
-                            } else {
-                            window.birdbrain.wheels.setWheels(window.birdbrain.wheels.speeds[0], window.birdbrain.wheels.speeds[1]);
-                            }
-                            }
-                            //Create a new XMLHttpRequest object
-                            var xhr = new XMLHttpRequest();
-                            var thisURL = "http://127.0.0.1:30061/hummingbird/out/wheels/A/" + left + "/" + right;
-                            //console.log("thisURL: " + thisURL);
-                            xhr.open("GET", thisURL, true);
-                            xhr.onload = function (e) {
-                            if (xhr.readyState === 4) {
-                            if (xhr.status === 200) {
-                            callback();
-                            } else {
-                            console.error(xhr.statusText);
-                            }
-                            }
-                            };
-
-                            xhr.onerror = function (e) {
-                            console.error(xhr.statusText);
-                            };
-
-                            xhr.send(null);
-                            }
-                            };
-                            }
-
-                            if (window.birdbrain.wheels.speeds === undefined) {
-                            window.birdbrain.wheels.setWheels(left, right);
-                            }
-                            window.birdbrain.wheels.speeds = [left, right];
-                        </l>
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/wheels/A/</l>
+                                        <block var="left"/>
+                                        <l>/</l>
+                                        <block var="right"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
                     </block>
-                    <list>
-                        <block var="left"/>
-                        <block var="right"/>
-                    </list>
+                    <list></list>
                 </block>
             </script>
         </block-definition>
@@ -989,144 +940,57 @@
                         </block>
                     </script>
                 </block>
-                <block s="doRun">
-                    <block s="reportJSFunction">
-                        <list>
-                            <l>rednum</l>
-                            <l>greennum</l>
-                            <l>bluenum</l>
-                        </list>
-                        <l>
-var realPort = 0;
-////////////////////////////////////////////////////////////////////////////////
-// In order to avoid sending more messages than the app can handle, whenever we
-// send a message we also save it in a persistent global variable. When the
-// message is processed in the app, the callback checks if the global variable
-// still matches what it was changed to. If it was, it deletes the global
-// variable. Otherwise the message is resent with new data.
-//
-// When this block is called it checks if the global value has been set. If it
-// has, it sends a message. Otherwise it just updates the value and lets the
-// callback handle it.
-//
-// We can&apos;t run code beforehand to define values so we must check each block
-// call if they are set.
-
-if (window.birdbrain === undefined || window.birdbrain.triLEDs === undefined) {
-    window.birdbrain = window.birdbrain || {};
-    window.birdbrain.triLEDs = {
-    // By attaching this function to a global variable, it is only
-    // defined once instead of every time this block is called, improving
-    // performance significantly.
-
-        setLEDIntensities: function(port, intensities) {
-            function callback() {
-                if (JSON.stringify(window.birdbrain.triLEDs[port]) === JSON.stringify(intensities)) {
-                    delete window.birdbrain.triLEDs[port];
-                } else {
-                    window.birdbrain.triLEDs.setLEDIntensities(port, window.birdbrain.triLEDs[port]);
-                }
-             }
-            //Create a new XMLHttpRequest object
-            var xhr = new XMLHttpRequest();
-            var actualPort = port+1;
-            /* Note RGB:
-                red: intensities[0],
-                green: intensities[1],
-                blue: intensities[2]
-            */
-
-            var thisURL = "http://127.0.0.1:30061/hummingbird/out/triled/" + actualPort + "/" + intensities[0] + "/" + intensities[1] + "/" + intensities[2];
-            //console.log("thisURL: " + thisURL);
-
-            xhr.open("GET", thisURL, true);
-            xhr.onload = function (e) {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        callback();
-                    } else {
-                        console.error(xhr.statusText);
-                    }
-                }
-            };
-            xhr.onerror = function (e) {
-                console.error(xhr.statusText);
-            };
-            xhr.send(null);
-        }
-    }
-}
-var realIntensities = [rednum, greennum, bluenum].map(function(intensity) {
-    return Math.floor(Math.max(Math.min(intensity*2.55, 255), 0));
-});
-
-if (window.birdbrain.triLEDs[realPort] === undefined) {
-    window.birdbrain.triLEDs.setLEDIntensities(realPort, realIntensities);
-}
-window.birdbrain.triLEDs[realPort] = realIntensities;
-
-                        </l>
+                <block s="doSetVar">
+                    <l>redLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="redLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="false">Scale factor 255/100</comment>
+                        </block>
                     </block>
-                    <list>
-                        <block var="redLED"/>
-                        <block var="greenLED"/>
-                        <block var="blueLED"/>
-                    </list>
                 </block>
-                <block s="doWait">
-                    <l>0</l>
+                <block s="doSetVar">
+                    <l>blueLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="blueLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="false">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doSetVar">
+                    <l>greenLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="greenLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="false">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/triled/1/</l>
+                                        <block var="redLED"/>
+                                        <l>/</l>
+                                        <block var="greenLED"/>
+                                        <l>/</l>
+                                        <block var="blueLED"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
                 </block>
             </script>
-            <scripts>
-                <script x="251.42857142857144" y="108.85714285714293">
-                    <block s="doSetVar">
-                        <l>redLED</l>
-                        <block s="reportRound">
-                            <block s="reportProduct">
-                                <block var="redLED"/>
-                                <l>2.55</l>
-                                <comment w="90" collapsed="false">Scale factor 255/100</comment>
-                            </block>
-                        </block>
-                    </block>
-                    <block s="doSetVar">
-                        <l>blueLED</l>
-                        <block s="reportRound">
-                            <block s="reportProduct">
-                                <block var="blueLED"/>
-                                <l>2.55</l>
-                                <comment w="90" collapsed="false">Scale factor 255/100</comment>
-                            </block>
-                        </block>
-                    </block>
-                    <block s="doSetVar">
-                        <l>greenLED</l>
-                        <block s="reportRound">
-                            <block s="reportProduct">
-                                <block var="greenLED"/>
-                                <l>2.55</l>
-                                <comment w="90" collapsed="false">Scale factor 255/100</comment>
-                            </block>
-                        </block>
-                    </block>
-                    <block s="doReport">
-                        <block s="reportURL">
-                            <block s="reportJoinWords">
-                                <list>
-                                    <l>http://127.0.0.1:30061/hummingbird/out/triled/</l>
-                                    <l></l>
-                                    <l>/</l>
-                                    <l></l>
-                                    <l>/</l>
-                                    <l></l>
-                                    <l>/</l>
-                                    <l></l>
-                                </list>
-                            </block>
-                        </block>
-                    </block>
-                </script>
-            </scripts>
         </block-definition>
         <block-definition s="Finch Tail %&apos;port&apos; R %&apos;redLED&apos; % G %&apos;greenLED&apos; % B %&apos;blueLED&apos; %"
                 type="command" category="looks">
@@ -1213,96 +1077,57 @@ window.birdbrain.triLEDs[realPort] = realIntensities;
                         </block>
                     </script>
                 </block>
-                <block s="doRun">
-                    <block s="reportJSFunction">
-                        <list>
-                            <l>port</l>
-                            <l>rednum</l>
-                            <l>greennum</l>
-                            <l>bluenum</l>
-                        </list>
-                        <l>
-var realPort = port;
-
-////////////////////////////////////////////////////////////////////////////////
-// In order to avoid sending more messages than the app can handle, whenever we
-// send a message we also save it in a persistent global variable. When the
-// message is processed in the app, the callback checks if the global variable
-// still matches what it was changed to. If it was, it deletes the global
-// variable. Otherwise the message is resent with new data.
-//
-// When this block is called it checks if the global value has been set. If it
-// has, it sends a message. Otherwise it just updates the value and lets the
-// callback handle it.
-//
-// We can&apos;t run code beforehand to define values so we must check each block
-// call if they are set.
-
-if (window.birdbrain === undefined || window.birdbrain.tailLEDs === undefined) {
-    window.birdbrain = window.birdbrain || {};
-    window.birdbrain.tailLEDs = {
-        // By attaching this function to a global variable, it is only
-        // defined once instead of every time this block is called, improving
-        // performance significantly.
-        setLEDIntensities: function(port, intensities) {
-            function callback() {
-                if (JSON.stringify(window.birdbrain.tailLEDs[port]) === JSON.stringify(intensities)) {
-                    delete window.birdbrain.tailLEDs[port];
-                } else {
-                    window.birdbrain.tailLEDs.setLEDIntensities(port, window.birdbrain.tailLEDs[port]);
-                }
-            }
-
-            //Create a new XMLHttpRequest object
-            var xhr = new XMLHttpRequest();
-            var actualPort = port;
-            if (actualPort != "all") { actualPort = parseInt(port) + 1;}
-            /* Note RGB:
-            red: intensities[0],
-            green: intensities[1],
-            blue: intensities[2]
-            */
-            var thisURL = "http://127.0.0.1:30061/hummingbird/out/triled/" + actualPort + "/" + intensities[0] + "/" + intensities[1] + "/" + intensities[2];
-            //console.log("thisURL: " + thisURL);
-
-            xhr.open("GET", thisURL, true);
-            xhr.onload = function (e) {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        callback();
-                    } else {
-                        console.error(xhr.statusText);
-                    }
-                }
-            };
-            xhr.onerror = function (e) {
-                console.error(xhr.statusText);
-            };
-            xhr.send(null);
-        }
-    }
-}
-
-var realIntensities = [rednum, greennum, bluenum].map(function(intensity) {
-    return Math.floor(Math.max(Math.min(intensity*2.55, 255), 0));
-});
-
-if (window.birdbrain.tailLEDs[realPort] === undefined) {
-    window.birdbrain.tailLEDs.setLEDIntensities(realPort, realIntensities);
-}
-window.birdbrain.tailLEDs[realPort] = realIntensities;
-
-                        </l>
+                <block s="doSetVar">
+                    <l>redLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="redLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="false">Scale factor 255/100</comment>
+                        </block>
                     </block>
-                    <list>
-                        <block var="port"/>
-                        <block var="redLED"/>
-                        <block var="greenLED"/>
-                        <block var="blueLED"/>
-                    </list>
                 </block>
-                <block s="doWait">
-                    <l>0</l>
+                <block s="doSetVar">
+                    <l>blueLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="blueLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="false">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doSetVar">
+                    <l>greenLED</l>
+                    <block s="reportRound">
+                        <block s="reportProduct">
+                            <block var="greenLED"/>
+                            <l>2.55</l>
+                            <comment w="90" collapsed="false">Scale factor 255/100</comment>
+                        </block>
+                    </block>
+                </block>
+                <block s="doRun">
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/triled/</l>
+                                        <block var="port"/>
+                                        <l>/</l>
+                                        <block var="redLED"/>
+                                        <l>/</l>
+                                        <block var="greenLED"/>
+                                        <l>/</l>
+                                        <block var="blueLED"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
+                    </block>
+                    <list></list>
                 </block>
             </script>
         </block-definition>
@@ -1315,79 +1140,19 @@ window.birdbrain.tailLEDs[realPort] = realIntensities;
             </inputs>
             <script>
                 <block s="doRun">
-                    <block s="reportJSFunction">
-                        <list>
-                            <l>string</l>
-                        </list>
-                        <l>////////////////////////////////////////////////////////////////////////////////
-                            // In order to avoid sending more messages than the app can handle, whenever we
-                            // send a message we also save it in a persistent global variable. When the
-                            // message is processed in the app, the callback checks if the global variable
-                            // still matches what it was changed to. If it was, it deletes the global
-                            // variable. Otherwise the message is resent with new data.
-                            //
-                            // When this block is called it checks if the global value has been set. If it
-                            // has, it sends a message. Otherwise it just updates the value and lets the
-                            // callback handle it.
-                            // Encode any special characters in the URL string = encodeURIComponent(string);
-                            //
-                            // We can&apos;t run code beforehand to define values so we must check each block
-                            // call if they are set.
-
-                            if (window.birdbrain === undefined || window.birdbrain.printObj === undefined) {
-                                window.birdbrain = window.birdbrain || {};
-                                window.birdbrain.printObj = {
-                                    // By attaching this function to a global variable, it is only
-                                    // defined once instead of every time this block is called, improving
-                                    // performance significantly.
-
-                                    printString: function(string) {
-                                        function callback() {
-                                            if (window.birdbrain.printObj.stringToPrint === string) {
-                                                delete window.birdbrain.printObj.stringToPrint;
-                                            } else {
-                                                window.birdbrain.printObj.printString(window.birdbrain.printObj.stringToPrint);
-                                            }
-                                        }
-                                        /*
-                                        var report = {
-                                        message:"L".charCodeAt(0),
-                                        port: port.toString().charCodeAt(0),
-                                        intensity: intensity
-                                        };
-
-                                        chrome.runtime.sendMessage(hummingbirdAppID, report, callback);
-                                        */
-                                        //Create a new XMLHttpRequest object
-                                        var xhr = new XMLHttpRequest();
-                                        var printURL = "http://127.0.0.1:30061/hummingbird/out/print/" + string;
-                                        xhr.open("GET", printURL, true);
-                                        xhr.onload = function (e) {
-                                            if (xhr.readyState === 4) {
-                                                if (xhr.status === 200) {
-                                                    callback();
-                                                } else {
-                                                    console.error(xhr.statusText);
-                                                }
-                                            }
-                                        };
-                                        xhr.onerror = function (e) {
-                                            console.error(xhr.statusText);
-                                        };
-                                        xhr.send(null);
-                                    }
-                                }
-                            }
-                            //TODO Turn &apos;/&apos; chars into %
-                            if (window.birdbrain.printObj.stringToPrint === undefined) {
-                                window.birdbrain.printObj.printString(string);
-                            }
-                            window.birdbrain.printObj.stringToPrint = string;
-                        </l>
+                    <block s="reifyReporter">
+                        <autolambda>
+                            <block s="reportURL">
+                                <block s="reportJoinWords">
+                                    <list>
+                                        <l>http://127.0.0.1:30061/hummingbird/out/print/</l>
+                                        <block var="string"/>
+                                    </list>
+                                </block>
+                            </block>
+                        </autolambda>
+                        <list></list>
                     </block>
-                    <list>
-                        <block var="string"/>
-                    </list>
                 </block>
                 <block s="doWait">
                     <block s="reportProduct">
@@ -1400,7 +1165,7 @@ window.birdbrain.tailLEDs[realPort] = realIntensities;
             </script>
         </block-definition>
         <block-definition
-                s="micro:bit Display $nl %&apos;r1c1&apos; %&apos;r1c2&apos; %&apos;r1c3&apos; %&apos;r1c4&apos; %&apos;r1c5&apos; $nl %&apos;r2c1&apos; %&apos;r2c2&apos; %&apos;r2c3&apos; %&apos;r2c4&apos; %&apos;r2c5&apos; $nl %&apos;r3c1&apos; %&apos;r3c2&apos; %&apos;r3c3&apos; %&apos;r3c4&apos; %&apos;r3c5&apos; $nl %&apos;r4c1&apos; %&apos;r4c2&apos; %&apos;r4c3&apos; %&apos;r4c4&apos; %&apos;r4c5&apos; $nl %&apos;r5c1&apos; %&apos;r5c2&apos; %&apos;r5c3&apos; %&apos;r5c4&apos; %&apos;r5c5&apos;"
+                s="micro:bit Display $nl %&apos;11&apos; %&apos;12&apos; %&apos;13&apos; %&apos;14&apos; %&apos;15&apos; $nl %&apos;21&apos; %&apos;22&apos; %&apos;23&apos; %&apos;24&apos; %&apos;25&apos; $nl %&apos;31&apos; %&apos;32&apos; %&apos;33&apos; %&apos;34&apos; %&apos;35&apos; $nl %&apos;41&apos; %&apos;42&apos; %&apos;43&apos; %&apos;44&apos; %&apos;45&apos; $nl %&apos;51&apos; %&apos;52&apos; %&apos;53&apos; %&apos;54&apos; %&apos;55&apos;"
                 type="command" category="looks">
             <header></header>
             <code></code>
@@ -1433,172 +1198,65 @@ window.birdbrain.tailLEDs[realPort] = realIntensities;
                 <input type="%b">false</input>
             </inputs>
             <script>
-                <block s="doRun">
-                    <block s="reportJSFunction">
-                        <list>
-                            <l>r1c1, r1c2, r1c3, r1c4, r1c5, r2c1, r2c2, r2c3, r2c4, r2c5, r3c1, r3c2, r3c3, r3c4, r3c5,
-                                r4c1, r4c2, r4c3, r4c4, r4c5, r5c1, r5c2, r5c3, r5c4, r5c5
-                            </l>
-                        </list>
-                        <l>////////////////////////////////////////////////////////////////////////////////
-                            // In order to avoid sending more messages than the app can handle, whenever we
-                            // send a message we also save it in a persistent global variable. When the
-                            // message is processed in the app, the callback checks if the global variable
-                            // still matches what it was changed to. If it was, it deletes the global
-                            // variable. Otherwise the message is resent with new data.
-                            //
-                            // When this block is called it checks if the global value has been set. If it
-                            // has, it sends a message. Otherwise it just updates the value and lets the
-                            // callback handle it.
-
-                            // Create url representation from inputs
-                            var symbolString = r1c1 + "\/"+ r1c2 + "\/"+ r1c3 + "\/"+ r1c4 + "\/"+ r1c5 + "\/" +
-                             r2c1 + "\/"+ r2c2 + "\/"+ r2c3 + "\/"+ r2c4 + "\/"+ r2c5 + "\/" +
-                             r3c1 + "\/"+ r3c2 + "\/"+ r3c3 + "\/"+ r3c4 + "\/"+ r3c5 + "\/" +
-                             r4c1 + "\/"+ r4c2 + "\/"+ r4c3 + "\/"+ r4c4 + "\/"+ r4c5 + "\/" +
-                             r5c1 + "\/"+ r5c2 + "\/"+ r5c3 + "\/"+ r5c4 + "\/"+ r5c5 ;
-
-                            //r1c1, r1c2, r1c3, r1c4, r1c5, r2c1, r2c2, r2c3, r2c4, r2c5, r3c1, r3c2, r3c3, r3c4,
-                            r3c5, r4c1, r4c2, r4c3, r4c4, r4c5, r5c1, r5c2, r5c3, r5c4, r5c5
-
-                            // We can&apos;t run code beforehand to define values so we must check each block
-                            // call if they are set.
-                            if (window.birdbrain === undefined || window.birdbrain.symbolObj === undefined) {
-                                window.birdbrain = window.birdbrain || {};
-                                window.birdbrain.symbolObj = {
-                                    // By attaching this function to a global variable, it is only
-                                    // defined once instead of every time this block is called, improving
-                                    // performance significantly.
-                                    printSymbol: function(symbol) {
-                                        function callback() {
-                                            if (window.birdbrain.symbolObj.symbolToPrint === symbol) { // Check if arrays are equal
-                                                delete window.birdbrain.symbolObj.symbolToPrint;
-                                            } else {
-                                                window.birdbrain.symbolObj.printSymbol(window.birdbrain.symbolObj.symbolToPrint);
-                                            }
-                                        }
-                                        //Create a new XMLHttpRequest object
-                                        var xhr = new XMLHttpRequest();
-                                        var symbolURL = "http://127.0.0.1:30061/hummingbird/out/symbol/A/" + symbol;
-                                        xhr.open("GET", symbolURL, true);
-                                        xhr.onload = function (e) {
-                                            if (xhr.readyState === 4) {
-                                                if (xhr.status === 200) {
-                                                    callback();
-                                                } else {
-                                                    console.error(xhr.statusText);
-                                                }
-                                            }
-                                        };
-                                        xhr.onerror = function (e) {
-                                            console.error(xhr.statusText);
-                                        };
-                                        xhr.send(null);
-                                    }
-                                }
-                            }
-
-                            if (window.birdbrain.symbolObj.symbolToPrint === undefined) {
-                                window.birdbrain.symbolObj.printSymbol(symbolString);
-                            }
-                            window.birdbrain.symbolObj.symbolToPrint = symbolString;
-
-                        </l>
-                    </block>
-                    <list>
-                        <block var="r1c1"/>
-                        <block var="r1c2"/>
-                        <block var="r1c3"/>
-                        <block var="r1c4"/>
-                        <block var="r1c5"/>
-                        <block var="r2c1"/>
-                        <block var="r2c2"/>
-                        <block var="r2c3"/>
-                        <block var="r2c4"/>
-                        <block var="r2c5"/>
-                        <block var="r3c1"/>
-                        <block var="r3c2"/>
-                        <block var="r3c3"/>
-                        <block var="r3c4"/>
-                        <block var="r3c5"/>
-                        <block var="r4c1"/>
-                        <block var="r4c2"/>
-                        <block var="r4c3"/>
-                        <block var="r4c4"/>
-                        <block var="r4c5"/>
-                        <block var="r5c1"/>
-                        <block var="r5c2"/>
-                        <block var="r5c3"/>
-                        <block var="r5c4"/>
-                        <block var="r5c5"/>
-                    </list>
-                </block>
-                <block s="doWait">
-                    <l></l>
-                </block>
+              <block s="doReport">
+                  <block s="reportURL">
+                      <block s="reportJoinWords">
+                          <list>
+                              <l>http://127.0.0.1:30061/hummingbird/out/symbol/A/</l>
+                              <block var="11"/>
+                              <l>/</l>
+                              <block var="12"/>
+                              <l>/</l>
+                              <block var="13"/>
+                              <l>/</l>
+                              <block var="14"/>
+                              <l>/</l>
+                              <block var="15"/>
+                              <l>/</l>
+                              <block var="21"/>
+                              <l>/</l>
+                              <block var="22"/>
+                              <l>/</l>
+                              <block var="23"/>
+                              <l>/</l>
+                              <block var="24"/>
+                              <l>/</l>
+                              <block var="25"/>
+                              <l>/</l>
+                              <block var="31"/>
+                              <l>/</l>
+                              <block var="32"/>
+                              <l>/</l>
+                              <block var="33"/>
+                              <l>/</l>
+                              <block var="34"/>
+                              <l>/</l>
+                              <block var="35"/>
+                              <l>/</l>
+                              <block var="41"/>
+                              <l>/</l>
+                              <block var="42"/>
+                              <l>/</l>
+                              <block var="43"/>
+                              <l>/</l>
+                              <block var="44"/>
+                              <l>/</l>
+                              <block var="45"/>
+                              <l>/</l>
+                              <block var="51"/>
+                              <l>/</l>
+                              <block var="52"/>
+                              <l>/</l>
+                              <block var="53"/>
+                              <l>/</l>
+                              <block var="54"/>
+                              <l>/</l>
+                              <block var="55"/>
+                          </list>
+                      </block>
+                  </block>
+              </block>
             </script>
-            <scripts>
-                <script x="731" y="16">
-                    <block s="doReport">
-                        <block s="reportURL">
-                            <block s="reportJoinWords">
-                                <list>
-                                    <l>http://127.0.0.1:30061/hummingbird/out/symbol/A/</l>
-                                    <block var="11"/>
-                                    <l>/</l>
-                                    <block var="12"/>
-                                    <l>/</l>
-                                    <block var="r1c3"/>
-                                    <l>/</l>
-                                    <block var="r1c4"/>
-                                    <l>/</l>
-                                    <block var="r1c5"/>
-                                    <l>/</l>
-                                    <block var="r2c1"/>
-                                    <l>/</l>
-                                    <block var="r2c2"/>
-                                    <l>/</l>
-                                    <block var="r2c3"/>
-                                    <l>/</l>
-                                    <block var="r2c4"/>
-                                    <l>/</l>
-                                    <block var="25"/>
-                                    <l>/</l>
-                                    <block var="31"/>
-                                    <l>/</l>
-                                    <block var="r3c2"/>
-                                    <l>/</l>
-                                    <block var="33"/>
-                                    <l>/</l>
-                                    <block var="34"/>
-                                    <l>/</l>
-                                    <block var="35"/>
-                                    <l>/</l>
-                                    <block var="41"/>
-                                    <l>/</l>
-                                    <block var="42"/>
-                                    <l>/</l>
-                                    <block var="43"/>
-                                    <l>/</l>
-                                    <block var="44"/>
-                                    <l>/</l>
-                                    <block var="45"/>
-                                    <l>/</l>
-                                    <block var="51"/>
-                                    <l>/</l>
-                                    <block var="52"/>
-                                    <l>/</l>
-                                    <block var="53"/>
-                                    <l>/</l>
-                                    <block var="54"/>
-                                    <l>/</l>
-                                    <block var="55"/>
-                                </list>
-                            </block>
-                        </block>
-                    </block>
-                </script>
-            </scripts>
         </block-definition>
     </blocks>
     <variables></variables>

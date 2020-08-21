@@ -1551,6 +1551,11 @@
                         </block>
                     </script>
                 </block>
+                <custom-block s="Finch %txt Stop">
+                    <block var="devId"/>
+                    <comment w="170" collapsed="true">Compensate for firmware bug</comment>
+                </custom-block>
+                <block s="doWait"><l>0.1</l></block>
             </script>
         </block-definition>
         <block-definition s="Finch %&apos;devId&apos; Turn %&apos;direction&apos; %&apos;angle&apos; ° at %&apos;speed&apos; %" type="command"
@@ -1695,6 +1700,11 @@
                         </block>
                     </script>
                 </block>
+                <custom-block s="Finch %txt Stop">
+                    <block var="devId"/>
+                    <comment w="170" collapsed="true">Compensate for firmware bug</comment>
+                </custom-block>
+                <block s="doWait"><l>0.1</l></block>
             </script>
         </block-definition>
         <block-definition s="Finch %&apos;devId&apos; Wheels L %&apos;left&apos; % R %&apos;right&apos; %" type="command" category="motion">

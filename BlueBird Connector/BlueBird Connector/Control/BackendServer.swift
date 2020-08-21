@@ -312,19 +312,16 @@ class BackendServer {
     
     
     private func triledRequest (_ request: HttpRequest) -> HttpResponse {
-        os_log("triled request [%s]", log: log, type: .debug, request.path)
         
         let params = request.path.split(separator: "/")
         let port = params[3]
         
         guard let robot = getRobot(params: params, robotIndex: 7) else {
-            //return HttpResponse.badRequest(.text("Invalid device letter"))
             return NOT_CONNECTED
         }
         
         guard let R = UInt8(params[4]), let G = UInt8(params[5]), let B = UInt8(params[6]) else {
             os_log("Invalid params in request: R [%s], G [%s], B [%s]", log: log, type: .error, String(params[4]), String(params[5]), String(params[6]))
-            //return HttpResponse.badRequest(.text("Invalid params"))
             return INVALID_PARAMETERS
         }
         
@@ -347,7 +344,6 @@ class BackendServer {
             return NOT_CONNECTED
         }
         
-        //return HttpResponse.ok(.text("triled set"))
         return BackendServer.getRawResponse("triled set")
     }
     

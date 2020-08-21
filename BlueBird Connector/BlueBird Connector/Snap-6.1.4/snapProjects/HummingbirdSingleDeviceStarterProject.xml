@@ -550,8 +550,9 @@
                             &#xD;                }
                             &#xD;            }
                             &#xD;
-                            &#xD;            //Create a new XMLHttpRequest object
+                            &#xD;            window.birdbrain.servos.lastRequestSent = Date.now()
                             &#xD;
+                            &#xD;            //Create a new XMLHttpRequest object
                             &#xD;            var xhr = new XMLHttpRequest();
                             &#xD;            var actualPort = port+1;
                             &#xD;            var thisURL = "http://127.0.0.1:30061/hummingbird/out/servo/" + actualPort + "/" + angle;
@@ -582,7 +583,7 @@
                             &#xD;
                             &#xD;//realAngle = Math.max(Math.min(realAngle,225.0),0.0);
                             &#xD;
-                            &#xD;if (window.birdbrain.servos[realPort] === undefined) {
+                            &#xD;if (window.birdbrain.servos[realPort] === undefined || Date.now() > window.birdbrain.servos.lastRequestSent + 1000) {
                             &#xD;    window.birdbrain.servos.setServoAngle(realPort, position);
                             &#xD;}
                             &#xD;
@@ -720,6 +721,8 @@
                             &#xD;                }
                             &#xD;            }
                             &#xD;
+                            &#xD;            window.birdbrain.rotationServos.lastRequestSent = Date.now()
+                            &#xD;
                             &#xD;            //Create a new XMLHttpRequest object
                             &#xD;            var xhr = new XMLHttpRequest();
                             &#xD;
@@ -748,7 +751,7 @@
                             &#xD;    };
                             &#xD;}
                             &#xD;
-                            &#xD;if (window.birdbrain.rotationServos[realPort] === undefined) {
+                            &#xD;if (window.birdbrain.rotationServos[realPort] === undefined || Date.now() > window.birdbrain.rotationServos.lastRequestSent + 1000) {
                             &#xD;    window.birdbrain.rotationServos.setServoSpeed(realPort, speed);
                             &#xD;}
                             &#xD;
@@ -842,6 +845,8 @@
                             &#xD;            chrome.runtime.sendMessage(hummingbirdAppID, report, callback);
                             &#xD;            */
                             &#xD;
+                            &#xD;            window.birdbrain.LEDs.lastRequestSent = Date.now()
+                            &#xD;
                             &#xD;            //Create a new XMLHttpRequest object
                             &#xD;            var xhr = new XMLHttpRequest();
                             &#xD;            var actualPort = port+1;
@@ -871,7 +876,7 @@
                             &#xD;
                             &#xD;realIntensity = Math.max(Math.min(realIntensity,255.0),0.0);
                             &#xD;
-                            &#xD;if (window.birdbrain.LEDs[realPort] === undefined) {
+                            &#xD;if (window.birdbrain.LEDs[realPort] === undefined || Date.now() > window.birdbrain.LEDs.lastRequestSent + 1000) {
                             &#xD;    window.birdbrain.LEDs.setLEDIntensity(realPort, realIntensity);
                             &#xD;}
                             &#xD;
@@ -1039,6 +1044,9 @@
                             &#xD;                }
                             &#xD;            }
                             &#xD;
+                            &#xD;
+                            &#xD;            window.birdbrain.triLEDs.lastRequestSent = Date.now()
+                            &#xD;
                             &#xD;             //Create a new XMLHttpRequest object
                             &#xD;            var xhr = new XMLHttpRequest();
                             &#xD;
@@ -1074,7 +1082,7 @@
                             &#xD;    return Math.floor(Math.max(Math.min(intensity*2.55, 255), 0));
                             &#xD;});
                             &#xD;
-                            &#xD;if (window.birdbrain.triLEDs[realPort] === undefined) {
+                            &#xD;if (window.birdbrain.triLEDs[realPort] === undefined || Date.now() > window.birdbrain.triLEDs.lastRequestSent + 1000) {
                             &#xD;    window.birdbrain.triLEDs.setLEDIntensities(realPort, realIntensities);
                             &#xD;}
                             &#xD;
@@ -1197,6 +1205,8 @@
                             &#xD;            chrome.runtime.sendMessage(hummingbirdAppID, report, callback);
                             &#xD;            */
                             &#xD;
+                            &#xD;            window.birdbrain.printObj.lastRequestSent = Date.now()
+                            &#xD;
                             &#xD;            //Create a new XMLHttpRequest object
                             &#xD;            var xhr = new XMLHttpRequest();
                             &#xD;            var printURL = "http://127.0.0.1:30061/hummingbird/out/print/" + string;
@@ -1221,7 +1231,7 @@
                             &#xD;    }
                             &#xD;
                             &#xD;//TODO Turn &apos;/&apos; chars into %
-                            &#xD;if (window.birdbrain.printObj.stringToPrint === undefined) {
+                            &#xD;if (window.birdbrain.printObj.stringToPrint === undefined || Date.now() > window.birdbrain.printObj.lastRequestSent + 1000) {
                             &#xD;    window.birdbrain.printObj.printString(string);
                             &#xD;}
                             &#xD;
@@ -1320,6 +1330,8 @@
                             &#xD;                }
                             &#xD;            }
                             &#xD;
+                            &#xD;            window.birdbrain.symbolObj.lastRequestSent = Date.now()
+                            &#xD;
                             &#xD;            //Create a new XMLHttpRequest object
                             &#xD;            var xhr = new XMLHttpRequest();
                             &#xD;            var symbolURL = "http://127.0.0.1:30061/hummingbird/out/symbol/A/" + symbol;
@@ -1342,7 +1354,7 @@
                             &#xD;    }
                             &#xD;}
                             &#xD;
-                            &#xD;if (window.birdbrain.symbolObj.symbolToPrint === undefined) {
+                            &#xD;if (window.birdbrain.symbolObj.symbolToPrint === undefined || Date.now() > window.birdbrain.symbolObj.lastRequestSent + 1000) {
                             &#xD;    window.birdbrain.symbolObj.printSymbol(symbolString);
                             &#xD;}
                             &#xD;
