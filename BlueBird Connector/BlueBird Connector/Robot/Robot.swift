@@ -97,12 +97,15 @@ extension Robot {
             return
         }
         
-        
+        self.writtenCondition.lock()
         let nextCopy = self.nextRobotState
+        self.writtenCondition.signal()
+        self.writtenCondition.unlock()
+        
         let changeOccurred = !(nextCopy == self.currentRobotState)
 
         guard changeOccurred else { return }
-     
+        //print(nextCopy.trileds)
         let command = nextCopy.setAllCommand()
         let oldCommand = currentRobotState.setAllCommand()
         
@@ -222,9 +225,10 @@ extension Robot {
         Reset the robot to initial off state.
      */
     func stopAll() -> Bool {
-        let success = setOutput(ifCheck: (true), when: {return true},
+        let success = setOutput(ifCheck: (true), when: {self.nextRobotState == self.currentRobotState},
                   set: {self.nextRobotState = RobotState(robotType: self.type)})
         print("stopAll success \(success)")
+        self.commandPending = nil
         self.manageableRobot.sendData(turnOffCommand)
         
         return success

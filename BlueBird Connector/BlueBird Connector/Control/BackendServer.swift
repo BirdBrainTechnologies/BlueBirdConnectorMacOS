@@ -328,9 +328,10 @@ class BackendServer {
         var success = false
         if let robot = robot as? Finch {
             if (port == "all") {
-                for i in 2 ..< 6 {
+                success = robot.setTail(R: R, G: G, B: B)
+                /*for i in 2 ..< 6 {
                     success = robot.setTriLED(port: i, R: R, G: G, B: B)
-                }
+                }*/
             } else {
                 guard let p = Int(port) else { return INVALID_PORT }
                 success = robot.setTriLED(port: p, R: R, G: G, B: B)

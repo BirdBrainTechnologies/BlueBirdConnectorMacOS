@@ -217,7 +217,7 @@ class Finch: Robot {
     }
     
     /**
-        Set the specified led (Beak at port 0, Tail at ports 1 to 5)
+        Set the specified led (Beak at port 0, Tail at ports 1 to 4)
      */
     func setTriLED(port: Int, R: UInt8, G: UInt8, B: UInt8) -> Bool {
         let i = port - 1
@@ -226,6 +226,20 @@ class Finch: Robot {
             when: {self.nextRobotState.trileds[i] == self.currentRobotState.trileds[i]},
             set: {self.nextRobotState.trileds[i] = TriLED(R, G, B)})
     }
+    
+    /**
+        Set the whole tail to the same color
+     */
+    func setTail(R: UInt8, G: UInt8, B: UInt8) -> Bool {
+        return setOutput(ifCheck: self.nextRobotState.trileds.count == 5,
+        when: {self.nextRobotState.trileds[1] == self.currentRobotState.trileds[1] && self.nextRobotState.trileds[2] == self.currentRobotState.trileds[2] && self.nextRobotState.trileds[3] == self.currentRobotState.trileds[3] && self.nextRobotState.trileds[4] == self.currentRobotState.trileds[4]},
+        set: {
+            for i in 1 ..< 5 {
+                self.nextRobotState.trileds[i] = TriLED(R, G, B)
+            }
+            })
+    }
+    
     /**
         Reset the finch encoders
      */

@@ -810,23 +810,23 @@
                         </block>
                     </script>
                 </block>
-                <block s="doRun">
-                    <block s="reifyReporter">
-                        <autolambda>
-                            <block s="reportURL">
-                                <block s="reportJoinWords">
-                                    <list>
-                                        <l>http://127.0.0.1:30061/hummingbird/out/wheels/A/</l>
-                                        <block var="left"/>
-                                        <l>/</l>
-                                        <block var="right"/>
-                                    </list>
-                                </block>
-                            </block>
-                        </autolambda>
-                        <list></list>
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/wheels/A/</l>
+                                <block var="left"/>
+                                <l>/</l>
+                                <block var="right"/>
+                            </list>
+                        </block>
                     </block>
-                    <list></list>
                 </block>
             </script>
         </block-definition>
@@ -836,23 +836,20 @@
             <translations></translations>
             <inputs></inputs>
             <script>
-                <block s="doRun">
-                    <block s="reifyReporter">
-                        <autolambda>
-                            <block s="reportURL">
-                                <block s="reportJoinWords">
-                                    <list>
-                                        <l>http://127.0.0.1:30061/hummingbird/out/stopFinch/A/</l>
-                                    </list>
-                                </block>
-                            </block>
-                        </autolambda>
-                        <list></list>
-                    </block>
-                    <list></list>
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
                 </block>
-                <block s="doWait">
-                    <l>0</l>
+                <block s="doSetVar">
+                    <l>response</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/stopFinch/A/</l>
+                            </list>
+                        </block>
+                    </block>
                 </block>
             </script>
         </block-definition>
@@ -970,25 +967,25 @@
                         </block>
                     </block>
                 </block>
-                <block s="doRun">
-                    <block s="reifyReporter">
-                        <autolambda>
-                            <block s="reportURL">
-                                <block s="reportJoinWords">
-                                    <list>
-                                        <l>http://127.0.0.1:30061/hummingbird/out/triled/1/</l>
-                                        <block var="redLED"/>
-                                        <l>/</l>
-                                        <block var="greenLED"/>
-                                        <l>/</l>
-                                        <block var="blueLED"/>
-                                    </list>
-                                </block>
-                            </block>
-                        </autolambda>
-                        <list></list>
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/triled/1/</l>
+                                <block var="redLED"/>
+                                <l>/</l>
+                                <block var="greenLED"/>
+                                <l>/</l>
+                                <block var="blueLED"/>
+                            </list>
+                        </block>
                     </block>
-                    <list></list>
                 </block>
             </script>
         </block-definition>
@@ -1107,27 +1104,27 @@
                         </block>
                     </block>
                 </block>
-                <block s="doRun">
-                    <block s="reifyReporter">
-                        <autolambda>
-                            <block s="reportURL">
-                                <block s="reportJoinWords">
-                                    <list>
-                                        <l>http://127.0.0.1:30061/hummingbird/out/triled/</l>
-                                        <block var="port"/>
-                                        <l>/</l>
-                                        <block var="redLED"/>
-                                        <l>/</l>
-                                        <block var="greenLED"/>
-                                        <l>/</l>
-                                        <block var="blueLED"/>
-                                    </list>
-                                </block>
-                            </block>
-                        </autolambda>
-                        <list></list>
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/triled/</l>
+                                <block var="port"/>
+                                <l>/</l>
+                                <block var="redLED"/>
+                                <l>/</l>
+                                <block var="greenLED"/>
+                                <l>/</l>
+                                <block var="blueLED"/>
+                            </list>
+                        </block>
                     </block>
-                    <list></list>
                 </block>
             </script>
         </block-definition>
@@ -1198,7 +1195,13 @@
                 <input type="%b">false</input>
             </inputs>
             <script>
-              <block s="doReport">
+              <block s="doDeclareVariables">
+                <list>
+                  <l>response</l>
+                </list>
+              </block>
+              <block s="doSetVar">
+                  <l>response</l>
                   <block s="reportURL">
                       <block s="reportJoinWords">
                           <list>
