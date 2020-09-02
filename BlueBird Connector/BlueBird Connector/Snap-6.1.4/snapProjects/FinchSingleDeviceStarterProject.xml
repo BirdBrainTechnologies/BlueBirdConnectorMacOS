@@ -48,7 +48,7 @@
         <block-definition s="Finch Distance (cm)" type="reporter" category="sensing">
             <header></header>
             <code></code>
-            <translations></translations>
+            <translations>ca:Finch Distància (cm)&#xD;de:Finch Entfernung (cm)&#xD;es:Finch Distancia (cm)&#xD;fr:Finch Distance (cm)&#xD;he:Finch מרחק (cm)&#xD;ko:Finch 거리 센서 (cm)&#xD;nl:Finch Afstand (cm)&#xD;pt:Finch Distância (cm)&#xD;zh_TW:Finch 距離 (cm)&#xD;</translations>
             <script>
                 <block s="doDeclareVariables">
                     <list>
@@ -90,7 +90,7 @@
         <block-definition s="Finch %&apos;port&apos; Light" type="reporter" category="sensing">
             <header></header>
             <code></code>
-            <translations></translations>
+            <translations>ca:Finch _ Llum&#xD;de:Finch _ Licht&#xD;es:Finch _ Luz&#xD;fr:Finch _ Lumière&#xD;he:Finch _ אור&#xD;ko:Finch _ 빛 센서&#xD;nl:Finch _ Licht&#xD;pt:Finch _ Luz&#xD;zh_TW:Finch _ 燈光&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">Right<options>Left&#xD;Right</options></input>
             </inputs>
@@ -110,7 +110,7 @@
         <block-definition s="Finch %&apos;port&apos; Line" type="reporter" category="sensing">
             <header></header>
             <code></code>
-            <translations></translations>
+            <translations>ca:Finch _ Línia&#xD;de:Finch _ Linie&#xD;es:Finch _ Línea&#xD;fr:Finch _ Ligne&#xD;he:Finch _ קו&#xD;ko:Finch _ 선&#xD;nl:Finch _ Lijn&#xD;pt:Finch _ Linha&#xD;zh_TW:Finch _ 線&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">Right<options>Left&#xD;Right</options></input>
             </inputs>
@@ -156,7 +156,7 @@
         <block-definition s="Finch %&apos;port&apos; Encoder (rotations)" type="reporter" category="sensing">
             <header></header>
             <code></code>
-            <translations></translations>
+            <translations>ca:Finch Recompte de voltes _&#xD;de:Finch _ Kodierer&#xD;es:Finch Recuento de vueltas _&#xD;fr:Finch _ Encodeur&#xD;he:Finch _ קודאי&#xD;ko:Finch _ 인코더&#xD;nl:Finch _ Encoder&#xD;pt:Finch _ Código&#xD;zh_TW:Finch _ 編碼器&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">Right<options>Left&#xD;Right</options></input>
             </inputs>
@@ -200,7 +200,7 @@
         <block-definition s="Finch Reset Encoders" type="command" category="sensing">
             <header></header>
             <code></code>
-            <translations></translations>
+            <translations>ca:Finch Reinicialitza els comptadors de voltes&#xD;de:Finch Kodierer Zurücksetzen&#xD;es:Finch Reinicializar los contadores de vueltas&#xD;fr:Finch Réinitialiser les encodeurs&#xD;he:Finch לאפס קודאי&#xD;ko:Finch 인코더 리셋하기&#xD;nl:Finch Encoders Resetten&#xD;pt:Finch Redefinir Código&#xD;zh_TW:Finch 重置編碼器&#xD;</translations>
             <inputs></inputs>
             <script>
                 <block s="doRun">
@@ -491,7 +491,7 @@
                           category="motion">
             <header></header>
             <code></code>
-            <translations></translations>
+            <translations>ca:Finch Mou-te cap _ _ cm  a velocitat _ %&#xD;de:Finch Gehe _ _ cm mit _ %&#xD;es:Finch Mover hacia _ _ cm a velocidad _ %&#xD;fr:Finch Déplacer _ _ cm sur _ %&#xD;he:Finch זוז _ _ ס''מ ב _ %&#xD;ko:Finch _ _ cm 로 움직이기 빠르기 _ %&#xD;nl:Finch Beweeg _ _ cm op _ %&#xD;pt:Finch Mova _ _ cm  a _ %&#xD;zh_TW:Finch 移動  _ _ 厘米在 _ %&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">Forward<options>Forward&#xD;Backward</options></input>
                 <input type="%n">10</input>
@@ -624,7 +624,7 @@
                           category="motion">
             <header></header>
             <code></code>
-            <translations></translations>
+            <translations>ca:Finch Gira cap a la _ _ ° a velocitat _ %&#xD;de:Finch Drehe _ _ ° mit _ %&#xD;es:Finch Girar hacia la _ _ ° a velocidad _ %&#xD;fr:Finch Tournez _ _ ° à _ %&#xD;he:Finch הסתובב _ _ מעלות ב _ %&#xD;ko:Finch _ _ ° 로 회전하기 빠르기 _ %&#xD;nl:Finch Draai _ _ ° op _ %&#xD;pt:Finch Gire _ _ ° a _ %&#xD;zh_TW:Finch 轉動 _ _ °在 _ %&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">Right<options>Right&#xD;Left</options></input>
                 <input type="%n">90</input>
@@ -756,7 +756,7 @@
         <block-definition s="Finch Wheels L %&apos;left&apos; % R %&apos;right&apos; %" type="command" category="motion">
             <header></header>
             <code></code>
-            <translations></translations>
+            <translations>ca:Finch Posa les rodes a velocitat E _ % D _ %&#xD;de:Finch Räder L _ % R _ %&#xD;es:Finch Poner las ruedas a velocidad I _ % D _ %&#xD;fr:Finch Roues L _ % R _ %&#xD;he:Finch גלגלים שמאל _ % ימין _ %&#xD;ko:Finch 바퀴 왼쪽 _ % 오른쪽 _ %&#xD;nl:Finch Wielen L _ % R _ %&#xD;pt:Finch Rodas E _ % D _ %&#xD;zh_TW:Finch 車輪  左 _ % 右 _ %&#xD;</translations>
             <inputs>
                 <input type="%n">0</input>
                 <input type="%n">0</input>
@@ -833,7 +833,7 @@
         <block-definition s="Finch Stop" type="command" category="motion">
             <header></header>
             <code></code>
-            <translations></translations>
+            <translations>ca:Finch Atura&#xD;de:Finch Stoppe&#xD;es:Finch Detener&#xD;fr:Finch Stop&#xD;he:Finch להפסיק&#xD;ko:Finch 멈추기&#xD;nl:Finch Stop&#xD;pt:Finch Pare&#xD;zh_TW:Finch 停止&#xD;</translations>
             <inputs></inputs>
             <script>
                 <block s="doDeclareVariables">
@@ -857,8 +857,7 @@
                 type="command" category="looks">
             <header></header>
             <code></code>
-            <translations>
-            </translations>
+            <translations>ca:Finch Encén el bec de color R _ % G _ % B _ %&#xD;de:Finch Schnabel R _ % G _ % B _ %&#xD;es:Finch Encender el pico de color R _ % V _ % A _ %&#xD;fr:Finch Bec R _ % G _ % B _ %&#xD;he:Finch מקור אדום _ % ירוק _ % כחול _ %&#xD;ko:Finch 부리 빨강 _ % 초록 _ % 파랑 _ %&#xD;nl:Finch Bek R _ % G _ % B _ %&#xD;pt:Finch Bico R _ % G _ % B _ %&#xD;zh_TW:Finch 鳥嘴 紅 _ % 綠 _ % 藍 _ %&#xD;</translations>
             <inputs>
                 <input type="%n">0</input>
                 <input type="%n">0</input>
@@ -993,8 +992,7 @@
                 type="command" category="looks">
             <header></header>
             <code></code>
-            <translations>
-            </translations>
+            <translations>ca:Finch Encén la cua de color _ R _ % G _ % B _ %&#xD;de:Finch Schwanz _ R _ % G _ % B _ %&#xD;es:Finch Encender la cola de color _ R _ % V _ % A _ %&#xD;fr:Finch Queue _ R _ % G _ % B _ %&#xD;he:Finch זנב _ אדום _ % ירוק _ % כחול _ %&#xD;ko:Finch 꼬리 _ 빨강 _ % 초록 _ % 파랑 _ %&#xD;nl:Finch Staart _ R _ % G _ % B _ %&#xD;pt:Finch Cauda _ R _ % G _ % B _ %&#xD;zh_TW:Finch 尾巴 _ 紅 _ % 綠 _ % 藍 _ %&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">all<options>all&#xD;1&#xD;2&#xD;3&#xD;4</options></input>
                 <input type="%n">0</input>
