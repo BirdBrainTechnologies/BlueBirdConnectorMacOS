@@ -112,9 +112,16 @@
                             <l>1.41</l>
                         </block>
                     </block>
-                    <comment w="228" collapsed="false">254/180 Scaling Factor</comment>
+                    <comment w="228" collapsed="true">254/180 Scaling Factor</comment>
                 </block>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
@@ -200,7 +207,14 @@
                         </block>
                     </script>
                 </block>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
@@ -261,7 +275,14 @@
                         </block>
                     </block>
                 </block>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
@@ -380,7 +401,14 @@
                         </block>
                     </block>
                 </block>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
@@ -638,6 +666,12 @@
                         </comment>
                     </block>
                 </block>
+                <block s="doSetVar">
+                  <l>note</l>
+                  <block s="reportRound">
+                    <block var="note"/>
+                  </block>
+                </block>
                 <block s="doRun">
                     <block s="reifyReporter">
                         <autolambda>
@@ -666,14 +700,6 @@
                     <comment w="205" collapsed="false">block for number of seconds</comment>
                 </block>
             </script>
-            <scripts>
-                <script x="276.9482451875001" y="583.8333383333334">
-                    <block var="note"/>
-                </script>
-                <script x="300.9482451875001" y="595.8333383333334">
-                    <block var="beats"/>
-                </script>
-            </scripts>
         </block-definition>
         <block-definition s="micro:bit %&apos;devId&apos; Button %&apos;button&apos;" type="predicate"
                           category="sensing">
@@ -1025,7 +1051,14 @@
                 <input type="%b">false</input>
             </inputs>
             <script>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
@@ -1111,7 +1144,7 @@
         <block-definition s="Finch %&apos;devId&apos; Distance (cm)" type="reporter" category="sensing">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ Distància (cm)&#xD;de:Finch _ Entfernung (cm)&#xD;es:Finch _ Distancia (cm)&#xD;fr:Finch _ Distance (cm)&#xD;he:Finch _ מרחק (cm)&#xD;ko:Finch _ 거리 센서 (cm)&#xD;nl:Finch _ Afstand (cm)&#xD;pt:Finch _ Distância (cm)&#xD;zh_TW:Finch _ 距離 (cm)&#xD;</translations>
+            <translations>ca:Finch _ Distància (cm)&#xD;de:Finch _ Entfernung (cm)&#xD;es:Finch _ Distancia (cm)&#xD;fr:Finch _ Distance (cm)&#xD;he:Finch _ מרחק (cm)&#xD;ko:Finch _ 거리 센서 (cm)&#xD;nl:Finch _ Afstand (cm)&#xD;pt:Finch _ Distância (cm)&#xD;zh_CN:Finch _ 距离 (cm)&#xD;zh_TW:Finch _ 距離 (cm)&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
             </inputs>
@@ -1161,7 +1194,7 @@
         <block-definition s="Finch %&apos;devId&apos; %&apos;port&apos; Light" type="reporter" category="sensing">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ _ Llum&#xD;de:Finch _ _ Licht&#xD;es:Finch _ _ Luz&#xD;fr:Finch _ _ Lumière&#xD;he:Finch _ _ אור&#xD;ko:Finch _ _ 빛 센서&#xD;nl:Finch _ _ Licht&#xD;pt:Finch _ _ Luz&#xD;zh_TW:Finch _ _ 燈光&#xD;</translations>
+            <translations>ca:Finch _ _ Llum&#xD;de:Finch _ _ Licht&#xD;es:Finch _ _ Luz&#xD;fr:Finch _ _ Lumière&#xD;he:Finch _ _ אור&#xD;ko:Finch _ _ 빛 센서&#xD;nl:Finch _ _ Licht&#xD;pt:Finch _ _ Luz&#xD;zh_CN:Finch _ _ 灯光&#xD;zh_TW:Finch _ _ 燈光&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
                 <input type="%txt" readonly="true">Right<options>Left&#xD;Right</options></input>
@@ -1184,7 +1217,7 @@
         <block-definition s="Finch %&apos;devId&apos; %&apos;port&apos; Line" type="reporter" category="sensing">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ _ Línia&#xD;de:Finch _ _ Linie&#xD;es:Finch _ _ Línea&#xD;fr:Finch _ _ Ligne&#xD;he:Finch _ _ קו&#xD;ko:Finch _ _ 선&#xD;nl:Finch _ _ Lijn&#xD;pt:Finch _ _ Linha&#xD;zh_TW:Finch _ _ 線&#xD;</translations>
+            <translations>ca:Finch _ _ Línia&#xD;de:Finch _ _ Linie&#xD;es:Finch _ _ Línea&#xD;fr:Finch _ _ Ligne&#xD;he:Finch _ _ קו&#xD;ko:Finch _ _ 선&#xD;nl:Finch _ _ Lijn&#xD;pt:Finch _ _ Linha&#xD;zh_CN:Finch _ _ 线&#xD;zh_TW:Finch _ _ 線&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
                 <input type="%txt" readonly="true">Right<options>Left&#xD;Right</options></input>
@@ -1233,7 +1266,7 @@
         <block-definition s="Finch %&apos;devId&apos; %&apos;port&apos; Encoder (rotations)" type="reporter" category="sensing">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ Recompte de voltes _&#xD;de:Finch _ _ Kodierer&#xD;es:Finch _ Recuento de vueltas _&#xD;fr:Finch _ _ Encodeur&#xD;he:Finch _ _ קודאי&#xD;ko:Finch _ _ 인코더&#xD;nl:Finch _ _ Encoder&#xD;pt:Finch _ _ Código&#xD;zh_TW:Finch _ _ 編碼器&#xD;</translations>
+            <translations>ca:Finch _ Recompte de voltes _&#xD;de:Finch _ _ Kodierer&#xD;es:Finch _ Recuento de vueltas _&#xD;fr:Finch _ _ Encodeur&#xD;he:Finch _ _ קודאי&#xD;ko:Finch _ _ 인코더&#xD;nl:Finch _ _ Encoder&#xD;pt:Finch _ _ Código&#xD;zh_CN:Finch _ _ 编码器&#xD;zh_TW:Finch _ _ 編碼器&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
                 <input type="%txt" readonly="true">Right<options>Left&#xD;Right</options></input>
@@ -1280,7 +1313,7 @@
         <block-definition s="Finch %&apos;devId&apos; Reset Encoders" type="command" category="sensing">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ Reinicialitza els comptadors de voltes&#xD;de:Finch _ Kodierer Zurücksetzen&#xD;es:Finch _ Reinicializar los contadores de vueltas&#xD;fr:Finch _ Réinitialiser les encodeurs&#xD;he:Finch _ לאפס קודאי&#xD;ko:Finch _ 인코더 리셋하기&#xD;nl:Finch _ Encoders Resetten&#xD;pt:Finch _ Redefinir Código&#xD;zh_TW:Finch _ 重置編碼器&#xD;</translations>
+            <translations>ca:Finch _ Reinicialitza els comptadors de voltes&#xD;de:Finch _ Kodierer Zurücksetzen&#xD;es:Finch _ Reinicializar los contadores de vueltas&#xD;fr:Finch _ Réinitialiser les encodeurs&#xD;he:Finch _ לאפס קודאי&#xD;ko:Finch _ 인코더 리셋하기&#xD;nl:Finch _ Encoders Resetten&#xD;pt:Finch _ Redefinir Código&#xD;zh_CN:Finch _ 重置编码器&#xD;zh_TW:Finch _ 重置編碼器&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
             </inputs>
@@ -1380,6 +1413,12 @@
                         </comment>
                     </block>
                 </block>
+                <block s="doSetVar">
+                  <l>note</l>
+                  <block s="reportRound">
+                    <block var="note"/>
+                  </block>
+                </block>
                 <block s="doRun">
                     <block s="reifyReporter">
                         <autolambda>
@@ -1413,7 +1452,7 @@
                           category="motion">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ Mou-te cap _ _ cm  a velocitat _ %&#xD;de:Finch _ Gehe _ _ cm mit _ %&#xD;es:Finch _ Mover hacia _ _ cm a velocidad _ %&#xD;fr:Finch _ Déplacer _ _ cm sur _ %&#xD;he:Finch _ זוז _ _ ס''מ ב _ %&#xD;ko:Finch _ _ _ cm 로 움직이기 빠르기 _ %&#xD;nl:Finch _ Beweeg _ _ cm op _ %&#xD;pt:Finch _ Mova _ _ cm  a _ %&#xD;zh_TW:Finch _ 移動  _ _ 厘米在 _ %&#xD;</translations>
+            <translations>ca:Finch _ Mou-te cap _ _ cm  a velocitat _ %&#xD;de:Finch _ Gehe _ _ cm mit _ %&#xD;es:Finch _ Mover hacia _ _ cm a velocidad _ %&#xD;fr:Finch _ Déplacer _ _ cm sur _ %&#xD;he:Finch _ זוז _ _ ס''מ ב _ %&#xD;ko:Finch _ _ _ cm 로 움직이기 빠르기 _ %&#xD;nl:Finch _ Beweeg _ _ cm op _ %&#xD;pt:Finch _ Mova _ _ cm  a _ %&#xD;zh_CN:Finch _ 移动 _ _ cm 以 _ %&#xD;zh_TW:Finch _ 移動  _ _ 厘米在 _ %&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
                 <input type="%txt" readonly="true">Forward<options>Forward&#xD;Backward</options></input>
@@ -1562,7 +1601,7 @@
                           category="motion">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ Gira cap a la _ _ ° a velocitat _ %&#xD;de:Finch _ Drehe _ _ ° mit _ %&#xD;es:Finch _ Girar hacia la _ _ ° a velocidad _ %&#xD;fr:Finch _ Tournez _ _ ° à _ %&#xD;he:Finch _ הסתובב _ _ מעלות ב _ %&#xD;ko:Finch _ _ _ ° 로 회전하기 빠르기 _ %&#xD;nl:Finch _ Draai _ _ ° op _ %&#xD;pt:Finch _ Gire _ _ ° a _ %&#xD;zh_TW:Finch _ 轉動 _ _ °在 _ %&#xD;</translations>
+            <translations>ca:Finch _ Gira cap a la _ _ ° a velocitat _ %&#xD;de:Finch _ Drehe _ _ ° mit _ %&#xD;es:Finch _ Girar hacia la _ _ ° a velocidad _ %&#xD;fr:Finch _ Tournez _ _ ° à _ %&#xD;he:Finch _ הסתובב _ _ מעלות ב _ %&#xD;ko:Finch _ _ _ ° 로 회전하기 빠르기 _ %&#xD;nl:Finch _ Draai _ _ ° op _ %&#xD;pt:Finch _ Gire _ _ ° a _ %&#xD;zh_CN:Finch _ 转动 _ _ ° 以 _ %&#xD;zh_TW:Finch _ 轉動 _ _ °在 _ %&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
                 <input type="%txt" readonly="true">Right<options>Right&#xD;Left</options></input>
@@ -1710,7 +1749,7 @@
         <block-definition s="Finch %&apos;devId&apos; Wheels L %&apos;left&apos; % R %&apos;right&apos; %" type="command" category="motion">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ Posa les rodes a velocitat E _ % D _ %&#xD;de:Finch _ Räder L _ % R _ %&#xD;es:Finch _ Poner las ruedas a velocidad I _ % D _ %&#xD;fr:Finch _ Roues L _ % R _ %&#xD;he:Finch _ גלגלים שמאל _ % ימין _ %&#xD;ko:Finch _ 바퀴 왼쪽 _ % 오른쪽 _ %&#xD;nl:Finch _ Wielen L _ % R _ %&#xD;pt:Finch _ Rodas E _ % D _ %&#xD;zh_TW:Finch _ 車輪  左 _ % 右 _ %&#xD;</translations>
+            <translations>ca:Finch _ Posa les rodes a velocitat E _ % D _ %&#xD;de:Finch _ Räder L _ % R _ %&#xD;es:Finch _ Poner las ruedas a velocidad I _ % D _ %&#xD;fr:Finch _ Roues L _ % R _ %&#xD;he:Finch _ גלגלים שמאל _ % ימין _ %&#xD;ko:Finch _ 바퀴 왼쪽 _ % 오른쪽 _ %&#xD;nl:Finch _ Wielen L _ % R _ %&#xD;pt:Finch _ Rodas E _ % D _ %&#xD;zh_CN:Finch _ 左轮 _ % 右轮 _ %&#xD;zh_TW:Finch _ 車輪  左 _ % 右 _ %&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
                 <input type="%n">0</input>
@@ -1765,54 +1804,53 @@
                         </block>
                     </script>
                 </block>
-                <block s="doRun">
-                    <block s="reifyReporter">
-                        <autolambda>
-                            <block s="reportURL">
-                                <block s="reportJoinWords">
-                                    <list>
-                                        <l>http://127.0.0.1:30061/hummingbird/out/wheels/</l>
-                                        <block var="devId"/>
-                                        <l>/</l>
-                                        <block var="left"/>
-                                        <l>/</l>
-                                        <block var="right"/>
-                                    </list>
-                                </block>
-                            </block>
-                        </autolambda>
-                        <list></list>
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/wheels/</l>
+                                <block var="devId"/>
+                                <l>/</l>
+                                <block var="left"/>
+                                <l>/</l>
+                                <block var="right"/>
+                            </list>
+                        </block>
                     </block>
-                    <list></list>
                 </block>
             </script>
         </block-definition>
         <block-definition s="Finch %&apos;devId&apos; Stop" type="command" category="motion">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ Atura&#xD;de:Finch _ Stoppe&#xD;es:Finch _ Detener&#xD;fr:Finch _ Stop&#xD;he:Finch _ להפסיק&#xD;ko:Finch _ 멈추기&#xD;nl:Finch _ Stop&#xD;pt:Finch _ Pare&#xD;zh_TW:Finch _ 停止&#xD;</translations>
+            <translations>ca:Finch _ Atura&#xD;de:Finch _ Stoppe&#xD;es:Finch _ Detener&#xD;fr:Finch _ Stop&#xD;he:Finch _ להפסיק&#xD;ko:Finch _ 멈추기&#xD;nl:Finch _ Stop&#xD;pt:Finch _ Pare&#xD;zh_CN:Finch _ 停止&#xD;zh_TW:Finch _ 停止&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
             </inputs>
             <script>
-                <block s="doRun">
-                    <block s="reifyReporter">
-                        <autolambda>
-                            <block s="reportURL">
-                                <block s="reportJoinWords">
-                                    <list>
-                                        <l>http://127.0.0.1:30061/hummingbird/out/stopFinch/</l>
-                                        <block var="devId"/>
-                                    </list>
-                                </block>
-                            </block>
-                        </autolambda>
-                        <list></list>
-                    </block>
-                    <list></list>
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
                 </block>
-                <block s="doWait">
-                    <l>0</l>
+                <block s="doSetVar">
+                    <l>response</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/stopFinch/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
+                    </block>
                 </block>
             </script>
         </block-definition>
@@ -1820,7 +1858,7 @@
                           type="command" category="looks">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ Encén el bec de color R _ % G _ % B _ %&#xD;de:Finch _ Schnabel R _ % G _ % B _ %&#xD;es:Finch _ Encender el pico de color R _ % V _ % A _ %&#xD;fr:Finch _ Bec R _ % G _ % B _ %&#xD;he:Finch _ מקור אדום _ % ירוק _ % כחול _ %&#xD;ko:Finch _ 부리 빨강 _ % 초록 _ % 파랑 _ %&#xD;nl:Finch _ Bek R _ % G _ % B _ %&#xD;pt:Finch _ Bico R _ % G _ % B _ %&#xD;zh_TW:Finch _ 鳥嘴 紅 _ % 綠 _ % 藍 _ %&#xD;</translations>
+            <translations>ca:Finch _ Encén el bec de color R _ % G _ % B _ %&#xD;de:Finch _ Schnabel R _ % G _ % B _ %&#xD;es:Finch _ Encender el pico de color R _ % V _ % A _ %&#xD;fr:Finch _ Bec R _ % G _ % B _ %&#xD;he:Finch _ מקור אדום _ % ירוק _ % כחול _ %&#xD;ko:Finch _ 부리 빨강 _ % 초록 _ % 파랑 _ %&#xD;nl:Finch _ Bek R _ % G _ % B _ %&#xD;pt:Finch _ Bico R _ % G _ % B _ %&#xD;zh_CN:Finch _ 鸟喙 R _ % G _ % B _ %&#xD;zh_TW:Finch _ 鳥嘴 紅 _ % 綠 _ % 藍 _ %&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
                 <input type="%n">0</input>
@@ -1930,27 +1968,28 @@
                         </block>
                     </block>
                 </block>
-                <block s="doRun">
-                    <block s="reifyReporter">
-                        <autolambda>
-                            <block s="reportURL">
-                                <block s="reportJoinWords">
-                                    <list>
-                                        <l>http://127.0.0.1:30061/hummingbird/out/triled/1/</l>
-                                        <block var="redLED"/>
-                                        <l>/</l>
-                                        <block var="greenLED"/>
-                                        <l>/</l>
-                                        <block var="blueLED"/>
-                                        <l>/</l>
-                                        <block var="devId"/>
-                                    </list>
-                                </block>
-                            </block>
-                        </autolambda>
-                        <list></list>
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/triled/1/</l>
+                                <block var="redLED"/>
+                                <l>/</l>
+                                <block var="greenLED"/>
+                                <l>/</l>
+                                <block var="blueLED"/>
+                                <l>/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
                     </block>
-                    <list></list>
                 </block>
             </script>
         </block-definition>
@@ -1958,7 +1997,7 @@
                           type="command" category="looks">
             <header></header>
             <code></code>
-            <translations>ca:Finch _ Encén la cua de color _ R _ % G _ % B _ %&#xD;de:Finch _ Schwanz _ R _ % G _ % B _ %&#xD;es:Finch _ Encender la cola de color _ R _ % V _ % A _ %&#xD;fr:Finch _ Queue _ R _ % G _ % B _ %&#xD;he:Finch _ זנב _ אדום _ % ירוק _ % כחול _ %&#xD;ko:Finch _ 꼬리 _ 빨강 _ % 초록 _ % 파랑 _ %&#xD;nl:Finch _ Staart _ R _ % G _ % B _ %&#xD;pt:Finch _ Cauda _ R _ % G _ % B _ %&#xD;zh_TW:Finch _ 尾巴 _ 紅 _ % 綠 _ % 藍 _ %&#xD;</translations>
+            <translations>ca:Finch _ Encén la cua de color _ R _ % G _ % B _ %&#xD;de:Finch _ Schwanz _ R _ % G _ % B _ %&#xD;es:Finch _ Encender la cola de color _ R _ % V _ % A _ %&#xD;fr:Finch _ Queue _ R _ % G _ % B _ %&#xD;he:Finch _ זנב _ אדום _ % ירוק _ % כחול _ %&#xD;ko:Finch _ 꼬리 _ 빨강 _ % 초록 _ % 파랑 _ %&#xD;nl:Finch _ Staart _ R _ % G _ % B _ %&#xD;pt:Finch _ Cauda _ R _ % G _ % B _ %&#xD;zh_CN:Finch _ 鸟尾 _ R _ % G _ % B _ %&#xD;zh_TW:Finch _ 尾巴 _ 紅 _ % 綠 _ % 藍 _ %&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
                 <input type="%txt" readonly="true">all<options>all&#xD;1&#xD;2&#xD;3&#xD;4</options></input>
@@ -2086,29 +2125,30 @@
                         </block>
                     </block>
                 </block>
-                <block s="doRun">
-                    <block s="reifyReporter">
-                        <autolambda>
-                            <block s="reportURL">
-                                <block s="reportJoinWords">
-                                    <list>
-                                        <l>http://127.0.0.1:30061/hummingbird/out/triled/</l>
-                                        <block var="port"/>
-                                        <l>/</l>
-                                        <block var="redLED"/>
-                                        <l>/</l>
-                                        <block var="greenLED"/>
-                                        <l>/</l>
-                                        <block var="blueLED"/>
-                                        <l>/</l>
-                                        <block var="devId"/>
-                                    </list>
-                                </block>
-                            </block>
-                        </autolambda>
-                        <list></list>
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
+                    <block s="reportURL">
+                        <block s="reportJoinWords">
+                            <list>
+                                <l>http://127.0.0.1:30061/hummingbird/out/triled/</l>
+                                <block var="port"/>
+                                <l>/</l>
+                                <block var="redLED"/>
+                                <l>/</l>
+                                <block var="greenLED"/>
+                                <l>/</l>
+                                <block var="blueLED"/>
+                                <l>/</l>
+                                <block var="devId"/>
+                            </list>
+                        </block>
                     </block>
-                    <list></list>
                 </block>
             </script>
         </block-definition>

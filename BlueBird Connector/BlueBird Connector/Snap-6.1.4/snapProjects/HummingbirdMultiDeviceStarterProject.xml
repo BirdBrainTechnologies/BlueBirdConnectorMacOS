@@ -114,7 +114,14 @@
                     </block>
                     <comment w="228" collapsed="false">254/180 Scaling Factor</comment>
                 </block>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
@@ -200,7 +207,14 @@
                         </block>
                     </script>
                 </block>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
@@ -261,7 +275,14 @@
                         </block>
                     </block>
                 </block>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
@@ -381,7 +402,14 @@
                         </block>
                     </block>
                 </block>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
@@ -638,6 +666,12 @@
                             = Duration in ms = BPMS * number of beats
                         </comment>
                     </block>
+                </block>
+                <block s="doSetVar">
+                  <l>note</l>
+                  <block s="reportRound">
+                    <block var="note"/>
+                  </block>
                 </block>
                 <block s="doRun">
                     <block s="reifyReporter">
@@ -910,7 +944,14 @@
                 <input type="%b">false</input>
             </inputs>
             <script>
-                <block s="doReport">
+                <block s="doDeclareVariables">
+                  <list>
+                    <l>response</l>
+                  </list>
+                  <comment w="228" collapsed="true">Storing the url response in a variable forces the block to wait for a response before returning.</comment>
+                </block>
+                <block s="doSetVar">
+                    <l>response</l>
                     <block s="reportURL">
                         <block s="reportJoinWords">
                             <list>
