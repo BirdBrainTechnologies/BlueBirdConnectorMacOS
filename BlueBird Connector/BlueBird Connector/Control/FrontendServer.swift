@@ -324,7 +324,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
                 print(body)
                 return
             }
-            os_log("WebView console log: [%s]", log: log, type: .debug, logMsg)
+            os_log("WebView console log: [%{public}s]", log: log, type: .debug, logMsg)
         case "document status":
             if let documentStatus = body["documentStatus"] as? String {
                 switch(documentStatus) {

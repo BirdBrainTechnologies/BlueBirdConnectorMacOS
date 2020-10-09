@@ -136,6 +136,7 @@ class BackendServer {
     }
     
     private func sensorRequest (_ request: HttpRequest) -> HttpResponse {
+        os_log("Sensor request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         let sensor = params[2]
         let port = (params.count > 3 ? String(params[3]) : "")
@@ -312,7 +313,7 @@ class BackendServer {
     
     
     private func triledRequest (_ request: HttpRequest) -> HttpResponse {
-        
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         let port = params[3]
         
@@ -349,6 +350,7 @@ class BackendServer {
     }
     
     private func ledRequest (_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         
         guard let robot = getRobot(params: params, robotIndex: 5) else {
@@ -375,6 +377,7 @@ class BackendServer {
     }
     
     private func printRequest (_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         
         guard let robot = getRobot(params: params, robotIndex: 4) else {
@@ -389,6 +392,7 @@ class BackendServer {
     }
     
     private func symbolRequest (_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
 
         guard let robot = getRobot(params: params, robotIndex: 3) else {
@@ -407,6 +411,7 @@ class BackendServer {
     }
     
     private func playNoteRequest(_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
 
         guard let robot = getRobot(params: params, robotIndex: 5) else {
@@ -425,6 +430,7 @@ class BackendServer {
     }
     
     private func servoRequest(_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
 
         guard let robot = getRobot(params: params, robotIndex: 5) as? Hummingbird else {
@@ -446,6 +452,7 @@ class BackendServer {
     }
     
     private func stopAllRequest(_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         
         guard let robot = getRobot(params: params, robotIndex: 3) else {
@@ -461,6 +468,7 @@ class BackendServer {
     
     
     private func finchMove (_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         
         guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
@@ -494,6 +502,7 @@ class BackendServer {
     }
     
     private func finchTurn (_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         
         guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
@@ -527,6 +536,7 @@ class BackendServer {
     }
     
     private func finchWheels (_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         
         guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
@@ -548,6 +558,7 @@ class BackendServer {
         Just stop the motors (finch only)
      */
     private func stopFinch (_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         
         guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
@@ -562,6 +573,7 @@ class BackendServer {
     }
     
     private func resetEncoders (_ request: HttpRequest) -> HttpResponse {
+        os_log("Output request [%{public}s]", log: log, type: .debug, request.path)
         let params = request.path.split(separator: "/")
         
         guard let robot = getRobot(params: params, robotIndex: 3) as? Finch else {
@@ -590,6 +602,7 @@ class BackendServer {
     
     //MARK: Helper functions
     private static func getRawResponse(_ text: String, _ type: HttpResponse? = nil) -> HttpResponse {
+        os_log("Raw response [%s]", log: OSLog.default, type: .debug, text)
         if let type = type {
             return .raw(type.statusCode, type.reasonPhrase, ["Access-Control-Allow-Origin": "*", "Content-Type": "text/plain"], { writer in
                 try? writer.write([UInt8](text.utf8))
