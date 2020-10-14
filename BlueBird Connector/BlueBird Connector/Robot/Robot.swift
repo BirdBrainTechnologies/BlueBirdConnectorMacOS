@@ -227,10 +227,12 @@ extension Robot {
     func stopAll() -> Bool {
         let success = setOutput(ifCheck: (true), when: {self.nextRobotState == self.currentRobotState},
                   set: {self.nextRobotState = RobotState(robotType: self.type)})
-        print("stopAll success \(success)")
         self.commandPending = nil
-        self.manageableRobot.sendData(turnOffCommand)
         
+        //So that an in progress print will not continue
+        self.inProgressPrintID = self.inProgressPrintID + 1
+        
+        self.manageableRobot.sendData(turnOffCommand)
         return success
     }
     

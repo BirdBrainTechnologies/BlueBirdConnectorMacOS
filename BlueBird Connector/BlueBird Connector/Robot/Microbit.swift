@@ -25,7 +25,7 @@ class Microbit: Robot {
     let buttonShakeIndex: Int = 7
     let accXindex: Int = 4
     let type: RobotType = .MicroBit
-    let turnOffCommand: Data = Data(bytes: UnsafePointer<UInt8>([144, 0, 0, 0, 0, 0, 0, 0] as [UInt8]), count: 8)
+    let turnOffCommand: Data = Data(bytes: UnsafePointer<UInt8>([0xCB, 0xFF, 0xFF, 0xFF] as [UInt8]), count: 4)
     
     internal var accelerometer: [Double]? {
         guard let raw = self.manageableRobot.rawInputData else { return nil }
