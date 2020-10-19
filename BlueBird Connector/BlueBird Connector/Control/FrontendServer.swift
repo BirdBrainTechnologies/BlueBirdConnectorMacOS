@@ -48,7 +48,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         screen wakes back up).
      */
     private func screenDidSleep(n: Notification) {
-        print("screenDidSleep")
+        os_log("screenDidSleep", log: log, type: .debug)
         screenIsSleeping = true
         stopScan()
         
@@ -60,7 +60,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         When the computer wakes, if there are any robots waiting to reconnect, start a scan.
      */
     private func screenDidWake(n: Notification) {
-        print("screenDidWake")
+        os_log("screenDidWake", log: log, type: .debug)
         screenIsSleeping = false
         if getAutoReconnectCount() > 0 && !managerIsScanning{
             managerIsScanning = Shared.robotManager.startScanning()
@@ -139,7 +139,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         availableDevices[uuid]?.isConnected = false
         
         if (device.shouldAutoConnectAs != nil) {
-            os_log("User did not request disconnect. Attempting to reconnect automatically. Screen is sleeping? [%s] Manager is scanning? [%s]", log: log, type: .debug, String(screenIsSleeping), String(managerIsScanning))
+            os_log("User did not request disconnect. Attempting to reconnect automatically. Screen is sleeping? [%{public}s] Manager is scanning? [%{public}s]", log: log, type: .debug, String(screenIsSleeping), String(managerIsScanning))
             
             
             //if the screen is sleeping, it will start the scan when it wakes.
@@ -237,12 +237,12 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             return
         }
         
-        os_log("eval js on frontend: [%s]", log: log, type: .debug, javascript)
+        os_log("eval js on frontend: [%{public}s]", log: log, type: .debug, javascript)
         
         //TODO: Do we need to submit this to a dispatch queue like in birdblox?
         webView.evaluateJavaScript(javascript) { (response, error) in
             if let error = error {
-                os_log("Error evaluating javascript: [%s]", log: self.log, type: .error, error.localizedDescription)
+                os_log("Error evaluating javascript: [%{public}s]", log: self.log, type: .error, error.localizedDescription)
             } else if let _ = response {
                 os_log("Javascript eval response received", log: self.log, type: .debug)
             }
@@ -337,7 +337,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
                 case "onresize":
                     os_log("webview has resized", log: log, type: .debug)
                 default:
-                    os_log("unrecognized document status [%s]", log: log, type: .error, documentStatus)
+                    os_log("unrecognized document status [%{public}s]", log: log, type: .error, documentStatus)
                 }
             }
         case "command":
@@ -354,7 +354,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
                 case "calibrate":
                     handleCalibrateCommand(body)
                 default:
-                    os_log("Command not found [%s]", log: log, type: .error, command)
+                    os_log("Command not found [%{public}s]", log: log, type: .error, command)
                 }
             }
         case "error":
@@ -385,7 +385,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
         case "off":
             stopScan()
         default:
-            os_log("unknown scan state [%s]", log: log, type: .error, scanState)
+            os_log("unknown scan state [%{public}s]", log: log, type: .error, scanState)
         }
     }
     /**
@@ -398,7 +398,7 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             print(fullCommand)
             return
         }
-        os_log("connect to [%s]", log: log, type: .debug, address)
+        os_log("connect to [%{public}s]", log: log, type: .debug, address)
         let _ = Shared.robotManager.connectToDevice(havingUUID: uuid)
     }
     /**
@@ -435,20 +435,20 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             urlString = "http://localhost:30061/snap/snap.html#open:snapProjects/" + projectName + ".xml&editMode&lang=" + language;
         }
         guard let url = URL(string: urlString) else {
-            os_log("Bad url string [%s]", log: log, type: .error, urlString)
+            os_log("Bad url string [%{public}s]", log: log, type: .error, urlString)
             return
         }
         
         //if on 10.15 or later, we can open in chrome specifically, if available
         if #available(OSX 10.15, *), let chromeURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.google.Chrome") {
-            os_log("Opening snap! at [%s] in chrome at [%s]", log: log, type: .debug, url.absoluteString, chromeURL.absoluteString)
+            os_log("Opening snap! at [%{public}s] in chrome at [%{public}s]", log: log, type: .debug, url.absoluteString, chromeURL.absoluteString)
             let configuration = NSWorkspace.OpenConfiguration()
             NSWorkspace.shared.open([url], withApplicationAt: chromeURL, configuration: configuration)
         } else {
             if NSWorkspace.shared.open(url) {
-                os_log("Opened snap! at [%s]", log: log, type: .debug, url.absoluteString)
+                os_log("Opened snap! at [%{public}s]", log: log, type: .debug, url.absoluteString)
             } else {
-                os_log("Failed to open snap! at [%s]", log: log, type: .error, url.absoluteString)
+                os_log("Failed to open snap! at [%{public}s]", log: log, type: .error, url.absoluteString)
             }
         }
         

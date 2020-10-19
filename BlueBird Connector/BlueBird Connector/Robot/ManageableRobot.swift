@@ -62,14 +62,14 @@ extension ManageableRobot: UARTDeviceDelegate {
     
     /* This function determines what happens when the Bluetooth device changes whether or not it is sending notifications. */
     public func uartDevice(_ device: UARTDevice, isSendingStateChangeNotifications: Bool) {
-        os_log("uartDevice isSendingChangeNotifications [%s]", log: log, type: .debug, String(describing: isSendingStateChangeNotifications))
+        os_log("uartDevice isSendingChangeNotifications [%{public}s]", log: log, type: .debug, String(describing: isSendingStateChangeNotifications))
         self.notificationsRunning = isSendingStateChangeNotifications
     }
     
     /* This function determines what happens when the Bluetooth device has new data. */
     public func uartDevice(_ device: UARTDevice, newState stateData: Data) {
         guard let rawState = RawInputState(data: stateData, type: type) else {
-            os_log("uartDevice [%s] state update fail", log: log, type: .error, self.advertisementSignature?.advertisedName ?? "unknown")
+            os_log("uartDevice [%{public}s] state update fail", log: log, type: .error, self.advertisementSignature?.advertisedName ?? "unknown")
             self.rawInputState?.isStale = true
             return
         }
@@ -82,18 +82,18 @@ extension ManageableRobot: UARTDeviceDelegate {
             if type == .Finch { index = 16 }
             let byte = rawState.data[index]
             let bits = byteToBits(byte)
-            print("CALIBRATION VALUES \(bits[2]) \(bits[3])")
+            os_log("CALIBRATION VALUES %{public}d %{public}d", log: log, type: .debug, bits[2], bits[3])
             
             if bits[3] == 1 {
                 self.isCalibrating = false
-                print("CALIBRATION FAILED \(bits)")
+                os_log("CALIBRATION FAILED %{public}s", log: log, type: .debug, bits.description)
                 Shared.frontendServer.notifyCalibrationResult(false)
             } else if bits[2] == 1 {
                 self.isCalibrating = false
-                print("CALIBRATION SUCCESSFUL \(bits)")
+                os_log("CALIBRATION SUCCESSFUL %{public}s", log: log, type: .debug, bits.description)
                 Shared.frontendServer.notifyCalibrationResult(true)
             } else {
-                print("CALIBRATION UNKNOWN \(bits)")
+                os_log("CALIBRATION UNKNOWN %{public}s", log: log, type: .debug, bits.description)
             }
         }
         
@@ -152,7 +152,7 @@ extension ManageableRobot: UARTDeviceDelegate {
     /* This function determines what happens when the Bluetooth devices gets an error instead of data. */
     public func uartDevice(_ device: UARTDevice, errorGettingState error: Error) {
         self.rawInputState?.isStale = true
-        os_log("uartDevice [%s] error getting state [%s]", log: log, type: .error, device.advertisementSignature?.advertisedName ?? "unknown", error.localizedDescription)
+        os_log("uartDevice [%{public}s] error getting state [%{public}s]", log: log, type: .error, device.advertisementSignature?.advertisedName ?? "unknown", error.localizedDescription)
     }
 }
 

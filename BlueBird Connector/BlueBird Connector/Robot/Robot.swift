@@ -91,7 +91,7 @@ extension Robot {
         if let command = self.commandPending {
             var commandArray: [UInt8] = []
             commandArray = Array(command)
-            print("sending a pending command \(commandArray)")
+            os_log("sending a pending command: %{public}s", log: log, type: .debug, commandArray.description)
             self.manageableRobot.sendData(command)
             self.commandPending = nil
             return
@@ -118,8 +118,7 @@ extension Robot {
         if command != oldCommand {
             var commandArray: [UInt8] = []
             commandArray = Array(command)
-            print("Sending set all. \(commandArray)")
-            //self.sendData(data: command)
+            os_log("sending set all: %{public}s", log: log, type: .debug, commandArray.description)
             self.manageableRobot.sendData(command)
             sentSetAll = true
         }
@@ -130,7 +129,7 @@ extension Robot {
             } else {
                 var commandArray: [UInt8] = []
                 commandArray = Array(additionalCommand)
-                print("Sending additional command. \(commandArray)")
+                os_log("sending additional command: %{public}s", log: log, type: .debug, commandArray.description)
                 self.manageableRobot.sendData(additionalCommand)
             }
         }
@@ -146,18 +145,18 @@ extension Robot {
     func setOutput(ifCheck isValid: Bool, when predicate: (() -> Bool), set work: (() -> ())) -> Bool {
         
         guard isConnected else {
-            os_log("Tried to set output on disconnected device [%s]", log: log, type: .error, self.name)
+            os_log("Tried to set output on disconnected device [%{public}s]", log: log, type: .error, self.name)
             return false
         }
         if !isValid {
-            os_log("Tried to set output on device [%s] with invalid check", log: log, type: .error, self.name)
+            os_log("Tried to set output on device [%{public}s] with invalid check", log: log, type: .error, self.name)
             return false
         }
         
         writtenCondition.lock()
         
         while !predicate() && isConnected {
-            print("waiting...")
+            os_log("waiting...", log: log, type: .debug)
             writtenCondition.wait(until: Date(timeIntervalSinceNow: 0.05))
         }
         

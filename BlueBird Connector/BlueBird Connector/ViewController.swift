@@ -76,7 +76,6 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
     //MARK: NSWindowDelegate methods
     
     func windowDidResize(_ notification: Notification) {
-        print("windowDidResize \(notification)")
         os_log("windowDidResize", log: log, type: .debug)
         self.webView.frame = self.view.bounds
     }
@@ -86,12 +85,12 @@ class ViewController: NSViewController, WKNavigationDelegate, WKUIDelegate, NSWi
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         NSLog("did fail provisional navigation %@", error as NSError)
-        os_log("did fail provisional navigation: [%s]", log: log, type: .error, error.localizedDescription)
+        os_log("did fail provisional navigation: [%{public}s]", log: log, type: .error, error.localizedDescription)
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         NSLog("did fail navigation %@", error as NSError)
-        os_log("did fail navigation: [%s]", log: log, type: .error, error.localizedDescription)
+        os_log("did fail navigation: [%{public}s]", log: log, type: .error, error.localizedDescription)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

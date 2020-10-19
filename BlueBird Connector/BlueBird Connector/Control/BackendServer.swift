@@ -26,7 +26,7 @@ class BackendServer {
     public init() {
         server = HttpServer()
         server.notFoundHandler = { request in
-            os_log("Invalid request [%s]", log: self.log, type: .error, request.path)
+            os_log("Invalid request [%{public}s]", log: self.log, type: .error, request.path)
             return .notFound
         }
         
@@ -35,9 +35,9 @@ class BackendServer {
         do {
             try server.start(30061)
             let port = try server.port()
-            os_log("Server has started on port [%s].", log: log, type: .debug, String(port))
+            os_log("Server has started on port [%{public}s].", log: log, type: .debug, String(port))
         } catch {
-            os_log("Server start error: [%s]", log: log, type: .error, error.localizedDescription)
+            os_log("Server start error: [%{public}s]", log: log, type: .error, error.localizedDescription)
         }
         
     }
@@ -54,16 +54,6 @@ class BackendServer {
         server["/snap/*/*/:filename"] = handleSnapRequest(_:)
         server["/snap/*/*/*/:filename"] = handleSnapRequest(_:)
         server["/snap/*/*/*/*/:filename"] = handleSnapRequest(_:)
-        
-                
-        if let resourcePath = Bundle.main.resourcePath {
-            //server["/snap/(.+)"] = resourcePath + "/Snap-6.1.4"
-            print("SETUP")
-            //server["/snap/snap.html"] = shareFilesFromDirectory(resourcePath + "/Snap-6.1.4")
-            //server["/snap/(.+)"] = HttpHandlers.directory("~/")
-            //server["/snap/:path"] = shareFilesFromDirectory(resourcePath + "/Snap-6.1.4")
-        }
-
         
         //outputs for any
         server["/hummingbird/out/stopall"] = stopAllRequest(_:)
@@ -322,7 +312,7 @@ class BackendServer {
         }
         
         guard let R = UInt8(params[4]), let G = UInt8(params[5]), let B = UInt8(params[6]) else {
-            os_log("Invalid params in request: R [%s], G [%s], B [%s]", log: log, type: .error, String(params[4]), String(params[5]), String(params[6]))
+            os_log("Invalid params in request: R [%{public}s], G [%{public}s], B [%{public}s]", log: log, type: .error, String(params[4]), String(params[5]), String(params[6]))
             return INVALID_PARAMETERS
         }
         
@@ -358,7 +348,7 @@ class BackendServer {
         }
         
         guard var intensity = Int(params[4]), let port = Int(params[3]) else {
-            os_log("Invalid params in request: intensity [%s], port [%s]", log: log, type: .error, String(params[4]), String(params[3]))
+            os_log("Invalid params in request: intensity [%{public}s], port [%{public}s]", log: log, type: .error, String(params[4]), String(params[3]))
             return INVALID_PARAMETERS
         }
         
@@ -418,7 +408,7 @@ class BackendServer {
             return NOT_CONNECTED
         }
         guard let note = Int(params[3]), let duration = Int(params[4]) else {
-            os_log("Invalid params in request: duration [%s], note [%s]", log: log, type: .error, String(params[4]), String(params[3]))
+            os_log("Invalid params in request: duration [%{public}s], note [%{public}s]", log: log, type: .error, String(params[4]), String(params[3]))
             return INVALID_PARAMETERS
         }
         
@@ -438,7 +428,7 @@ class BackendServer {
         }
         
         guard var value = Int(params[4]), let port = Int(params[3]) else {
-            os_log("Invalid params in request: value [%s], port [%s]", log: log, type: .error, String(params[4]), String(params[3]))
+            os_log("Invalid params in request: value [%{public}s], port [%{public}s]", log: log, type: .error, String(params[4]), String(params[3]))
             return INVALID_PARAMETERS
         }
         //All scaling is done for servos before requests are made.
@@ -477,7 +467,7 @@ class BackendServer {
         
         let direction = String(params[4])
         guard let distance = Double(params[5]), let speed = Double(params[6]), (direction == "Forward" || direction == "Backward") else {
-            os_log("Invalid params in request: direction [%s], distance [%s], speed [%s]", log: log, type: .error, direction, String(params[5]), String(params[6]))
+            os_log("Invalid params in request: direction [%{public}s], distance [%{public}s], speed [%{public}s]", log: log, type: .error, direction, String(params[5]), String(params[6]))
             return INVALID_PARAMETERS
         }
         
@@ -511,7 +501,7 @@ class BackendServer {
         
         let direction = String(params[4])
         guard let angle = Double(params[5]), let speed = Double(params[6]), (direction == "Right" || direction == "Left") else {
-            os_log("Invalid params in request: direction [%s], angle [%s], speed [%s]", log: log, type: .error, direction, String(params[5]), String(params[6]))
+            os_log("Invalid params in request: direction [%{public}s], angle [%{public}s], speed [%{public}s]", log: log, type: .error, direction, String(params[5]), String(params[6]))
             return INVALID_PARAMETERS
         }
         
@@ -544,7 +534,7 @@ class BackendServer {
         }
         
         guard let leftSpeed = Double(params[4]), let rightSpeed = Double(params[5]) else {
-            os_log("Invalid params in request: left speed [%s], right speed [%s]", log: log, type: .error, String(params[4]), String(params[5]))
+            os_log("Invalid params in request: left speed [%{public}s], right speed [%{public}s]", log: log, type: .error, String(params[4]), String(params[5]))
             return INVALID_PARAMETERS
         }
         
@@ -602,7 +592,7 @@ class BackendServer {
     
     //MARK: Helper functions
     private static func getRawResponse(_ text: String, _ type: HttpResponse? = nil) -> HttpResponse {
-        os_log("Raw response [%s]", log: OSLog.default, type: .debug, text)
+        os_log("Raw response [%{public}s]", log: OSLog.default, type: .debug, text)
         if let type = type {
             return .raw(type.statusCode, type.reasonPhrase, ["Access-Control-Allow-Origin": "*", "Content-Type": "text/plain"], { writer in
                 try? writer.write([UInt8](text.utf8))
@@ -623,92 +613,32 @@ class BackendServer {
         }
         
         guard let devLetter = DeviceLetter.fromString(devLetterString) else {
-            os_log("Invalid device letter [%s] in request", log: log, type: .error, devLetterString)
+            os_log("Invalid device letter [%{public}s] in request", log: log, type: .error, devLetterString)
             return nil
         }
         guard let robot = connectedRobots[devLetter] else {
-            os_log("No robot in position [%s]", log: log, type: .error, devLetterString)
+            os_log("No robot in position [%{public}s]", log: log, type: .error, devLetterString)
             return nil
         }
         return robot
     }
     
     //MARK: Snap!
-/*    private func handleSnapRequest (_ request: HttpRequest) -> HttpResponse {
-        print("Snap request!  \(request.path) \(request.params) \(request.queryParams)")
-      
-        if let docsPath = Bundle.main.resourcePath {
-            let sPath = docsPath + "/Snap-6.1.4"
-            do {
-                let docsArray = try FileManager.default.contentsOfDirectory(atPath: sPath)
-                print(docsArray)
-            } catch {
-                print(error)
-            }
-        }
-        
-        
-        guard var snapPath = Bundle.main.resourcePath else {
-            return .notFound
-        }
-        snapPath += "/Snap-6.1.4"
-        print(snapPath)
-        
-        let handler = shareFilesFromDirectory(snapPath)
-        let response = handler(request)
-        print(response.reasonPhrase)
-        
-        //let filePath = snapPath + request.path
-        guard let fileRelativePath = request.params.first else {
-            return .notFound
-        }
-        let filePath = snapPath + String.pathSeparator + fileRelativePath.value
-        print("looking for \(filePath)")
-        if let file = try? filePath.openForReading() {
-            print("found")
-            //let mimeType = "text/html"
-            let mimeType = fileRelativePath.value.mimeType()
-            var responseHeader: [String: String] = ["Content-Type": mimeType]
-            
-            if let attr = try? FileManager.default.attributesOfItem(atPath: filePath),
-                let fileSize = attr[FileAttributeKey.size] as? UInt64 {
-                //print("adding filesize \(fileSize)")
-                responseHeader["Content-Length"] = String(fileSize)
-            }
-            print(responseHeader)
-            return .raw(200, "OK", responseHeader, { writer in
-                do {
-                    try writer.write(file)
-                    file.close()
-                } catch {
-                    print(error)
-                }
-            })
-        }
-        
-        
-        return response
-    }*/
+
     private func handleSnapRequest (_ request: HttpRequest) -> HttpResponse {
         
-        let params = request.path.split(separator: "/")
-        print(params)
+        //let params = request.path.split(separator: "/")
+        //print(params)
         
         guard var snapPath = Bundle.main.resourcePath else {
             return .notFound
         }
         snapPath += "/Snap-6.1.4"
-        print(snapPath)
         
-        /*guard let fileRelativePath = request.params.first else {
-            return .notFound
-        }
-        let filePath = snapPath + String.pathSeparator + fileRelativePath.value*/
         let filePath = snapPath + request.path.dropFirst(5)
-        print("looking for \(filePath)")
+        os_log("looking for [%{public}s]", log: log, type: .debug, filePath)
         if let file = try? filePath.openForReading() {
-            print("found")
-            //let mimeType = fileRelativePath.value.mimeType()
+            os_log("file path found", log: log, type: .debug)
             let mimeType = filePath.mimeType()
             var responseHeader: [String: String] = ["Content-Type": mimeType]
             
@@ -716,13 +646,13 @@ class BackendServer {
                 let fileSize = attr[FileAttributeKey.size] as? UInt64 {
                 responseHeader["Content-Length"] = String(fileSize)
             }
-            print(responseHeader)
+            //print(responseHeader)
             return .raw(200, "OK", responseHeader, { writer in
                 do {
                     try writer.write(file)
                     file.close()
                 } catch {
-                    print(error)
+                    os_log("Error writing snap response [%{public}s]", log: self.log, type: .error, error.localizedDescription)
                 }
             })
         }

@@ -100,11 +100,15 @@ class Finch: Robot {
             setSymbol = (ledArrayArray[1] == 0x80)
             setFlash = !setSymbol
             ledArrayArray.removeFirst(2)
+            if setFlash {
+                os_log("Setting flash sent...", log: log, type: .debug)
+                nextRobotState.ledArray = RobotState.flashSent
+            }
         }
         
         if setMotors {
             guard nextCopy.motors.count == 2 else {
-                NSLog("Finch motors not found in output state.")
+                os_log("Finch motors not found in output state.", log: log, type: .error)
                 return nil
             }
             let motors = nextCopy.motors
@@ -113,7 +117,7 @@ class Finch: Robot {
             if nextCopy.motors == self.nextRobotState.motors {
                 self.nextRobotState.motors = [Motor(), Motor()]
             } else {
-                print("the motors have already changed")
+                os_log("the motors have already changed", log: log, type: .debug)
             }
         }
         
@@ -166,7 +170,7 @@ class Finch: Robot {
             correction = 1.06871493e-02*R + 1.94526614e-02*G + 6.12409825e-02*B + 4.01343475e-04*R*G + 4.25761981e-04*R*B + 6.46091068e-04*G*B + -4.41056971e-06*R*G*B
             raw = Double(rawData[2])
         }
-        print("correcting raw light value \(raw) with \(R), \(G), \(B) -> \(correction)")
+        os_log("correcting raw light value %{public}f with %{public}f, %{public}f, %{public}f -> %{public}f", log: log, type: .debug, raw, R, G, B, correction)
         let finalVal = raw - correction
         return Int(finalVal.rounded()).clamped(to: 0 ... 100)
     }

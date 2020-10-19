@@ -73,7 +73,7 @@ class Microbit: Robot {
         }
         
         if nextCopy.ledArray.starts(with: "F") {
-            print("And now setting to \(RobotState.flashSent)")
+            os_log("Setting flash sent...", log: log, type: .debug)
             nextRobotState.ledArray = RobotState.flashSent
         }
         

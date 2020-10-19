@@ -22,7 +22,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         enables or disables ble.
      */
     func didUpdateState(to state: UARTDeviceManagerState) {
-        os_log("UARTDeviceManagerDelegate.didUpdateState to: [%s]", log: log, type: .debug, state.rawValue)
+        os_log("UARTDeviceManagerDelegate.didUpdateState to: [%{public}s]", log: log, type: .debug, state.rawValue)
         switch state {
         case .enabled:
             Shared.frontendServer.startScan()
@@ -38,9 +38,9 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
      */
     func didDiscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
         
-        os_log("DID DISCOVER [%s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
+        os_log("DID DISCOVER [%{public}s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
         guard let advertisementSignature = advertisementSignature else {
-            os_log("Ignoring device [%s] because it is missing advertisement info.", log: log, type: .debug, uuid.uuidString)
+            os_log("Ignoring device [%{public}s] because it is missing advertisement info.", log: log, type: .debug, uuid.uuidString)
             return
         }
         
@@ -52,7 +52,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         are changes in the info.
      */
     func didRediscover(uuid: UUID, advertisementSignature: AdvertisementSignature?, advertisementData: [String : Any], rssi: NSNumber) {
-        os_log("DID REDISCOVER [%s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
+        os_log("DID REDISCOVER [%{public}s]", log: log, type: .debug, advertisementSignature?.advertisedName ?? "unknown")
         
         Shared.frontendServer.updateDeviceInfo(uuid: uuid, adSig: advertisementSignature, rssi: rssi)
 
@@ -61,7 +61,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         Called when a device hasn't been seen in a while.
      */
     func didDisappear(uuid: UUID) {
-        os_log("DID DISAPPEAR [%s]", log: log, type: .debug, uuid.uuidString)
+        os_log("DID DISAPPEAR [%{public}s]", log: log, type: .debug, uuid.uuidString)
         Shared.frontendServer.notifyDeviceDidDisappear(uuid: uuid)
     }
     /**
@@ -70,9 +70,9 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         frontend.
      */
     func didConnectTo(uuid: UUID) {
-        os_log("DID CONNECT TO [%s]", log: log, type: .debug, uuid.uuidString)
+        os_log("DID CONNECT TO [%{public}s]", log: log, type: .debug, uuid.uuidString)
         guard let mRobot = Shared.robotManager.getDevice(uuid: uuid) else {
-            os_log("Connected robot not found with uuid [%s]", log: log, type: .error, uuid.uuidString)
+            os_log("Connected robot not found with uuid [%{public}s]", log: log, type: .error, uuid.uuidString)
             let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
             return
         }
@@ -136,9 +136,9 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         Called when a device disconnects either by user choice or otherwise.
      */
     func didDisconnectFrom(uuid: UUID, error: Error?) {
-        os_log("DID DISCONNECT FROM [%s]", log: log, type: .debug, uuid.uuidString)
+        os_log("DID DISCONNECT FROM [%{public}s]", log: log, type: .debug, uuid.uuidString)
         if let error = error {
-            os_log("Error: [%s]", log: log, type: .error, error.localizedDescription)
+            os_log("Error: [%{public}s]", log: log, type: .error, error.localizedDescription)
         }
         
         for (letter, robot) in Shared.backendServer.connectedRobots {
@@ -153,7 +153,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         Called on connection failure.
      */
     func didFailToConnectTo(uuid: UUID, error: Error?) {
-        os_log("DID FAIL TO CONNECT TO [%s] with error [%s]", log: log, type: .error, uuid.uuidString, error?.localizedDescription ?? "no error")
+        os_log("DID FAIL TO CONNECT TO [%{public}s] with error [%{public}s]", log: log, type: .error, uuid.uuidString, error?.localizedDescription ?? "no error")
     }
 }
 

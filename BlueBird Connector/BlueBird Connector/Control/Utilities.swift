@@ -41,7 +41,7 @@ public func getUnicode(_ char: Character) -> UInt8{
     let scalars = String(char).unicodeScalars
     var val = scalars[scalars.startIndex].value
     if val > 255 {
-        os_log("Unicode for character [%s] not supported.", log: OSLog.default, type: .error, String(char))
+        os_log("Unicode for character [%{public}s] not supported.", log: OSLog.default, type: .error, String(char))
         val = 254
     }
     return UInt8(val)
@@ -118,7 +118,7 @@ public func rawToFinchMagnetometer(_ rawMag: [UInt8]) -> [Double] {
     let finchY = y * __cospi(40/180) + z * __sinpi(40/180)
     let finchZ = z * __cospi(40/180) - y * __sinpi(40/180)
     
-    print("rawToFinchMagnetometer \(rawMag) \([x, y, z]) \([finchX, finchY, finchZ])")
+    //print("rawToFinchMagnetometer \(rawMag) \([x, y, z]) \([finchX, finchY, finchZ])")
     
     return [finchX, finchY, finchZ]
 }
