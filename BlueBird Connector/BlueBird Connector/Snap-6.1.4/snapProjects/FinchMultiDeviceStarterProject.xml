@@ -77,46 +77,62 @@
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
             </inputs>
             <script>
-                <block s="doDeclareVariables">
-                    <list>
-                        <l>value</l>
-                    </list>
-                </block>
-                <block s="doSetVar">
-                    <l>value</l>
-                    <block s="reportURL">
-                        <block s="reportJoinWords">
-                            <list>
-                                <l>http://127.0.0.1:30061/hummingbird/in/Distance/static/</l>
-                                <block var="devId"/>
-                            </list>
-                        </block>
+              <block s="doDeclareVariables">
+                <list>
+                  <l>value</l>
+                  <l>split</l>
+                </list>
+              </block>
+              <block s="doSetVar">
+                <l>value</l>
+                <block s="reportURL">
+                    <block s="reportJoinWords">
+                        <list>
+                            <l>http://127.0.0.1:30061/hummingbird/in/Distance/static/</l>
+                            <block var="devId"/>
+                        </list>
                     </block>
                 </block>
-                <block s="doIfElse">
-                    <block s="reportNot">
-                        <block s="reportEquals">
-                            <block var="value"/>
-                            <l>Not Connected</l>
-                        </block>
+              </block>
+              <block s="doSetVar">
+                <l>split</l>
+                <block s="reportTextSplit"><block var="value"/>
+                  <l>v</l>
+                </block>
+              </block>
+              <block s="doIfElse">
+                <block s="reportEquals">
+                  <block s="reportListLength"><block var="split"/></block>
+                  <l>2</l>
+                </block>
+                <script>
+                  <block s="doReport">
+                    <block s="reportListItem">
+                      <l>1</l><block var="split"/></block>
+                  </block>
+                </script>
+                <script>
+                  <block s="doIfElse">
+                    <block s="reportIsA"><block var="value"/>
+                      <l>
+                        <option>number</option>
+                      </l>
                     </block>
                     <script>
-                        <block s="doReport">
-                            <block s="reportRound">
-                                <block s="reportProduct">
-                                    <l>0.0919</l>
-                                    <block var="value"/>
-                                </block>
-                            </block>
-                            <comment w="90" collapsed="false">0.0919 Scaling factor</comment>
+                      <block s="doReport">
+                        <block s="reportRound">
+                          <block s="reportProduct">
+                            <l>0.0919</l><block var="value"/></block>
                         </block>
+                        <comment w="90" collapsed="false">0.0919 Scaling factor</comment>
+                      </block>
                     </script>
                     <script>
-                        <block s="doReport">
-                            <l>Not Connected</l>
-                        </block>
+                      <block s="doReport"><block var="value"/></block>
                     </script>
-                </block>
+                  </block>
+                </script>
+              </block>
             </script>
         </block-definition>
         <block-definition s="Finch %&apos;devId&apos; %&apos;port&apos; Light" type="reporter" category="sensing">
@@ -1086,45 +1102,77 @@
             <code></code>
             <translations>ko:micro:bit _ 버튼 _&#xD;de:micro:bit _ Knopf _&#xD;pt:micro:bit _ Tecla _&#xD;fr:micro:bit _ Bouton _&#xD;nl:micro:bit _ Knop _&#xD;zh_CN:micro:bit _ 按钮 _&#xD;zh_TW:micro:bit _ 按鈕 _&#xD;ar:micro:bit _ زر _&#xD;dk:micro:bit _ Knap _&#xD;he:micro:bit _ לחצן _&#xD;es:micro:bit _ Pulsador _&#xD;ca:micro:bit _ Botó _&#xD;fi:micro:bit _ Painike _&#xD;sv:micro:bit _ Knapp _&#xD;</translations>
             <inputs>
-                <input type="%s" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
-                <input type="%txt" readonly="true">A<options>A&#xD;B</options></input>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;Logo (V2)</options></input>
             </inputs>
             <script>
-                <block s="doIfElse">
+                <block s="doDeclareVariables">
+                <list>
+                  <l>result</l>
+                </list>
+              </block>
+              <block s="doSetVar">
+                <l>result</l>
+                <block s="reportURL">
+                  <block s="reportJoinWords">
+                    <list>
+                      <l>http://127.0.0.1:30061/hummingbird/in/button/</l>
+                        <block var="button"/>
+                        <l>/</l>
+                        <block var="devId"/>
+                    </list>
+                  </block>
+                </block>
+              </block>
+              <block s="doReport">
+                <block s="reportIfElse">
+                  <block s="reportEquals">
+                    <block var="result"/>
+                    <l>true</l>
+                  </block>
+                  <block s="reportBoolean">
+                    <l>
+                      <bool>true</bool>
+                    </l>
+                  </block>
+                  <block s="reportIfElse">
                     <block s="reportEquals">
+                      <block var="result"/>
+                      <l>false</l>
+                    </block>
+                    <block s="reportBoolean">
+                      <l>
+                        <bool>false</bool>
+                      </l>
+                    </block>
+                    <block var="result"/>
+                  </block>
+                </block>
+              </block>
+            </script>
+        </block-definition>
+        <block-definition s="micro:bit V2 %&apos;devId&apos; %&apos;sensor&apos;" type="reporter" category="sensing">
+                <header></header>
+                <code></code>
+                <translations></translations>
+                <inputs>
+                    <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
+                    <input type="%txt" readonly="true">Sound<options>Sound&#xD;Temperature (°C)</options></input>
+                </inputs>
+                <script>
+                    <block s="doReport">
                         <block s="reportURL">
                             <block s="reportJoinWords">
                                 <list>
-                                    <l>http://127.0.0.1:30061/hummingbird/in/button</l>
-                                    <l>/</l>
-                                    <block var="button"/>
+                                    <l>http://127.0.0.1:30061/hummingbird/in/V2sensor/</l>
+                                    <block var="sensor"/>
                                     <l>/</l>
                                     <block var="devId"/>
                                 </list>
                             </block>
                         </block>
-                        <l>true</l>
                     </block>
-                    <script>
-                        <block s="doReport">
-                            <block s="reportBoolean">
-                                <l>
-                                    <bool>true</bool>
-                                </l>
-                            </block>
-                        </block>
-                    </script>
-                    <script>
-                        <block s="doReport">
-                            <block s="reportBoolean">
-                                <l>
-                                    <bool>false</bool>
-                                </l>
-                            </block>
-                        </block>
-                    </script>
-                </block>
-            </script>
+                </script>
         </block-definition>
         <block-definition s="Finch %&apos;devId&apos; %&apos;dim&apos;" type="predicate" category="sensing">
             <header></header>
@@ -1176,7 +1224,7 @@
             <translations></translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
-                <input type="%s" readonly="true">Accelerometer (m/s²)<options>Accelerometer (m/s²)&#xD;Magnetometer (µT)</options></input>
+                <input type="%txt" readonly="true">Accelerometer (m/s²)<options>Accelerometer (m/s²)&#xD;Magnetometer (µT)</options></input>
                 <input type="%txt" readonly="true">X<options>X&#xD;Y&#xD;Z</options></input>
             </inputs>
             <script>
@@ -1248,7 +1296,7 @@
             <translations>ko:micro:bit _ 출력 _&#xD;de:micro:bit _ Drucke _&#xD;pt:micro:bit _ Imprimir _&#xD;fr:micro:bit _ Imprimer _&#xD;nl:micro:bit _ Schrijf _&#xD;zh_CN:micro:bit _ 打印 _&#xD;zh_TW:micro:bit _ 打印 _&#xD;ar:micro:bit _ طباعة _&#xD;dk:micro:bit _ Vis _&#xD;he:micro:bit _ הדפס _&#xD;es:micro:bit _ Imprimir _&#xD;ca:micro:bit _ Escriu _&#xD;fi:micro:bit _ Näytä teksti _&#xD;sv:micro:bit _ Visa text _&#xD;</translations>
             <inputs>
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
-                <input type="%s">Hello</input>
+                <input type="%txt">Hello</input>
             </inputs>
             <script>
                 <block s="doRun">
