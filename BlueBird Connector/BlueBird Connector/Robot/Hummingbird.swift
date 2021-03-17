@@ -15,7 +15,8 @@ class Hummingbird: Robot {
     var manageableRobot: ManageableRobot
     var currentRobotState: RobotState
     var nextRobotState: RobotState
-    var commandPending: Data?
+    //var commandPending: Data?
+    var commandPending: [UInt8]?
     var setAllTimer: SetAllTimer
     var isConnected: Bool
     var writtenCondition: NSCondition = NSCondition()
@@ -25,7 +26,8 @@ class Hummingbird: Robot {
     let buttonShakeIndex: Int = 7
     let accXindex: Int = 4
     let type: RobotType = .HummingbirdBit
-    let turnOffCommand: Data = Data(bytes: UnsafePointer<UInt8>([0xCB, 0xFF, 0xFF, 0xFF] as [UInt8]), count: 4)
+    //let turnOffCommand: Data = Data(bytes: UnsafePointer<UInt8>([0xCB, 0xFF, 0xFF, 0xFF] as [UInt8]), count: 4)
+    let turnOffCommand: [UInt8] = [0xCB, 0xFF, 0xFF, 0xFF]
     
     internal var accelerometer: [Double]? {
         guard let raw = self.manageableRobot.rawInputData else { return nil }
@@ -39,6 +41,16 @@ class Hummingbird: Robot {
     
     
     //MARK: Public calculated values
+    
+    var V2sound: Int {
+        guard let raw = self.manageableRobot.rawInputData else { return 0 }
+        return Int(raw[14])
+    }
+    
+    var V2temperature: Int {
+        guard let raw = self.manageableRobot.rawInputData else { return 0 }
+        return Int(raw[15])
+    }
     
     var compass: Int {
         guard let raw = self.manageableRobot.rawInputData else { return 0 }
@@ -65,7 +77,8 @@ class Hummingbird: Robot {
     /**
        Get the command to set the led array to its next value.
     */
-    internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
+    //internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
+    internal func getAdditionalCommand(_ nextCopy: RobotState) -> [UInt8]? {
         guard nextCopy.ledArray != currentRobotState.ledArray,
         nextCopy.ledArray != RobotState.flashSent,
             let ledArrayCommand = nextCopy.ledArrayCommand() else {

@@ -16,7 +16,8 @@ class Finch: Robot {
     var manageableRobot: ManageableRobot
     var currentRobotState: RobotState
     var nextRobotState: RobotState
-    var commandPending: Data?
+    //var commandPending: Data?
+    var commandPending: [UInt8]?
     var setAllTimer: SetAllTimer
     var isConnected: Bool
     let writtenCondition: NSCondition = NSCondition()
@@ -26,7 +27,8 @@ class Finch: Robot {
     let buttonShakeIndex: Int = 16
     let accXindex: Int = 13
     let type: RobotType = .Finch
-    let turnOffCommand: Data = Data(bytes: UnsafePointer<UInt8>([0xDF] as [UInt8]), count: 1)
+    //let turnOffCommand: Data = Data(bytes: UnsafePointer<UInt8>([0xDF] as [UInt8]), count: 1)
+    let turnOffCommand: [UInt8] = [0xDF]
     
     internal var accelerometer: [Double]? {
         guard let raw = self.manageableRobot.rawInputData else { return nil }
@@ -47,6 +49,16 @@ class Finch: Robot {
     
     //MARK: Public calculated values
     
+    var V2sound: Int {
+        guard let raw = self.manageableRobot.rawInputData else { return 0 }
+        return Int(raw[0])
+    }
+    
+    var V2temperature: Int {
+        guard let raw = self.manageableRobot.rawInputData else { return 0 }
+        return Int(raw[6] >> 2)
+    }
+    
     var compass: Int {
         if let acc = accelerometer, let mag = magnetometer, let compass = DoubleToCompass(acc: acc, mag: mag) {
             //turn it around so that the finch beak points north at 0
@@ -56,11 +68,15 @@ class Finch: Robot {
         }
     }
     
-    var finchDistance: Int? {
+    var finchDistance: String? {
         guard let raw = self.manageableRobot.rawInputData else { return nil }
-        let msb = Int(raw[0])
-        let lsb = Int(raw[1])
-        return (msb << 8) + lsb
+        if manageableRobot.hasV2Microbit {
+            return String(Int(raw[1])) + "v2"
+        } else {
+            let msb = Int(raw[0])
+            let lsb = Int(raw[1])
+            return String((msb << 8) + lsb)
+        }
     }
     
     var isMoving: Bool? {
@@ -86,7 +102,8 @@ class Finch: Robot {
     /**
         Get the command to set the led array and motors to their next values.
      */
-    internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
+    //internal func getAdditionalCommand(_ nextCopy: RobotState) -> Data? {
+    internal func getAdditionalCommand(_ nextCopy: RobotState) -> [UInt8]? {
         var mode: UInt8 = 0x00
         let setMotors = (nextCopy.motors != currentRobotState.motors)
         let setLedArray = (nextCopy.ledArray != currentRobotState.ledArray && nextCopy.ledArray != RobotState.flashSent)
@@ -140,9 +157,10 @@ class Finch: Robot {
              M_L_4/C1, M_L_3/C2, M_L_2/C3, M_L_1/C4,
              C5, C6, C7, C8, C9, C10 */
             let command: [UInt8] = [0xD2, mode] + motorArray + ledArrayArray
-            let commandData = Data(bytes: UnsafePointer<UInt8>(command), count: command.count)
+            //let commandData = Data(bytes: UnsafePointer<UInt8>(command), count: command.count)
             
-            return commandData
+            //return commandData
+            return command
         } else {
             return nil
         }
@@ -256,5 +274,6 @@ class Finch: Robot {
 struct FinchConstants {
     static public let FINCH_TICKS_PER_CM = 49.7;
     static public let FINCH_TICKS_PER_DEGREE = 4.335;
-    static public let RESET_ENCODERS_COMMAND = Data(bytes: UnsafePointer<UInt8>([0xD5] as [UInt8]), count: 1)
+    //static public let RESET_ENCODERS_COMMAND = Data(bytes: UnsafePointer<UInt8>([0xD5] as [UInt8]), count: 1)
+    static public let RESET_ENCODERS_COMMAND:[UInt8] = [0xD5]
 }

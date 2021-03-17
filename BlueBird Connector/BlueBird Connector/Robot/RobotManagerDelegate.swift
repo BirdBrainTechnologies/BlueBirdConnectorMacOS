@@ -102,7 +102,7 @@ class RobotManagerDelegate: UARTDeviceManagerDelegate {
         }
         if let l = letterAssigned {
             Shared.backendServer.connectedRobots[l] = robot
-            Shared.frontendServer.notifyDeviceDidConnect(uuid: uuid, name: robot.name, fancyName: robot.fancyName, deviceLetter: l)
+            Shared.frontendServer.notifyDeviceDidConnect(robot, atLetter: l)
         } else {
             os_log("Too many connections", log: log, type: .error)
             let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)

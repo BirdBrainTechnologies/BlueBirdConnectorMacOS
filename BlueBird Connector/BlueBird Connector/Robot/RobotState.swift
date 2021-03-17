@@ -53,13 +53,15 @@ struct RobotState: Equatable {
     }
     
     
-    func setAllCommand() -> Data {
+    //func setAllCommand() -> Data {
+    func setAllCommand() -> [UInt8] {
         switch robotType {
         case .HummingbirdBit:
         //Set all: 0xCA LED1 Reserved R1 G1 B1 R2 G2 B2 SS1 SS2 SS3 SS4 LED2 LED3 Time us(MSB) Time us(LSB) Time ms(MSB) Time ms(LSB)
             guard leds.count == 3, trileds.count == 2, servos.count == 4, let buzzer = buzzer else {
                 os_log("Missing information in the hummingbird bit output state", log: log, type: .error)
-                return Data()
+                //return Data()
+                return []
             }
             
             let letter: UInt8 = 0xCA
@@ -75,14 +77,16 @@ struct RobotState: Equatable {
             assert(array.count == 19)
             
             //NSLog("Set all \(array)")
-            return Data(bytes: UnsafePointer<UInt8>(array), count: array.count)
+            //return Data(bytes: UnsafePointer<UInt8>(array), count: array.count)
+            return array
         case .Finch:
             // 0xD0, B_R(0-255), B_G(0-255), B_B(0-255), T1_R(0-255), T1_G(0-255), T1_B(0-255), T2_R(0-255),
             // T2_R(0-255), T2_R(0-255), T3_R(0-255), T3_G(0-255), T3_B(0-255), T4_R(0-255), T4_G(0-255), T4_B(0-255),
             // Time_us_MSB, Time_us_LSB, Time_ms_MSB, Time_ms_LSB
             guard trileds.count == 5, let buzzer = buzzer else {
                 os_log("Missing information in the finch output state", log: log, type: .error)
-                return Data()
+                //return Data()
+                return []
             }
             
             let letter: UInt8 = 0xD0
@@ -99,14 +103,17 @@ struct RobotState: Equatable {
         
             assert(array.count == 20)
             //NSLog("Set all \(array)")
-            return Data(bytes: UnsafePointer<UInt8>(array), count: array.count)
-
+            //return Data(bytes: UnsafePointer<UInt8>(array), count: array.count)
+            return array
+            
         default:
-            return Data()
+            //return Data()
+            return []
         }
     }
     
-    func ledArrayCommand() -> Data? {
+    //func ledArrayCommand() -> Data? {
+    func ledArrayCommand() -> [UInt8]? {
         let letter: UInt8 = 0xCC
         let ledStatusChars = Array(ledArray)
         
@@ -137,7 +144,8 @@ struct RobotState: Equatable {
             }
             
             //NSLog("Symbol command \([letter, symbol, led25, led24to17, led16to9, leds8to1])")
-            return Data(bytes: UnsafePointer<UInt8>([letter, symbol, led25, led24to17, led16to9, leds8to1] as [UInt8]), count: 6)
+            //return Data(bytes: UnsafePointer<UInt8>([letter, symbol, led25, led24to17, led16to9, leds8to1] as [UInt8]), count: 6)
+            return [letter, symbol, led25, led24to17, led16to9, leds8to1]
             
         case "F": //flash a string
             let length = ledStatusChars.count - 1
@@ -148,8 +156,11 @@ struct RobotState: Equatable {
             }
             
             //NSLog("Flash command \(commandArray)")
-            return Data(bytes: UnsafePointer<UInt8>(commandArray), count: length + 2)
-        default: return nil
+            //return Data(bytes: UnsafePointer<UInt8>(commandArray), count: length + 2)
+            return commandArray
+            
+        default: //return nil
+            return nil
         }
     }
     

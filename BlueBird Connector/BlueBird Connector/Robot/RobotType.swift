@@ -24,11 +24,11 @@ enum RobotType {
     }
     
     
-    var expectedRawStateByteCount: Int {
+    func expectedRawStateByteCount(_ hasV2: Bool) -> Int {
         switch self {
         case .Finch: return 20
-        case .HummingbirdBit: return 14
-        case .MicroBit: return 14
+        case .HummingbirdBit, .MicroBit:
+            return hasV2 ? 16 : 14
         case .Unknown: return 0
         }
     }

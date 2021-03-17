@@ -114,18 +114,40 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
     /**
         Notify the frontend of a new device connection. Flag the device as connected.
      */
-    func notifyDeviceDidConnect(uuid: UUID, name: String, fancyName: String, deviceLetter: DeviceLetter) {
-        availableDevices[uuid]?.isConnected = true
-        availableDevices[uuid]?.shouldAutoConnectAs = deviceLetter
+    func notifyDeviceDidConnect(_ robot: Robot, atLetter deviceLetter: DeviceLetter) {
+        
+        availableDevices[robot.uuid]?.isConnected = true
+        availableDevices[robot.uuid]?.shouldAutoConnectAs = deviceLetter
         
         sendAvailableDeviceUpdate()
         if getAutoReconnectCount() == 0 {
             stopScan()
         }
         
-        let args = "'" + uuid.uuidString + "', '" + name + "', '" + fancyName + "', '" + deviceLetter.toString() + "'"
-        let js = "CallbackManager.deviceDidConnect(" + args + ")"
-        sendToFrontend(js)
+        notifyFrontendOfConnection(robot, deviceLetter, startingAt: Date())
+    }
+    private func notifyFrontendOfConnection(_ robot: Robot, _ deviceLetter: DeviceLetter, startingAt startTime: Date) {
+        let uuid = robot.uuid
+        let name = robot.name
+        let fancyName = robot.fancyName
+        
+        if robot.manageableRobot.microbitVersionDetected {
+            let hasV2 = robot.manageableRobot.hasV2Microbit
+            var args = "'" + uuid.uuidString + "', '" + name + "', '" + fancyName + "', '"
+                args += deviceLetter.toString() + "', '" + String(hasV2) + "'"
+            let js = "CallbackManager.deviceDidConnect(" + args + ")"
+            sendToFrontend(js)
+            notifyDeviceBatteryUpdate(uuid: uuid, newState: robot.manageableRobot.battery)
+        } else if (Date().timeIntervalSince(startTime) > 2) { //Allow two seconds of checking
+            os_log("Timed out trying to detect micro:bit version for [%{public}s]", log: log, type: .error, name)
+            let _ = Shared.robotManager.disconnectFromDevice(havingUUID: uuid)
+        } else {
+            print("sleeping...")
+            _ = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false) { timer in
+                self.notifyFrontendOfConnection(robot, deviceLetter, startingAt: startTime)
+            }
+        }
+        
     }
     /**
         Notify the frontend of a device disconnection. Flag the device as disconnected.
@@ -399,7 +421,9 @@ class FrontendServer: NSObject, WKScriptMessageHandler {
             return
         }
         os_log("connect to [%{public}s]", log: log, type: .debug, address)
-        let _ = Shared.robotManager.connectToDevice(havingUUID: uuid)
+        let success = Shared.robotManager.connectToDevice(havingUUID: uuid)
+        os_log("connect result [%{public}s]", log: log, type: .debug, success.description)
+        
     }
     /**
         Handle requests to disconnect from a robot

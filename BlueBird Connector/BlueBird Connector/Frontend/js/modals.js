@@ -32,7 +32,7 @@ function closeModal() {
  * @param  {string} devLetter  letter assigned to device to calibrate
  * @param  {string} deviceName name of device to calibrate
  */
-function launchCalibrate(devLetter, deviceName) {
+function launchCalibrate(devLetter, deviceName, hasV2String) {
     sendMessageToBackend(msgTypes.CONSOLE_LOG, {
       consoleLog: "launch calibrate"
     })
@@ -45,7 +45,7 @@ function launchCalibrate(devLetter, deviceName) {
     sendMessageToBackend(msgTypes.COMMAND, data)
 
     // set the appropriate calibration video
-    var devVideo = getDeviceVideo(deviceName);
+    var devVideo = getDeviceVideo(deviceName, (hasV2String == 'true'));
     launchVideo(devVideo);
 }
 
@@ -60,15 +60,23 @@ function launchNativeMacOSBLEvideo() {
   * getDeviceVideo - Get the correct calibration video for the given device
   *
   * @param  {string} deviceName Advertised name of the device to calibrate
+  * @param  {boolean} hasV2  true if the device to calibrate has a V2 micro:bit
   * @return {string}            Filename of calibration video
   */
-function getDeviceVideo(deviceName) {
-  var deviceImage = "HummBit_Calibration.mp4" // default hummingbird video
-  if (deviceName.startsWith("MB"))
-    deviceImage = "MicroBit_Calibration.mp4";
-  if (deviceName.startsWith("FN"))
-    deviceImage = "Finch_Calibration.mp4";
-  return deviceImage;
+function getDeviceVideo(deviceName, hasV2) {
+    var deviceVideo = "HummBit_Calibration.mp4" // default hummingbird video
+    switch (deviceName.slice(0,2)) {
+        case "MB":
+            deviceVideo = hasV2 ? "MicroBit_V2_Calibration.mp4" : "MicroBit_Calibration.mp4"
+            break;
+        case "BB":
+            deviceVideo = hasV2 ? "HummBit_V2_Calibration.mp4" : "HummBit_Calibration.mp4"
+            break;
+        case "FN":
+            deviceVideo = hasV2 ? "Finch_V2_Calibration.mp4" : "Finch_Calibration.mp4"
+            break;
+    }
+    return deviceVideo;
 }
 
  /**
@@ -107,6 +115,9 @@ function launchVideo(videoName) {
         case "HummBit_Calibration.mp4":
         case "MicroBit_Calibration.mp4":
         case "Finch_Calibration.mp4":
+        case "HummBit_V2_Calibration.mp4":
+        case "MicroBit_V2_Calibration.mp4":
+        case "Finch_V2_Calibration.mp4":
             section.setAttribute("id", "calibrate-modal");
             icon.setAttribute("class", "fas fa-compass");
             icon2 = null;

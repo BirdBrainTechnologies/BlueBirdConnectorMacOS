@@ -99,6 +99,8 @@ class BackendServer {
         server["/hummingbird/in/Compass/:robot"] = sensorRequest(_:)
         server["/hummingbird/in/finchCompass/static"] = sensorRequest(_:)
         server["/hummingbird/in/finchCompass/static/:robot"] = sensorRequest(_:)
+        server["/hummingbird/in/V2sensor/:sensor"] = sensorRequest(_:)
+        server["/hummingbird/in/V2sensor/:sensor/:robot"] = sensorRequest(_:)
         //Hummingbird sensor port requests
         server["/hummingbird/in/Distance/:port"] = sensorRequest(_:) //also finch
         server["/hummingbird/in/Distance/:port/:robot"] = sensorRequest(_:)
@@ -142,7 +144,25 @@ class BackendServer {
             switch port {
             case "A": return BackendServer.getRawResponse(String(robot.buttonA))
             case "B": return BackendServer.getRawResponse(String(robot.buttonB))
+            case "Logo (V2)":
+                if robot.manageableRobot.hasV2Microbit {
+                    return BackendServer.getRawResponse(String(robot.V2touch))
+                } else {
+                    return BackendServer.getRawResponse("micro:bit V2 required", .badRequest(nil))
+                }
             default: return BackendServer.getRawResponse("Invalid button", .badRequest(nil))
+            }
+        case "V2sensor":
+            guard robot.manageableRobot.hasV2Microbit else {
+                return BackendServer.getRawResponse("micro:bit V2 required", .badRequest(nil))
+            }
+            switch port {
+            case "Sound":
+                return BackendServer.getRawResponse(String(robot.V2sound))
+            case "Temperature (°C)":
+                return BackendServer.getRawResponse(String(robot.V2temperature))
+            default:
+                return BackendServer.getRawResponse("Invalid V2 sensor", .badRequest(nil))
             }
         case "orientation":
             switch port {
@@ -212,7 +232,7 @@ class BackendServer {
             } else {
                 guard let robot = robot as? Finch else { return NOT_CONNECTED }
                 guard let distance = robot.finchDistance else { return NOT_CONNECTED }
-                return BackendServer.getRawResponse(String(distance))
+                return BackendServer.getRawResponse(distance)
             }
         case "Dial":
             guard let robot = robot as? Hummingbird else { return NOT_CONNECTED }

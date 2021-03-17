@@ -201,7 +201,7 @@ $.connectedDevListRefresh = function() {
       "                   <span style=\"display:inline-block\" class=\"button button-battery button-battery-" + devLetter + " fa-stack fa-2x\"><i class=\"fas /*fa-battery-full fa-battery-half*/ /*fa-battery-quarter*/ fa-stack-2x\"></i></span> " +
 
       // Calibration button
-      "                   <a class=\"button\" href=\"#\" onclick=\"return launchCalibrate(\'" + devLetter + "\', \'" + deviceName + "\');\"><span class=\"button-calibrate fa-stack fa-2x\">" +
+      "                   <a class=\"button\" href=\"#\" onclick=\"return launchCalibrate(\'" + devLetter + "\', \'" + deviceName + "\', \'" + item.hasV2 + "\');\"><span class=\"button-calibrate fa-stack fa-2x\">" +
       "                     <i class=\"fas fa-square fa-stack-2x\"></i>" +
       "                     <i class=\"fas fa-compass fa-stack-1x fa-inverse\"></i>" +
       "                   </span></a>" +

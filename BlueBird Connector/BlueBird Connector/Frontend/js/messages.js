@@ -124,15 +124,16 @@ CallbackManager.updateScanDeviceList = function(newList) {
  * @param  {string} fancyName device memorable name
  * @param  {string} devLetter letter assigned to device
  */
-CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter) {
+CallbackManager.deviceDidConnect = function(address, name, fancyName, devLetter, hasV2) {
   sendMessageToBackend(msgTypes.CONSOLE_LOG, {
-    consoleLog: "device did connect: " + address + ", " + name + ", " + fancyName + ", " + devLetter
+    consoleLog: "device did connect: " + address + ", " + name + ", " + fancyName + ", " + devLetter + ", " + hasV2
   })
   connectedDeviceList.push({
     deviceAddress: address,
     deviceFancyName: fancyName,
     deviceName: name,
     devLetter: devLetter,
+    hasV2: hasV2,
     batteryStatus: "unknown"
   })
   $.connectedDevListRefresh()

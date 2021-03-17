@@ -17,7 +17,8 @@ protocol Robot: AnyObject {
     var manageableRobot: ManageableRobot { get }
     var currentRobotState: RobotState { set get }
     var nextRobotState: RobotState { set get }
-    var commandPending: Data? { set get }
+    //var commandPending: Data? { set get }
+    var commandPending: [UInt8]? { set get }
     var setAllTimer: SetAllTimer { get }
     var isConnected: Bool { set get }
     var writtenCondition: NSCondition { get }
@@ -27,16 +28,20 @@ protocol Robot: AnyObject {
     var buttonShakeIndex: Int { get }
     var accXindex: Int { get }
     var type: RobotType { get }
-    var turnOffCommand: Data { get }
+    //var turnOffCommand: Data { get }
+    var turnOffCommand: [UInt8] { get }
     
     //calculated values
     var accelerometer: [Double]? { get }
     var magnetometer: [Double]? { get }
     var compass: Int { get }
- 
+    var V2sound: Int { get }
+    var V2temperature: Int { get }
+    
     init(_ mRobot: ManageableRobot)
     
-    func getAdditionalCommand(_ nextCopy: RobotState) -> Data?
+    //func getAdditionalCommand(_ nextCopy: RobotState) -> Data?
+    func getAdditionalCommand(_ nextCopy: RobotState) -> [UInt8]?
 }
 
 extension Robot {
@@ -64,6 +69,9 @@ extension Robot {
     var buttonB: Bool {
         return (buttonShakeBits?[5] == 0)
     }
+    var V2touch: Bool {
+        return (buttonShakeBits?[1] == 0)
+    }
     var shake: Bool {
         return (buttonShakeBits?[0] == 1)
     }
@@ -89,9 +97,10 @@ extension Robot {
     func setAll() {
 
         if let command = self.commandPending {
-            var commandArray: [UInt8] = []
+            /*var commandArray: [UInt8] = []
             commandArray = Array(command)
-            os_log("sending a pending command: %{public}s", log: log, type: .debug, commandArray.description)
+            os_log("sending a pending command: %{public}s", log: log, type: .debug, commandArray.description)*/
+            os_log("sending a pending command: %{public}s", log: log, type: .debug, command.description)
             self.manageableRobot.sendData(command)
             self.commandPending = nil
             return
@@ -244,7 +253,8 @@ extension Robot {
 }
 
 struct RobotConstants {
-    static public let CALIBRATE_COMMAND = Data(bytes: UnsafePointer<UInt8>([0xCE, 0xFF, 0xFF, 0xFF] as [UInt8]), count: 4)
+    //static public let CALIBRATE_COMMAND = Data(bytes: UnsafePointer<UInt8>([0xCE, 0xFF, 0xFF, 0xFF] as [UInt8]), count: 4)
+    static public let CALIBRATE_COMMAND:[UInt8] = [0xCE, 0xFF, 0xFF, 0xFF]
 }
 
 

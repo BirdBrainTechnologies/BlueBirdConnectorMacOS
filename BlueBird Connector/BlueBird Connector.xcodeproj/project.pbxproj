@@ -18,11 +18,13 @@
 		313ECBFD24D32B7300FEA8C5 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECBFC24D32B7300FEA8C5 /* Shared.swift */; };
 		313ECBFF24D4AEB600FEA8C5 /* RobotState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECBFE24D4AEB600FEA8C5 /* RobotState.swift */; };
 		313ECC0124D710E500FEA8C5 /* ManageableRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0024D710E500FEA8C5 /* ManageableRobot.swift */; };
-		313ECC0324D710FB00FEA8C5 /* ManageableRobotDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0224D710FB00FEA8C5 /* ManageableRobotDelegate.swift */; };
 		313ECC0524D7110F00FEA8C5 /* Finch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0424D7110F00FEA8C5 /* Finch.swift */; };
 		313ECC0724D7112000FEA8C5 /* Hummingbird.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0624D7112000FEA8C5 /* Hummingbird.swift */; };
 		313ECC0924D7113700FEA8C5 /* Microbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313ECC0824D7113700FEA8C5 /* Microbit.swift */; };
 		3162728124BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */; };
+		31B6E3D925F906ED00D352ED /* Finch_V2_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31B6E3D825F906ED00D352ED /* Finch_V2_Calibration.mp4 */; };
+		31B6E3DE25F906F900D352ED /* HummBit_V2_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31B6E3DD25F906F900D352ED /* HummBit_V2_Calibration.mp4 */; };
+		31B6E3E325F9070400D352ED /* MicroBit_V2_Calibration.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 31B6E3E225F9070400D352ED /* MicroBit_V2_Calibration.mp4 */; };
 		31C1D5B824D0974900A83B21 /* RobotManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */; };
 		31C1D5BA24D1BCEF00A83B21 /* logo-snap.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */; };
 		31C516ED24ABD0930051C05F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C516EC24ABD0930051C05F /* AppDelegate.swift */; };
@@ -106,11 +108,13 @@
 		313ECBFC24D32B7300FEA8C5 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		313ECBFE24D4AEB600FEA8C5 /* RobotState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotState.swift; sourceTree = "<group>"; };
 		313ECC0024D710E500FEA8C5 /* ManageableRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageableRobot.swift; sourceTree = "<group>"; };
-		313ECC0224D710FB00FEA8C5 /* ManageableRobotDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageableRobotDelegate.swift; sourceTree = "<group>"; };
 		313ECC0424D7110F00FEA8C5 /* Finch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Finch.swift; sourceTree = "<group>"; };
 		313ECC0624D7112000FEA8C5 /* Hummingbird.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hummingbird.swift; sourceTree = "<group>"; };
 		313ECC0824D7113700FEA8C5 /* Microbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Microbit.swift; sourceTree = "<group>"; };
 		3162728024BBC7F2009EFB25 /* AdvertisedNamePrefixesScanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertisedNamePrefixesScanFilter.swift; sourceTree = "<group>"; };
+		31B6E3D825F906ED00D352ED /* Finch_V2_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Finch_V2_Calibration.mp4; sourceTree = "<group>"; };
+		31B6E3DD25F906F900D352ED /* HummBit_V2_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HummBit_V2_Calibration.mp4; sourceTree = "<group>"; };
+		31B6E3E225F9070400D352ED /* MicroBit_V2_Calibration.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = MicroBit_V2_Calibration.mp4; sourceTree = "<group>"; };
 		31C1D5B724D0974900A83B21 /* RobotManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotManagerDelegate.swift; sourceTree = "<group>"; };
 		31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "logo-snap.svg"; sourceTree = "<group>"; };
 		31C516E924ABD0930051C05F /* BlueBird Connector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BlueBird Connector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,8 +381,11 @@
 			isa = PBXGroup;
 			children = (
 				3102E6A224E1941E00EB485F /* NativeMacBLEon.mp4 */,
+				31B6E3D825F906ED00D352ED /* Finch_V2_Calibration.mp4 */,
 				31C5176724ABDF5C0051C05F /* MicroBit_Calibration.mp4 */,
+				31B6E3DD25F906F900D352ED /* HummBit_V2_Calibration.mp4 */,
 				31C5176824ABDF5C0051C05F /* HummBit_Calibration.mp4 */,
+				31B6E3E225F9070400D352ED /* MicroBit_V2_Calibration.mp4 */,
 				31C5176924ABDF5C0051C05F /* Finch_Calibration.mp4 */,
 			);
 			path = vid;
@@ -389,7 +396,6 @@
 			children = (
 				31C63E9624AF72D70051F104 /* Robot.swift */,
 				313ECC0024D710E500FEA8C5 /* ManageableRobot.swift */,
-				313ECC0224D710FB00FEA8C5 /* ManageableRobotDelegate.swift */,
 				313ECC0424D7110F00FEA8C5 /* Finch.swift */,
 				313ECC0624D7112000FEA8C5 /* Hummingbird.swift */,
 				313ECC0824D7113700FEA8C5 /* Microbit.swift */,
@@ -538,6 +544,7 @@
 				31C5176424ABDF470051C05F /* raleway-semibold.woff in Resources */,
 				31C5173E24ABDEC00051C05F /* fa-regular-400.svg in Resources */,
 				31C63E8824AE73510051F104 /* hummingbirdlogo32x32.png in Resources */,
+				31B6E3E325F9070400D352ED /* MicroBit_V2_Calibration.mp4 in Resources */,
 				31C5176B24ABDF5C0051C05F /* HummBit_Calibration.mp4 in Resources */,
 				31C516F124ABD0960051C05F /* Assets.xcassets in Resources */,
 				31C5176024ABDF470051C05F /* raleway-semibold.ttf in Resources */,
@@ -553,11 +560,13 @@
 				31C5175F24ABDF470051C05F /* raleway-semibold.eot in Resources */,
 				31C5174824ABDEC10051C05F /* fa-brands-400.woff2 in Resources */,
 				31C5176C24ABDF5C0051C05F /* Finch_Calibration.mp4 in Resources */,
+				31B6E3DE25F906F900D352ED /* HummBit_V2_Calibration.mp4 in Resources */,
 				31C5176524ABDF470051C05F /* raleway-semibold.woff2 in Resources */,
 				31C5176324ABDF470051C05F /* raleway-semibold.svg in Resources */,
 				31C5174624ABDEC10051C05F /* fa-regular-400.ttf in Resources */,
 				31C5175624ABDF180051C05F /* pattern-blue-circuitry.svg in Resources */,
 				31C63E9024AE8A8C0051F104 /* modals.js in Resources */,
+				31B6E3D925F906ED00D352ED /* Finch_V2_Calibration.mp4 in Resources */,
 				31C5174A24ABDEC10051C05F /* fa-brands-400.ttf in Resources */,
 				31C5174B24ABDEC10051C05F /* fa-regular-400.eot in Resources */,
 			);
@@ -597,7 +606,6 @@
 				313ECBF724D31FC400FEA8C5 /* DeviceLetter.swift in Sources */,
 				313ECC0924D7113700FEA8C5 /* Microbit.swift in Sources */,
 				31C1D5B824D0974900A83B21 /* RobotManagerDelegate.swift in Sources */,
-				313ECC0324D710FB00FEA8C5 /* ManageableRobotDelegate.swift in Sources */,
 				313ECBFB24D3238100FEA8C5 /* Utilities.swift in Sources */,
 				313ECBFD24D32B7300FEA8C5 /* Shared.swift in Sources */,
 				31D9064624D9AFE00037A790 /* SetAllTimer.swift in Sources */,
@@ -768,7 +776,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BlueBird Connector/BlueBird_Connector.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = N6XC9HC8PB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "BlueBird Connector/Info.plist";
@@ -777,6 +785,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-Connector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -790,7 +799,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BlueBird Connector/BlueBird_Connector.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = N6XC9HC8PB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "BlueBird Connector/Info.plist";
@@ -799,6 +808,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.birdbraintechnologies.BlueBird-Connector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

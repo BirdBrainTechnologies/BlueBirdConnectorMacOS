@@ -15,6 +15,15 @@ class ManageableRobot: ManageableUARTDevice {
     private let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "BlueBird-Connector", category: "ManageableRobot")
     
     static public let scanFilter: UARTDeviceScanFilter = AdvertisedNamePrefixesScanFilter(prefixes: ["FN", "BB", "MB"])
+    private var getFirmwareVersionCommand: [UInt8] {
+        if type == .Finch {
+            return [0xD4]
+        } else {
+            return [0xCF, 0xFF, 0xFF, 0xFF]
+        }
+    }
+    static private let startNotificationsCommand: [UInt8] = [0x62, 0x67]
+    static private let startV2NotificationsCommand: [UInt8] = [0x62, 0x70]
     
     private var uartDevice: UARTDevice      // Required by the Bluetooth package
     public var uuid: UUID {         // Used by the Bluetooth package
@@ -30,8 +39,18 @@ class ManageableRobot: ManageableUARTDevice {
         return rawInputState?.data
     }
     private var batteryStatus: BatteryStatus?
+    public var battery: BatteryStatus {
+        batteryStatus ?? BatteryStatus.unknown
+    }
     private var type: RobotType
     private var isCalibrating: Bool
+    private var microbitV2Found: Bool?
+    public var hasV2Microbit: Bool {
+        microbitV2Found ?? false
+    }
+    public var microbitVersionDetected: Bool {
+        microbitV2Found != nil
+    }
     
     public required init (blePeripheral: BLEPeripheral) {
         self.uartDevice = BaseUARTDevice(blePeripheral: blePeripheral)
@@ -42,8 +61,11 @@ class ManageableRobot: ManageableUARTDevice {
         self.uartDevice.delegate = self
     }
     
-    func sendData(_ data: Data) {
-        uartDevice.writeWithoutResponse(data: data)
+    //func sendData(_ data: Data) {
+        //uartDevice.writeWithoutResponse(data: data)
+    func sendData(_ bytes: [UInt8]) {
+        print(bytes)
+        uartDevice.writeWithoutResponse(bytes: bytes)
     }
     
     func startCalibration() {
@@ -68,7 +90,34 @@ extension ManageableRobot: UARTDeviceDelegate {
     
     /* This function determines what happens when the Bluetooth device has new data. */
     public func uartDevice(_ device: UARTDevice, newState stateData: Data) {
-        guard let rawState = RawInputState(data: stateData, type: type) else {
+        
+        //Get the firmware version before accepting sensor data. For some reason, the firmware
+        // version of V2 microbits cannot be read unless sensor polling is started first.
+        guard microbitV2Found != nil else {
+            //print(Array(stateData))
+            
+            if stateData.count > 5 {
+                sendData(getFirmwareVersionCommand)
+            } else if stateData.count > 3 {
+                microbitV2Found = (stateData[3] == 0x22)
+            } else {
+                microbitV2Found = false
+            }
+            
+            if hasV2Microbit {
+                os_log("micro:bit V2 detected for [%{public}s]", log: log, type: .debug, self.advertisementSignature?.advertisedName ?? "unknown")
+                sendData(ManageableRobot.startV2NotificationsCommand)
+            } else if microbitV2Found != nil {
+                os_log("micro:bit for [%{public}s] is not a V2", log: log, type: .debug, self.advertisementSignature?.advertisedName ?? "unknown")
+            } else {
+                os_log("waiting for [%{public}s] firmware version data", log: log, type: .debug, self.advertisementSignature?.advertisedName ?? "unknown")
+            }
+            
+            return
+        }
+        
+        
+        guard let rawState = RawInputState(data: stateData, type: type, hasV2: hasV2Microbit) else {
             os_log("uartDevice [%{public}s] state update fail", log: log, type: .error, self.advertisementSignature?.advertisedName ?? "unknown")
             self.rawInputState?.isStale = true
             return
@@ -104,9 +153,17 @@ extension ManageableRobot: UARTDeviceDelegate {
             
             
             let newStatus: BatteryStatus
-            if let oldStatus = self.batteryStatus {
-                switch oldStatus {
-                case .green:
+            if hasV2Microbit && self.type == .Finch {
+                var val = rawState.data[i] & 0x3
+                if val == 3 { val = 2 } //3 is finch full charge - not currently handled
+                guard let status = BatteryStatus(rawValue: Int(val)) else {
+                    NSLog("Unknown battery status \(val)")
+                    return
+                }
+                newStatus = status
+            } else {
+                switch self.battery {
+                case .green, .full: //TODO: handle a threshold for full charge?
                     if voltage < yellowThreshold {
                         newStatus = .red
                     } else if voltage < greenThreshold - 0.05 {
@@ -130,14 +187,14 @@ extension ManageableRobot: UARTDeviceDelegate {
                     } else {
                         newStatus = .red
                     }
-                }
-            } else {
-                if voltage > greenThreshold {
-                    newStatus = BatteryStatus.green
-                } else if voltage > yellowThreshold {
-                    newStatus = BatteryStatus.yellow
-                } else {
-                    newStatus = BatteryStatus.red
+                case .unknown:
+                    if voltage > greenThreshold {
+                        newStatus = .green
+                    } else if voltage > yellowThreshold {
+                        newStatus = .yellow
+                    } else {
+                        newStatus = .red
+                    }
                 }
             }
             
@@ -164,8 +221,8 @@ public struct RawInputState {
     public let data: Data
     public fileprivate(set) var isStale: Bool   // is the data old?
     
-    init?(data: Data, type: RobotType) {
-        if data.count == type.expectedRawStateByteCount {
+    init?(data: Data, type: RobotType, hasV2: Bool) {
+        if data.count == type.expectedRawStateByteCount(hasV2) {
             self.timestamp = Date()
             self.data = data
             self.isStale = false
