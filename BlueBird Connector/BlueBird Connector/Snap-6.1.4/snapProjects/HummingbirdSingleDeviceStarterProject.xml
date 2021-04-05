@@ -366,6 +366,18 @@
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;Logo (V2)</options></input>
             </inputs>
             <script>
+                <block s="doIf">
+                    <block s="reportEquals">
+                        <block var="button"/>
+                        <l>Logo (V2)</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>button</l>
+                            <l>Logo</l>
+                        </block>
+                    </script>
+                </block>
                 <block s="doDeclareVariables">
                 <list>
                   <l>result</l>
@@ -415,6 +427,18 @@
                     <input type="%txt" readonly="true">Sound<options>Sound&#xD;Temperature (°C)</options></input>
                 </inputs>
                 <script>
+                    <block s="doIf">
+                        <block s="reportEquals">
+                            <block var="sensor"/>
+                            <l>Temperature (°C)</l>
+                        </block>
+                        <script>
+                            <block s="doSetVar">
+                                <l>sensor</l>
+                                <l>Temperature</l>
+                            </block>
+                        </script>
+                    </block>
                     <block s="doReport">
                         <block s="reportURL">
                             <block s="reportJoinWords">

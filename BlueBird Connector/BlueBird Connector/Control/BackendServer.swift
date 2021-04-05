@@ -129,7 +129,8 @@ class BackendServer {
     
     private func sensorRequest (_ request: HttpRequest) -> HttpResponse {
         os_log("Sensor request [%{public}s]", log: log, type: .debug, request.path)
-        let params = request.path.split(separator: "/")
+        let path = request.path.replacingOccurrences(of: "%20", with: " ")
+        let params = path.split(separator: "/")
         let sensor = params[2]
         let port = (params.count > 3 ? String(params[3]) : "")
         
@@ -141,10 +142,11 @@ class BackendServer {
         
         switch sensor {
         case "button":
+            let port = port.uppercased()
             switch port {
             case "A": return BackendServer.getRawResponse(String(robot.buttonA))
             case "B": return BackendServer.getRawResponse(String(robot.buttonB))
-            case "Logo (V2)":
+            case "LOGO":
                 if robot.manageableRobot.hasV2Microbit {
                     return BackendServer.getRawResponse(String(robot.V2touch))
                 } else {
@@ -159,7 +161,7 @@ class BackendServer {
             switch port {
             case "Sound":
                 return BackendServer.getRawResponse(String(robot.V2sound))
-            case "Temperature (°C)":
+            case "Temperature":
                 return BackendServer.getRawResponse(String(robot.V2temperature))
             default:
                 return BackendServer.getRawResponse("Invalid V2 sensor", .badRequest(nil))

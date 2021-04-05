@@ -71,11 +71,12 @@ class Finch: Robot {
     var finchDistance: String? {
         guard let raw = self.manageableRobot.rawInputData else { return nil }
         if manageableRobot.hasV2Microbit {
-            return String(Int(raw[1])) + "v2"
+            return String(Int(raw[1]))
         } else {
             let msb = Int(raw[0])
             let lsb = Int(raw[1])
-            return String((msb << 8) + lsb)
+            let raw = (msb << 8) + lsb
+            return String(Int((Double(raw) * 0.0919).rounded()))
         }
     }
     

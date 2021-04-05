@@ -711,6 +711,18 @@
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;Logo (V2)</options></input>
             </inputs>
             <script>
+                <block s="doIf">
+                    <block s="reportEquals">
+                        <block var="button"/>
+                        <l>Logo (V2)</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>button</l>
+                            <l>Logo</l>
+                        </block>
+                    </script>
+                </block>
                 <block s="doDeclareVariables">
                 <list>
                   <l>result</l>
@@ -765,6 +777,18 @@
                     <input type="%txt" readonly="true">Sound<options>Sound&#xD;Temperature (°C)</options></input>
                 </inputs>
                 <script>
+                    <block s="doIf">
+                        <block s="reportEquals">
+                            <block var="sensor"/>
+                            <l>Temperature (°C)</l>
+                        </block>
+                        <script>
+                            <block s="doSetVar">
+                                <l>sensor</l>
+                                <l>Temperature</l>
+                            </block>
+                        </script>
+                    </block>
                     <block s="doReport">
                         <block s="reportURL">
                             <block s="reportJoinWords">
@@ -1181,14 +1205,7 @@
                 <input type="%txt" readonly="true">A<options>A&#xD;B&#xD;C</options></input>
             </inputs>
             <script>
-              <block s="doDeclareVariables">
-                <list>
-                  <l>value</l>
-                  <l>split</l>
-                </list>
-              </block>
-              <block s="doSetVar">
-                <l>value</l>
+              <block s="doReport">
                 <block s="reportURL">
                     <block s="reportJoinWords">
                         <list>
@@ -1197,45 +1214,6 @@
                         </list>
                     </block>
                 </block>
-              </block>
-              <block s="doSetVar">
-                <l>split</l>
-                <block s="reportTextSplit"><block var="value"/>
-                  <l>v</l>
-                </block>
-              </block>
-              <block s="doIfElse">
-                <block s="reportEquals">
-                  <block s="reportListLength"><block var="split"/></block>
-                  <l>2</l>
-                </block>
-                <script>
-                  <block s="doReport">
-                    <block s="reportListItem">
-                      <l>1</l><block var="split"/></block>
-                  </block>
-                </script>
-                <script>
-                  <block s="doIfElse">
-                    <block s="reportIsA"><block var="value"/>
-                      <l>
-                        <option>number</option>
-                      </l>
-                    </block>
-                    <script>
-                      <block s="doReport">
-                        <block s="reportRound">
-                          <block s="reportProduct">
-                            <l>0.0919</l><block var="value"/></block>
-                        </block>
-                        <comment w="90" collapsed="false">0.0919 Scaling factor</comment>
-                      </block>
-                    </script>
-                    <script>
-                      <block s="doReport"><block var="value"/></block>
-                    </script>
-                  </block>
-                </script>
               </block>
             </script>
         </block-definition>

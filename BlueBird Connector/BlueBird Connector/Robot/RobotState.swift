@@ -36,13 +36,11 @@ struct RobotState: Equatable {
             servos = []
             leds = []
             motors = [Motor(), Motor()]
-            buzzer = Buzzer()
         case .HummingbirdBit:
             trileds = [TriLED(), TriLED()]
             servos = [255, 255, 255, 255]
             leds = [0, 0, 0]
             motors = []
-            buzzer = Buzzer()
         case .MicroBit, .Unknown:
             trileds = []
             servos = []
@@ -50,23 +48,28 @@ struct RobotState: Equatable {
             motors = []
         }
         ledArray = "S0000000000000000000000000"
+        buzzer = Buzzer()
     }
     
     
     //func setAllCommand() -> Data {
     func setAllCommand() -> [UInt8] {
+        guard let buzzer = buzzer else {
+            os_log("Missing buzzer information", log: log, type: .error)
+            return []
+        }
+        let buzzerArray = buzzer.array()
+        
         switch robotType {
         case .HummingbirdBit:
         //Set all: 0xCA LED1 Reserved R1 G1 B1 R2 G2 B2 SS1 SS2 SS3 SS4 LED2 LED3 Time us(MSB) Time us(LSB) Time ms(MSB) Time ms(LSB)
-            guard leds.count == 3, trileds.count == 2, servos.count == 4, let buzzer = buzzer else {
+            guard leds.count == 3, trileds.count == 2, servos.count == 4 else {
                 os_log("Missing information in the hummingbird bit output state", log: log, type: .error)
                 //return Data()
                 return []
             }
             
             let letter: UInt8 = 0xCA
-            
-            let buzzerArray = buzzer.array()
             
             let array: [UInt8] = [letter, leds[0], 0x00,
                                   trileds[0].red, trileds[0].green, trileds[0].blue,
@@ -83,15 +86,13 @@ struct RobotState: Equatable {
             // 0xD0, B_R(0-255), B_G(0-255), B_B(0-255), T1_R(0-255), T1_G(0-255), T1_B(0-255), T2_R(0-255),
             // T2_R(0-255), T2_R(0-255), T3_R(0-255), T3_G(0-255), T3_B(0-255), T4_R(0-255), T4_G(0-255), T4_B(0-255),
             // Time_us_MSB, Time_us_LSB, Time_ms_MSB, Time_ms_LSB
-            guard trileds.count == 5, let buzzer = buzzer else {
+            guard trileds.count == 5 else {
                 os_log("Missing information in the finch output state", log: log, type: .error)
                 //return Data()
                 return []
             }
             
             let letter: UInt8 = 0xD0
-        
-            let buzzerArray = buzzer.array()
         
             let array: [UInt8] = [letter,
                     trileds[0].red, trileds[0].green, trileds[0].blue,
@@ -105,7 +106,20 @@ struct RobotState: Equatable {
             //NSLog("Set all \(array)")
             //return Data(bytes: UnsafePointer<UInt8>(array), count: array.count)
             return array
+        case .MicroBit:
+            /** Micro:bit I/O :
+             * 0x90, FrequencyMSB, FrequencyLSB, Time MSB, Mode, Pad0_value, Pad1_value, Pad2_value
+             * Frequency is valid for only pin 0
+             *
+             * Mode 8 bits:
+             * FU, FU, P0_Mode_MSbit, P0_Mode_LSbit, P1_Mode_MSbit, P1_Mode_MSbit, P2_Mode_MSbit, P2_Mode_LSbit
+             * Only buzzer mode is currently supported here.
+             */
+            let letter: UInt8 = 0x90
             
+            let array: [UInt8] = [letter, buzzerArray[0], buzzerArray[1], buzzerArray[2], 0x20, buzzerArray[3], 0, 0]
+            
+            return array
         default:
             //return Data()
             return []
