@@ -776,7 +776,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BlueBird Connector/BlueBird_Connector.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = N6XC9HC8PB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "BlueBird Connector/Info.plist";
@@ -799,7 +799,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BlueBird Connector/BlueBird_Connector.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = N6XC9HC8PB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "BlueBird Connector/Info.plist";

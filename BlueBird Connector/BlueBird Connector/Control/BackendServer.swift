@@ -19,6 +19,7 @@ class BackendServer {
     
     //Standard Responses
     private let NOT_CONNECTED = getRawResponse("Not Connected")
+    private let V2_REQUIRED = getRawResponse("micro:bit V2 required")
     private let INVALID_PARAMETERS = getRawResponse("Invalid parameters", .badRequest(nil))
     private let INVALID_PORT = getRawResponse("Invalid port", .badRequest(nil))
     private let INVALID_AXIS = getRawResponse("Invalid axis", .badRequest(nil))
@@ -150,13 +151,13 @@ class BackendServer {
                 if robot.manageableRobot.hasV2Microbit {
                     return BackendServer.getRawResponse(String(robot.V2touch))
                 } else {
-                    return BackendServer.getRawResponse("micro:bit V2 required", .badRequest(nil))
+                    return V2_REQUIRED
                 }
             default: return BackendServer.getRawResponse("Invalid button", .badRequest(nil))
             }
         case "V2sensor":
             guard robot.manageableRobot.hasV2Microbit else {
-                return BackendServer.getRawResponse("micro:bit V2 required", .badRequest(nil))
+                return V2_REQUIRED
             }
             switch port {
             case "Sound":
