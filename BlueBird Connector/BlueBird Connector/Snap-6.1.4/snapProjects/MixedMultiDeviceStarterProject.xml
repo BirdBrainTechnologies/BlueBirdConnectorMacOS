@@ -312,6 +312,18 @@
             </inputs>
             <script>
                 <block s="doIf">
+                    <block s="reportLessThan">
+                        <block var="redLED"/>
+                        <l>0</l>
+                    </block>
+                    <script>
+                        <block s="doSetVar">
+                            <l>redLED</l>
+                            <l>0</l>
+                        </block>
+                    </script>
+                </block>
+                <block s="doIf">
                     <block s="reportGreaterThan">
                         <block var="redLED"/>
                         <l>100</l>
