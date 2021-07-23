@@ -53,7 +53,6 @@
 		31C5174924ABDEC10051C05F /* fa-brands-400.woff in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173924ABDEC00051C05F /* fa-brands-400.woff */; };
 		31C5174A24ABDEC10051C05F /* fa-brands-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173A24ABDEC00051C05F /* fa-brands-400.ttf */; };
 		31C5174B24ABDEC10051C05F /* fa-regular-400.eot in Resources */ = {isa = PBXBuildFile; fileRef = 31C5173B24ABDEC00051C05F /* fa-regular-400.eot */; };
-		31C5174E24ABDEF80051C05F /* birdbrain-technologies-logo.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5174D24ABDEF80051C05F /* birdbrain-technologies-logo.svg */; };
 		31C5175024ABDF030051C05F /* img-bit.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5174F24ABDF030051C05F /* img-bit.svg */; };
 		31C5175224ABDF090051C05F /* img-finch.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175124ABDF090051C05F /* img-finch.svg */; };
 		31C5175424ABDF100051C05F /* img-hummingbird-bit.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31C5175324ABDF100051C05F /* img-hummingbird-bit.svg */; };
@@ -76,6 +75,7 @@
 		31C63E9224AE8BAF0051F104 /* gui.js in Resources */ = {isa = PBXBuildFile; fileRef = 31C63E9124AE8BAF0051F104 /* gui.js */; };
 		31C63E9524AF6D1D0051F104 /* BirdbrainBLE in Frameworks */ = {isa = PBXBuildFile; productRef = 31C63E9424AF6D1D0051F104 /* BirdbrainBLE */; };
 		31C63E9724AF72D70051F104 /* Robot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C63E9624AF72D70051F104 /* Robot.swift */; };
+		31C8ECDB26AB056E00F50084 /* birdbrain-logo-h.png in Resources */ = {isa = PBXBuildFile; fileRef = 31C8ECDA26AB056E00F50084 /* birdbrain-logo-h.png */; };
 		31CD52C024DDE0710019AAD4 /* Snap-6.1.4 in Resources */ = {isa = PBXBuildFile; fileRef = 31CD52BF24DDE0710019AAD4 /* Snap-6.1.4 */; };
 		31D9064624D9AFE00037A790 /* SetAllTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D9064524D9AFE00037A790 /* SetAllTimer.swift */; };
 /* End PBXBuildFile section */
@@ -150,7 +150,6 @@
 		31C5173924ABDEC00051C05F /* fa-brands-400.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-brands-400.woff"; sourceTree = "<group>"; };
 		31C5173A24ABDEC00051C05F /* fa-brands-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-brands-400.ttf"; sourceTree = "<group>"; };
 		31C5173B24ABDEC00051C05F /* fa-regular-400.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-regular-400.eot"; sourceTree = "<group>"; };
-		31C5174D24ABDEF80051C05F /* birdbrain-technologies-logo.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "birdbrain-technologies-logo.svg"; sourceTree = "<group>"; };
 		31C5174F24ABDF030051C05F /* img-bit.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "img-bit.svg"; sourceTree = "<group>"; };
 		31C5175124ABDF090051C05F /* img-finch.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "img-finch.svg"; sourceTree = "<group>"; };
 		31C5175324ABDF100051C05F /* img-hummingbird-bit.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "img-hummingbird-bit.svg"; sourceTree = "<group>"; };
@@ -172,6 +171,7 @@
 		31C63E8F24AE8A8C0051F104 /* modals.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = modals.js; sourceTree = "<group>"; };
 		31C63E9124AE8BAF0051F104 /* gui.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = gui.js; sourceTree = "<group>"; };
 		31C63E9624AF72D70051F104 /* Robot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Robot.swift; sourceTree = "<group>"; };
+		31C8ECDA26AB056E00F50084 /* birdbrain-logo-h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "birdbrain-logo-h.png"; sourceTree = "<group>"; };
 		31CD52BF24DDE0710019AAD4 /* Snap-6.1.4 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Snap-6.1.4"; sourceTree = "<group>"; };
 		31D9064524D9AFE00037A790 /* SetAllTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAllTimer.swift; sourceTree = "<group>"; };
 		31F28126260E2808003EC93D /* Swifter */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Swifter; path = ../../../../../../Desktop/Swifter; sourceTree = "<group>"; };
@@ -352,12 +352,12 @@
 		31C5174C24ABDEED0051C05F /* img */ = {
 			isa = PBXGroup;
 			children = (
+				31C8ECDA26AB056E00F50084 /* birdbrain-logo-h.png */,
 				31C1D5B924D1BCEF00A83B21 /* logo-snap.svg */,
 				31C63E8724AE73510051F104 /* hummingbirdlogo32x32.png */,
 				31C5175124ABDF090051C05F /* img-finch.svg */,
 				31C5175524ABDF180051C05F /* pattern-blue-circuitry.svg */,
 				31C5175324ABDF100051C05F /* img-hummingbird-bit.svg */,
-				31C5174D24ABDEF80051C05F /* birdbrain-technologies-logo.svg */,
 				31C5174F24ABDF030051C05F /* img-bit.svg */,
 			);
 			path = img;
@@ -533,7 +533,6 @@
 				31C1D5BA24D1BCEF00A83B21 /* logo-snap.svg in Resources */,
 				31C5172424ABDE610051C05F /* custom.css in Resources */,
 				3102E6AA24E4322C00EB485F /* Credits.html in Resources */,
-				31C5174E24ABDEF80051C05F /* birdbrain-technologies-logo.svg in Resources */,
 				31C5174024ABDEC00051C05F /* fa-solid-900.eot in Resources */,
 				31C5176124ABDF470051C05F /* Nunito-Regular.ttf in Resources */,
 				31C5174724ABDEC10051C05F /* fa-solid-900.woff2 in Resources */,
@@ -544,6 +543,7 @@
 				31C5176424ABDF470051C05F /* raleway-semibold.woff in Resources */,
 				31C5173E24ABDEC00051C05F /* fa-regular-400.svg in Resources */,
 				31C63E8824AE73510051F104 /* hummingbirdlogo32x32.png in Resources */,
+				31C8ECDB26AB056E00F50084 /* birdbrain-logo-h.png in Resources */,
 				31B6E3E325F9070400D352ED /* MicroBit_V2_Calibration.mp4 in Resources */,
 				31C5176B24ABDF5C0051C05F /* HummBit_Calibration.mp4 in Resources */,
 				31C516F124ABD0960051C05F /* Assets.xcassets in Resources */,
